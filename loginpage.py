@@ -37,6 +37,8 @@ def loginbutton():
             conn.close()
             entry1.delete(0, END)
             entry2.delete(0, END)
+            root.destroy()
+            subprocess(['python', 'dashboard.py'])
 
         except mysql.connector.Error as err:
             messagebox.showerror(title='Database Error',
