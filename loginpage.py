@@ -19,27 +19,34 @@ def loginbutton():
                 password='20Bcs@125395',
                 database='Banking_Management_System'
             )
-
             cursor = conn.cursor()
 
-            query = "SELECT * FROM staff_login WHERE username = %s AND password = %s"
-            cursor.execute(query, (username, password))
-            result = cursor.fetchone()
+            # Check if the user exists in the registration table
+            query_check = "SELECT * FROM staff_registeration WHERE username = %s AND password = %s"
+            cursor.execute(query_check, (username, password))
+            registered_user = cursor.fetchone()
 
-            if result:
-                messagebox.showinfo(title='Login Successful',
-                                    message='Welcome to the Banking Management System!')
+            if not registered_user:
+                messagebox.showwarning(title='Login Failed',
+                                       message='Invalid Username or Password. Please register first.')
                 cursor.close()
                 conn.close()
-                
-                root.destroy()  # Destroy the current window before opening the new one
-                subprocess.run(['python', 'dashboard.py'])  # Run dashboard.py
-
-            else:
-                messagebox.showwarning(title='Login Failed',
-                                       message='Invalid Username or Password')
                 entry1.delete(0, END)
                 entry2.delete(0, END)
+                return
+            
+            # Insert user data into staff_login table if not already present
+            query_insert = "INSERT IGNORE INTO staff_login (username, password) VALUES (%s, %s)"
+            cursor.execute(query_insert, (username, password))
+            conn.commit()
+
+            messagebox.showinfo(title='Login Successful',
+                                message='Welcome to the Banking Management System!')
+            cursor.close()
+            conn.close()
+            
+            root.destroy()
+            subprocess.run(['python', 'dashboard.py'])
 
         except mysql.connector.Error as err:
             messagebox.showerror(title='Database Error',

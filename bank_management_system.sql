@@ -19,6 +19,6 @@ password varchar(50),
 confirm_password varchar(50)
 );
 
-select * from staff_registration;
+select * from staff_registeration;
 
 select * from staff_login;
