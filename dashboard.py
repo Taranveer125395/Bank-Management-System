@@ -12,12 +12,21 @@ def depositmoney():
 def withdrawmoney():
     messagebox.showinfo(title = 'Money Withdraw', message = 'Your money is withdrawed.')
 
+def loanapplication():
+    messagebox.showinfo(title = 'Loan Applied', message = 'Your loan is succefully applied')
+
+def transactionhistory():
+    messagebox.showinfo(title = 'Transaction History', message = 'Your transaction history is available.')
+
 root = Tk()
 root.title('Bank Management System - Dashboard')
 root.geometry('1920x1080')
 
-headerpoint = Frame(root, bg = 'lightpink', width = 50)
-headerpoint.pack(fill = 'y', side = 'left')
+headerpoint = Frame(root,
+                    bg = 'lightpink',
+                    width = 50)
+headerpoint.pack(fill = 'y',
+                 side = 'left')
 
 create_account = Button(headerpoint,
                         text = 'Create Account',
@@ -53,9 +62,20 @@ apply_for_loan = Button(headerpoint,
                         text = 'Apply For Loan',
                         bg = 'black',
                         fg = 'white',
-                        font = ('Arial', 12, 'bold'))
+                        font = ('Arial', 12, 'bold'),
+                        command = loanapplication)
 apply_for_loan.pack(side = 'top',
                     pady = 5,
                     padx = 5)
+
+transaction_history = Button(headerpoint,
+                             text = 'Transaction History',
+                             bg = 'black',
+                             fg = 'white',
+                             font = ('Arial', 12, 'bold'),
+                             command = transactionhistory)
+transaction_history.pack(side = 'top',
+                         pady = 5,
+                         padx = 5)
 
 root.mainloop()
