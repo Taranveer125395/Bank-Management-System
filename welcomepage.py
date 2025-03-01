@@ -11,7 +11,7 @@ def registration():
 
 root = Tk()
 root.title("Welcome")
-root.geometry("400x250")
+root.geometry("1920x1080")
 root.configure(bg = "#f0f0f0")
 
 title = Label(root,
@@ -19,6 +19,12 @@ title = Label(root,
               font = ('Arial', 14, 'bold'),
               bg = "#f0f0f0")
 title.pack(pady = 20)
+
+label =Label(root,
+             text = 'You have to choose out of Login and Registration to start your work.',
+             fg = 'blue',
+             font = ('Arial', 13, 'bold'))
+label.pack(pady = 10)
 
 loginbutton = Button(root,
                      text = 'Login',
