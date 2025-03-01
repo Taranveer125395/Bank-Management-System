@@ -8,16 +8,20 @@ def createaccount():
                         message = ' Your Bank Account is successfully created.')
 
 def depositmoney():
-    messagebox.showinfo(title = 'Money Deposited', message = 'Your Money is depositted.')
+    messagebox.showinfo(title = 'Money Deposited', 
+                        message = 'Your Money is depositted.')
 
 def withdrawmoney():
-    messagebox.showinfo(title = 'Money Withdraw', message = 'Your money is withdrawed.')
+    messagebox.showinfo(title = 'Money Withdraw', 
+                        message = 'Your money is withdrawed.')
 
 def loanapplication():
-    messagebox.showinfo(title = 'Loan Applied', message = 'Your loan is succefully applied')
+    messagebox.showinfo(title = 'Loan Applied', 
+                        message = 'Your loan is succefully applied')
 
 def transactionhistory():
-    messagebox.showinfo(title = 'Transaction History', message = 'Your transaction history is available.')
+    messagebox.showinfo(title = 'Transaction History', 
+                        message = 'Your transaction history is available.')
 
 root = Tk()
 root.title('Bank Management System - Dashboard')
