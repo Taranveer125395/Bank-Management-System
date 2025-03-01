@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import subprocess
 import mysql.connector
+from datetime import datetime
 
 conn = mysql.connector.connect(
     host = 'localhost',
@@ -31,6 +32,16 @@ def loanapplication():
 
 def transactionhistory():
     show_frame(transactionframe)
+
+def validate_button():
+    datetext = dobentry.get()
+    try:
+        datetime.strptime(datetext, "%d/%m/%Y")
+        messagebox.showinfo(title = 'Success',
+                            message = 'Valid Date Format: DD/MM/YYYY')
+    except:
+        messagebox.showerror(title = 'Error',
+                             message = 'Invalid Date! Use Format: DD/MM/YYYY')
 
 root = Tk()
 root.title('Bank Management System - Dashboard')
@@ -122,7 +133,18 @@ name1entry.grid(row = 0, column = 1, padx = 5, pady = 10, sticky = 'w')
 
 age1 = Label(accountframe, text = 'Age')
 age1entry = Entry(accountframe)
-age1.grid(row = 0, column = 2, padx = 5, pady = 10, sticky = 'e')
-age1entry.grid(row = 0, column = 3, padx = 5, pady = 10, sticky = 'w')
+age1.grid(row = 0, column = 3, padx = 5, pady = 10, sticky = 'e')
+age1entry.grid(row = 0, column = 4, padx = 5, pady = 10, sticky = 'w')
+
+dob = Label(accountframe, text = 'Date of Birth')
+dobentry = Entry(accountframe, textvariable = 'dd/mm/yyyy')
+dob.grid(row = 1, column = 0, padx = 10, pady = 5, sticky = 'e')
+dobentry.grid(row = 1, column =1, padx = 5, pady = 5, sticky = 'w')
+validate = Button(accountframe, text = 'Validate', command = validate_button)
+validate.grid(row = 1, column = 2, padx = 5, pady = 5)
+
+aadharnumber = Label(accountframe, text = 'Aadhaar No.')
+aadharnumberentry = Entry(accountframe)
+
 
 root.mainloop()
