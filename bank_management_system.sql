@@ -22,6 +22,20 @@ create table staff_registeration(
 create table accounts(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
+    age int,
+    mobilenumber VARCHAR(255),
+    dob date,
+    aadhaarno bigint,
+    pancardno VARCHAR(255),
+    fathername varchar(255),
+    mothername varchar(255),
+    address varchar(255),
+    city varchar(255),
+    district varchar(255),
+    state varchar(255),
+    country varchar(255),
+    pincode int,
+    email varchar(255),
     balance DECIMAL(10,2) NOT NULL
 );
 

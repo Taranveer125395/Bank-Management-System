@@ -432,4 +432,12 @@ accountbutton.grid(row = 6,
                    columnspan = 7,
                    pady = 5)
 
+heading1 = Label(depositframe,
+                 text = 'Deposit Cash',
+                 font = ('Arial', 14, 'bold'))
+heading1.grid(row = 0,
+              column = 0,
+              columnspan = 7,
+              pady = 20)
+
 root.mainloop()
