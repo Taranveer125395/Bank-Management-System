@@ -11,31 +11,26 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor()
 
-def createaccount():
-    account_window = Toplevel(root)
-    account_window.title('Create Account')
-    account_window.geometry('400x250')
+def show_frame(frame):
+    frame.tkraise()
 
-    name = Label(account_window, text = 'Name')
-    name_entry = Entry(account_window)
-    name.grid(row = 0, column = 0, padx = 5, pady = 2, sticky = 'e')
-    name_entry.grid(row = 0, column = 1, padx = 5, pady = 2, stickey = 'w')
+def homebutton():
+    show_frame(homeframe)
+
+def createaccount():
+    show_frame(accountframe)
 
 def depositmoney():
-    messagebox.showinfo(title = 'Money Deposited', 
-                        message = 'Your Money is depositted.')
+    show_frame(depositframe)
 
 def withdrawmoney():
-    messagebox.showinfo(title = 'Money Withdraw', 
-                        message = 'Your money is withdrawed.')
+    show_frame(withdrawfram)
 
 def loanapplication():
-    messagebox.showinfo(title = 'Loan Applied', 
-                        message = 'Your loan is succefully applied')
+    show_frame(loanframe)
 
 def transactionhistory():
-    messagebox.showinfo(title = 'Transaction History', 
-                        message = 'Your transaction history is available.')
+    show_frame(transactionframe)
 
 root = Tk()
 root.title('Bank Management System - Dashboard')
@@ -46,6 +41,16 @@ headerpoint = Frame(root,
                     width = 50)
 headerpoint.pack(fill = 'y',
                  side = 'left')
+
+home = Button(headerpoint,
+              text = 'Home',
+              bg = 'black',
+              fg = 'white',
+              font = ('Arial', 12, 'bold'),
+              command = homebutton)
+home.pack(side = 'top',
+          padx = 5,
+          pady = 5)
 
 create_account = Button(headerpoint,
                         text = 'Create Account',
@@ -96,5 +101,18 @@ transaction_history = Button(headerpoint,
 transaction_history.pack(side = 'top',
                          pady = 5,
                          padx = 5)
+
+main_frame = Frame(root, bg = 'white')
+main_frame.pack(expand = True, fill = 'both')
+
+homeframe = Frame(main_frame, bg = 'white')
+accountframe = Frame(main_frame, bg = 'skyblue')
+depositframe = Frame(main_frame, bg = 'skyblue')
+withdrawfram = Frame(main_frame, bg = 'skyblue')
+loanframe = Frame(main_frame, bg = 'skyblue')
+transactionframe = Frame(main_frame, bg = 'skyblue')
+
+for frame in (homeframe, accountframe, depositframe, withdrawfram, loanframe, transactionframe):
+    frame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
 root.mainloop()
