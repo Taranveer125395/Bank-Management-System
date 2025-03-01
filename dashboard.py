@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import messagebox
-import subprocess
 import mysql.connector
 from datetime import datetime
 
