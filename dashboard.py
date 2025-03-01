@@ -21,6 +21,15 @@ def homebutton():
 def createaccount():
     show_frame(accountframe)
 
+def mobile_number_validation(M):
+    if M.isdigit() and len(M) <= 10:
+        return True
+    elif M == ' ':
+        return True
+    else:
+        messagebox.showerror(title = 'Error',
+                             message = 'Mobile number shoul be equal to 10 digits')
+
 def depositmoney():
     show_frame(depositframe)
 
@@ -126,25 +135,33 @@ transactionframe = Frame(main_frame)
 for frame in (homeframe, accountframe, depositframe, withdrawfram, loanframe, transactionframe):
     frame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
-name1 = Label(accountframe, text = 'Name')
-name1entry = Entry(accountframe)
-name1.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = 'e')
-name1entry.grid(row = 0, column = 1, padx = 5, pady = 10, sticky = 'w')
+heading = Label(accountframe, text = 'New Account Application Form', font = ('Arial', 14, 'bold'))
+heading.grid(row = 0, column = 0, columnspan = 7, pady = 10)
 
-age1 = Label(accountframe, text = 'Age')
-age1entry = Entry(accountframe)
-age1.grid(row = 0, column = 3, padx = 5, pady = 10, sticky = 'e')
-age1entry.grid(row = 0, column = 4, padx = 5, pady = 10, sticky = 'w')
+name1 = Label(accountframe, text = 'Name', font = ('Arial', 12))
+name1entry = Entry(accountframe, font = ('Arial', 12), fg = 'blue')
+name1.grid(row = 1, column = 0, padx = 10, pady = 10, sticky = 'e')
+name1entry.grid(row = 1, column = 1, padx = 5, pady = 10, sticky = 'w')
 
-dob = Label(accountframe, text = 'Date of Birth')
-dobentry = Entry(accountframe, textvariable = 'dd/mm/yyyy')
-dob.grid(row = 1, column = 0, padx = 10, pady = 5, sticky = 'e')
-dobentry.grid(row = 1, column =1, padx = 5, pady = 5, sticky = 'w')
-validate = Button(accountframe, text = 'Validate', command = validate_button)
-validate.grid(row = 1, column = 2, padx = 5, pady = 5)
+age1 = Label(accountframe, text = 'Age', font = ('Arial', 12))
+age1entry = Entry(accountframe, font = ('Arial', 12), fg = 'blue')
+age1.grid(row = 1, column = 3, padx = 5, pady = 10, sticky = 'e')
+age1entry.grid(row = 1, column = 4, padx = 5, pady = 10, sticky = 'w')
 
-aadharnumber = Label(accountframe, text = 'Aadhaar No.')
-aadharnumberentry = Entry(accountframe)
+mobilenumber = Label(accountframe, text = 'Mobile Number', font = ('Arial', 12))
+mobilenumberentry = Entry(accountframe, font = ('Arial', 12), fg = 'blue')
+
+dob = Label(accountframe, text = 'Date of Birth', font = ('Arial', 12))
+dobentry = Entry(accountframe, textvariable = 'dd/mm/yyyy', font = ('Arial', 12), fg = 'blue')
+dob.grid(row = 2, column = 0, padx = 10, pady = 5, sticky = 'e')
+dobentry.grid(row = 2, column =1, padx = 5, pady = 5, sticky = 'w')
+validate = Button(accountframe, text = 'Validate', command = validate_button, font = ('Arial', 10))
+validate.grid(row = 2, column = 2, padx = 5, pady = 5)
+
+aadharnumber = Label(accountframe, text = 'Aadhaar No.', font = ('Arial', 12))
+aadharnumberentry = Entry(accountframe, font = ('Arial', 12), fg = 'blue')
+aadharnumber.grid(row = 2, column = 3, padx = 10, pady = 5, sticky = 'e')
+aadharnumberentry.grid(row = 2, column = 4, padx = 5, pady = 5, sticky = 'w')
 
 
 root.mainloop()

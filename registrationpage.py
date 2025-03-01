@@ -14,7 +14,14 @@ def register_button():
     password = password_type_entry.get()
     confirmpassword = confirm_password_type_entry.get()
 
-    if not (fullname and username and mobilenumber and age1 and qualification and job and password and confirmpassword):
+    if not (fullname and 
+            username and 
+            mobilenumber and 
+            age1 and 
+            qualification and 
+            job and 
+            password and 
+            confirmpassword):
         messagebox.showwarning(title = 'Error',
                                message = 'Enter Your Data Properly.')
         return
@@ -134,8 +141,8 @@ username_entry.grid(row = 1,
 mobile_number = Label(root,
                       text = 'Mobile Number')
 mobile_number_entry = Entry(root,
-                            validate="key", 
-                            validatecommand=(vcmd, "%P"))
+                            validate = "key", 
+                            validatecommand = (vcmd, "%P"))
 mobile_number.grid(row = 2,
                    column = 0,
                    padx = 5,
