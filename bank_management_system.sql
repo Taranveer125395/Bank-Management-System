@@ -37,7 +37,7 @@ create table accounts(
     pincode int,
     email varchar(255),
     balance DECIMAL(10,2) NOT NULL
-);
+)AUTO_INCREMENT = 1001;
 
 create table transactions(
     id INT AUTO_INCREMENT PRIMARY KEY,
