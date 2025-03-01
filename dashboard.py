@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import subprocess
+import mysql.connector
 
 def createaccount():
     messagebox.showinfo(title = 'Account Created',
