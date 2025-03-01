@@ -20,9 +20,10 @@ def homebutton():
 
 def createaccount():
     show_frame(accountframe)
-    def accountbutton():
-        messagebox(title = 'Success',
-                   message = ' Your account is created successfully.')
+
+def account_button():
+    messagebox(title = 'Success',
+               message = ' Your account is created successfully.')
 
 def mobile_number_validation(M):
     if M.isdigit() and len(M) <= 10:
@@ -424,7 +425,8 @@ emailentry.grid(row = 5,
 
 accountbutton = Button(accountframe,
                        text = 'Create Account',
-                       font = ('Arial', 12))
+                       font = ('Arial', 12),
+                       command = account_button)
 accountbutton.grid(row = 6,
                    column = 0,
                    columnspan = 7,
