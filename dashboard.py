@@ -105,14 +105,24 @@ transaction_history.pack(side = 'top',
 main_frame = Frame(root, bg = 'white')
 main_frame.pack(expand = True, fill = 'both')
 
-homeframe = Frame(main_frame, bg = 'white')
-accountframe = Frame(main_frame, bg = 'skyblue')
-depositframe = Frame(main_frame, bg = 'skyblue')
-withdrawfram = Frame(main_frame, bg = 'skyblue')
-loanframe = Frame(main_frame, bg = 'skyblue')
-transactionframe = Frame(main_frame, bg = 'skyblue')
+homeframe = Frame(main_frame)
+accountframe = Frame(main_frame)
+depositframe = Frame(main_frame)
+withdrawfram = Frame(main_frame)
+loanframe = Frame(main_frame)
+transactionframe = Frame(main_frame)
 
 for frame in (homeframe, accountframe, depositframe, withdrawfram, loanframe, transactionframe):
     frame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
+
+name1 = Label(accountframe, text = 'Name')
+name1entry = Entry(accountframe)
+name1.grid(row = 0, column = 0, padx = 10, pady = 10, sticky = 'e')
+name1entry.grid(row = 0, column = 1, padx = 5, pady = 10, sticky = 'w')
+
+age1 = Label(accountframe, text = 'Age')
+age1entry = Entry(accountframe)
+age1.grid(row = 0, column = 2, padx = 5, pady = 10, sticky = 'e')
+age1entry.grid(row = 0, column = 3, padx = 5, pady = 10, sticky = 'w')
 
 root.mainloop()
