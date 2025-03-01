@@ -3,9 +3,23 @@ from tkinter import messagebox
 import subprocess
 import mysql.connector
 
+conn = mysql.connector.connect(
+    host = 'localhost',
+    user = 'root',
+    password = '20Bcs@125395',
+    database = 'Banking_Management_System'
+)
+cursor = conn.cursor()
+
 def createaccount():
-    messagebox.showinfo(title = 'Account Created',
-                        message = ' Your Bank Account is successfully created.')
+    account_window = Toplevel(root)
+    account_window.title('Create Account')
+    account_window.geometry('400x250')
+
+    name = Label(account_window, text = 'Name')
+    name_entry = Entry(account_window)
+    name.grid(row = 0, column = 0, padx = 5, pady = 2, sticky = 'e')
+    name_entry.grid(row = 0, column = 1, padx = 5, pady = 2, stickey = 'w')
 
 def depositmoney():
     messagebox.showinfo(title = 'Money Deposited', 
