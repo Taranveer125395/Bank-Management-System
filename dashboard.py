@@ -22,8 +22,8 @@ def createaccount():
     show_frame(accountframe)
 
 def account_button():
-    messagebox(title = 'Success',
-               message = ' Your account is created successfully.')
+    messagebox.showinfo(title = 'Success',
+                        message = ' Your account is created successfully.')
 
 def mobile_number_validation(M):
     if M.isdigit() and len(M) <= 10:
