@@ -39,12 +39,13 @@ create table accounts(
     balance DECIMAL(10,2) NOT NULL
 )AUTO_INCREMENT = 1001;
 
-create table transactions(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    account_id INT,
-    type ENUM('Deposit', 'Withdraw') NOT NULL,
+CREATE TABLE Transactions (
+    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    account_number VARCHAR(20) NOT NULL,
+    transaction_type ENUM('Deposit', 'Withdraw') NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (account_id) REFERENCES accounts(id)
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_number) REFERENCES accounts(id)
 );
 
 create table loans(
