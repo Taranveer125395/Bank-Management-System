@@ -137,6 +137,46 @@ def government_sector(event = None):
         officeaddress.grid_remove()
         officeaddressentry.grid_remove()
 
+def private_sector(event = None):
+    if employertypeentry.get() == 'Private Sector':
+        employername.grid(row = 3,
+                          column = 0, 
+                          padx = 10, 
+                          pady = 10, 
+                          sticky = 'e')
+        employernameentry.grid(row = 3, 
+                               column = 1, 
+                               padx = 10, 
+                               pady = 10, 
+                               sticky = 'w')
+        position1.grid(row = 3, 
+                       column = 2, 
+                       padx = 10, 
+                       pady = 10, 
+                       sticky = 'e')
+        positionentry1.grid(row = 3, 
+                            column = 3, 
+                            padx = 10, 
+                            pady = 10, 
+                            sticky = 'w')
+        officeaddress1.grid(row = 3, 
+                            column = 4, 
+                            padx = 10, 
+                            pady = 10, 
+                            sticky = 'e')
+        officeaddressentry1.grid(row = 3, 
+                                 column = 5, 
+                                 padx = 10, 
+                                 pady = 10, 
+                                 sticky = 'w')
+    else:
+        employername.grid_remove()
+        employernameentry.grid_remove()
+        position1.grid_remove()
+        positionentry1.grid_remove()
+        officeaddress1.grid_remove()
+        officeaddressentry1.grid_remove()
+
 def transactionhistory():
     show_frame(transactionframe)
 
@@ -769,6 +809,8 @@ employertypeentry = ttk.Combobox(loanframe,
                                  font = ('Arial', 11))
 employertypeentry.bind('<<ComboboxSelected>>',
                        government_sector)
+employertypeentry.bind('<<ComboboxSelected>>',
+                       private_sector)
 
 position = Label(loanframe, text = 'Position', font = ('Arial', 11))
 positionentry = Entry(loanframe, font = ('Arial', 11))
@@ -776,6 +818,13 @@ department = Label(loanframe, text = 'Department', font = ('Arial', 11))
 departmententry = ttk.Combobox(loanframe, values = ['', 'Railway', 'Police', 'Revenue', 'Civil Services', 'Banking'], font = ('Arial', 11))
 officeaddress = Label(loanframe, text = 'Office Address', font = ('Arial', 11))
 officeaddressentry = Entry(loanframe, font = ('Arial', 11))
+
+employername = Label(loanframe, text = 'Employer Name', font = ('Arial', 11))
+employernameentry = Entry(loanframe, font = ('Arial', 11))
+position1 = Label(loanframe, text = 'Position', font = ('Arial', 11))
+positionentry1 = Entry(loanframe, font = ('Arial', 11))
+officeaddress1 = Label(loanframe, text = 'Office Address', font = ('Arial', 11))
+officeaddressentry1 = Entry(loanframe, font = ('Arial', 11))
 
 loanapplybutton = Button(loanframe,
                          text = 'Apply Loan', 
