@@ -477,7 +477,13 @@ amountentry.grid(row = 1,
                  pady = 10,
                  sticky = 'w')
 
-depositbutton = Button(depositframe,text = 'Deposit', font = ('Arial', 12), command = deposit_button)
-depositbutton.grid(row = 2,column = 0, columnspan = 4, pady = 10)
+depositbutton = Button(depositframe,
+                       text = 'Deposit', 
+                       font = ('Arial', 12), 
+                       command = deposit_button)
+depositbutton.grid(row = 2,
+                   column = 0, 
+                   columnspan = 4,
+                   pady = 10)
 
 root.mainloop()
