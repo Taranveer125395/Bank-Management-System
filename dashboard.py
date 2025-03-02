@@ -24,12 +24,12 @@ def createaccount():
 def gst_entry(event = None):
     if accounttypeentry.get() == 'Current':
         gstnumber.grid(row = 6,
-                       column = 3,
+                       column = 5,
                        padx = 5,
                        pady = 5,
                        sticky = 'e')
         gstnumberentry.grid(row = 6,
-                            column = 4,
+                            column = 6,
                             padx = 5,
                             pady = 5,
                             sticky = 'w')
@@ -87,10 +87,6 @@ def validate_button():
 root = Tk()
 root.title('Bank Management System - Dashboard')
 root.geometry('1920x1080')
-style = ttk.Style()
-style.configure("Custom.TCombobox",
-                foreground="blue",
-                font=("Arial", 12))
 
 headerpoint = Frame(root,
                     bg = 'lightpink',
@@ -102,7 +98,7 @@ home = Button(headerpoint,
               text = 'Home',
               bg = 'black',
               fg = 'white',
-              font = ('Arial', 12, 'bold'),
+              font = ('Arial', 11, 'bold'),
               command = homebutton,
               width = 15)
 home.pack(side = 'top',
@@ -113,7 +109,7 @@ create_account = Button(headerpoint,
                         text = 'Create Account',
                         bg = 'black',
                         fg = 'white',
-                        font = ('Arial', 12, 'bold'),
+                        font = ('Arial', 11, 'bold'),
                         command = createaccount,
                         width = 15)
 create_account.pack(side = 'top',
@@ -124,7 +120,7 @@ deposit_money = Button(headerpoint,
                        text = 'Deposit Money',
                        bg = 'black',
                        fg = 'white',
-                       font = ('Arial', 12, 'bold'),
+                       font = ('Arial', 11, 'bold'),
                        command = depositmoney,
                        width = 15)
 deposit_money.pack(side = 'top',
@@ -135,7 +131,7 @@ withdraw_money = Button(headerpoint,
                         text = 'Withdraw Money', 
                         bg = 'black',
                         fg = 'White',
-                        font = ('Arial', 12, 'bold'),
+                        font = ('Arial', 11, 'bold'),
                         command = withdrawmoney,
                         width = 15)
 withdraw_money.pack(side = 'top', 
@@ -146,7 +142,7 @@ apply_for_loan = Button(headerpoint,
                         text = 'Apply For Loan',
                         bg = 'black',
                         fg = 'white',
-                        font = ('Arial', 12, 'bold'),
+                        font = ('Arial', 11, 'bold'),
                         command = loanapplication,
                         width = 15)
 apply_for_loan.pack(side = 'top',
@@ -157,7 +153,7 @@ transaction_history = Button(headerpoint,
                              text = 'Transaction History',
                              bg = 'black',
                              fg = 'white',
-                             font = ('Arial', 12, 'bold'),
+                             font = ('Arial', 11, 'bold'),
                              command = transactionhistory,
                              width = 15)
 transaction_history.pack(side = 'top',
@@ -202,9 +198,9 @@ heading.grid(row = 0,
 
 name1 = Label(accountframe,
               text = 'Name',
-              font = ('Arial', 12))
+              font = ('Arial', 11))
 name1entry = Entry(accountframe,
-                   font = ('Arial', 12))
+                   font = ('Arial', 11))
 name1.grid(row = 1,
            column = 0,
            padx = 10,
@@ -218,9 +214,9 @@ name1entry.grid(row = 1,
 
 age1 = Label(accountframe,
              text = 'Age',
-             font = ('Arial', 12))
+             font = ('Arial', 11))
 age1entry = Entry(accountframe,
-                  font = ('Arial', 12))
+                  font = ('Arial', 11))
 age1.grid(row = 1,
           column = 3,
           padx = 5,
@@ -234,9 +230,9 @@ age1entry.grid(row = 1,
 
 mobilenumber = Label(accountframe,
                      text = 'Mobile Number',
-                     font = ('Arial', 12))
+                     font = ('Arial', 11))
 mobilenumberentry = Entry(accountframe,
-                          font = ('Arial', 12),
+                          font = ('Arial', 11),
                           validatecommand = (vcmd, "%M"))
 mobilenumber.grid(row = 1,
                   column = 5,
@@ -251,10 +247,10 @@ mobilenumberentry.grid(row = 1,
 
 dob = Label(accountframe,
             text = 'Date of Birth',
-            font = ('Arial', 12))
+            font = ('Arial', 11))
 dobentry = Entry(accountframe,
                  textvariable = 'dd/mm/yyyy',
-                 font = ('Arial', 12))
+                 font = ('Arial', 11))
 dob.grid(row = 2,
          column = 0,
          padx = 10,
@@ -276,9 +272,9 @@ validate.grid(row = 2,
 
 aadharnumber = Label(accountframe,
                      text = 'Aadhaar No.',
-                     font = ('Arial', 12))
+                     font = ('Arial', 11))
 aadharnumberentry = Entry(accountframe,
-                          font = ('Arial', 12))
+                          font = ('Arial', 11))
 aadharnumber.grid(row = 2,
                   column = 3,
                   padx = 10,
@@ -292,9 +288,9 @@ aadharnumberentry.grid(row = 2,
 
 pancardnumber = Label(accountframe,
                       text = 'Pan Card Number',
-                      font = ('Arial', 12))
+                      font = ('Arial', 11))
 pancardnumberentry = Entry(accountframe,
-                           font = ('Arial', 12))
+                           font = ('Arial', 11))
 pancardnumber.grid(row = 2,
                    column = 5,
                    padx = 5,
@@ -308,9 +304,9 @@ pancardnumberentry.grid(row = 2,
 
 fathername = Label(accountframe,
                    text = 'Father Name',
-                   font = ('Arial', 12))
+                   font = ('Arial', 11))
 fathernameentry = Entry(accountframe,
-                        font = ('Arial', 12))
+                        font = ('Arial', 11))
 fathername.grid(row = 3,
                 column = 0,
                 padx = 10,
@@ -324,9 +320,9 @@ fathernameentry.grid(row = 3,
 
 mothername = Label(accountframe,
                    text = 'Mother Name',
-                   font = ('Arial', 12))
+                   font = ('Arial', 11))
 mothernameentry = Entry(accountframe,
-                        font = ('Arial', 12))
+                        font = ('Arial', 11))
 mothername.grid(row = 3,
                 column = 3,
                 padx = 5,
@@ -340,9 +336,9 @@ mothernameentry.grid(row = 3,
 
 address = Label(accountframe,
                 text = 'Address',
-                font = ('Arial', 12))
+                font = ('Arial', 11))
 addressentry = Entry(accountframe,
-                     font = ('Arial', 12))
+                     font = ('Arial', 11))
 address.grid(row = 3,
              column = 5,
              padx = 5,
@@ -356,9 +352,9 @@ addressentry.grid(row = 3,
 
 city = Label(accountframe,
              text = 'City',
-             font = ('Arial', 12))
+             font = ('Arial', 11))
 cityentry = Entry(accountframe,
-                  font = ('Arial', 12))
+                  font = ('Arial', 11))
 city.grid(row = 4,
           column = 0,
           padx = 10,
@@ -372,9 +368,9 @@ cityentry.grid(row = 4,
 
 district = Label(accountframe,
                  text = 'District',
-                 font = ('Arial', 12))
+                 font = ('Arial', 11))
 districtentry = Entry(accountframe,
-                      font = ('Arial', 12))
+                      font = ('Arial', 11))
 district.grid(row = 4,
               column = 3,
               padx = 5,
@@ -388,9 +384,9 @@ districtentry.grid(row = 4,
 
 state = Label(accountframe,
               text = 'State',
-              font = ('Arial', 12))
+              font = ('Arial', 11))
 stateentry = Entry(accountframe,
-                   font = ('Arial', 12))
+                   font = ('Arial', 11))
 state.grid(row = 4,
            column = 5,
            padx = 5,
@@ -404,9 +400,9 @@ stateentry.grid(row = 4,
 
 country = Label(accountframe,
                 text = 'Country',
-                font = ('Arial', 12))
+                font = ('Arial', 11))
 countryentry = Entry(accountframe,
-                     font = ('Arial', 12))
+                     font = ('Arial', 11))
 country.grid(row = 5,
              column = 0,
              padx = 10,
@@ -420,9 +416,9 @@ countryentry.grid(row = 5,
 
 pincode = Label(accountframe,
                 text = 'Pin Code',
-                font = ('Arial', 12))
+                font = ('Arial', 11))
 pincodeentry = Entry(accountframe,
-                     font = ('Arial', 12))
+                     font = ('Arial', 11))
 pincode.grid(row = 5,
            column = 3,
            padx = 5,
@@ -436,9 +432,9 @@ pincodeentry.grid(row = 5,
 
 email = Label(accountframe,
               text = 'Email Address',
-              font = ('Arial', 12))
+              font = ('Arial', 11))
 emailentry = Entry(accountframe,
-                   font = ('Arial', 12))
+                   font = ('Arial', 11))
 email.grid(row = 5,
            column = 5,
            padx = 5,
@@ -450,36 +446,59 @@ emailentry.grid(row = 5,
                 pady = 5,
                 sticky = 'w')
 
+education = Label(accountframe,
+                  text = 'Education Qualification',
+                  font  = ('Arial', 11))
+educationentry = ttk.Combobox(accountframe,
+                              values = ['', 
+                                        'Below 12th',
+                                        '12th Pass',
+                                        'Diploma Holder',
+                                        'Graduate',
+                                        'Post Graduate',
+                                        'Doctrate'],
+                              font = ('Arial', 11))
+education.grid(row = 6,
+               column = 0,
+               padx = 10,
+               pady = 5,
+               sticky = 'e')
+educationentry.grid(row = 6,
+                    column = 1,
+                    padx = 10,
+                    pady = 5,
+                    sticky = 'w')
+
 accounttype = Label(accountframe,
                     text = 'Account Type',
-                    font = ('Arial', 12))
+                    font = ('Arial', 11))
 accounttypeentry = ttk.Combobox(accountframe,
                                 values = ['',
                                           'Saving',
                                           'Current'],
-                                font = ('Arial', 12))
+                                font = ('Arial', 11))
 accounttypeentry.bind('<<ComboboxSelected>>',
                       gst_entry)
 accounttype.grid(row = 6,
-                 column = 0,
-                 padx = 10,
+                 column = 3,
+                 padx = 5,
                  pady = 5,
                  sticky = 'e')
 accounttypeentry.grid(row = 6,
-                      column = 1,
+                      column = 4,
                       padx = 5,
                       pady = 5,
                       sticky = 'w')
 
 gstnumber = Label(accountframe,
                   text = 'GST Number',
-                  font = ('Arial', 12))
+                  font = ('Arial', 11))
 gstnumberentry = Entry(accountframe,
-                       font = ('Arial', 12))
+                       font = ('Arial', 11))
 
 accountbutton = Button(accountframe,
                        text = 'Create Account',
-                       font = ('Arial', 12),
+                       font = ('Arial', 11),
                        command = account_button)
 accountbutton.grid(row = 7,
                    column = 0,
@@ -496,9 +515,9 @@ heading1.grid(row = 0,
 
 accountnumber = Label(depositframe,
                       text = 'Account Number',
-                      font = ('Arial', 12))
+                      font = ('Arial', 11))
 accountnumberentry = Entry(depositframe,
-                           font = ('Arial', 12))
+                           font = ('Arial', 11))
 accountnumber.grid(row = 1,
                    column = 0,
                    padx = 10,
@@ -512,9 +531,9 @@ accountnumberentry.grid(row = 1,
 
 amount = Label(depositframe,
                text = 'Amount',
-               font = ('Arial', 12))
+               font = ('Arial', 11))
 amountentry = Entry(depositframe, 
-                    font = ('Arial', 12))
+                    font = ('Arial', 11))
 amount.grid(row = 1,
             column = 2,
             padx = 10,
@@ -528,7 +547,7 @@ amountentry.grid(row = 1,
 
 depositbutton = Button(depositframe,
                        text = 'Deposit', 
-                       font = ('Arial', 12), 
+                       font = ('Arial', 11), 
                        command = deposit_button)
 depositbutton.grid(row = 2,
                    column = 0, 
@@ -545,9 +564,9 @@ heading2.grid(row = 0,
 
 accountnumber = Label(withdrawframe,
                       text = 'Account Number',
-                      font = ('Arial', 12))
+                      font = ('Arial', 11))
 accountnumberentry = Entry(withdrawframe,
-                           font = ('Arial', 12))
+                           font = ('Arial', 11))
 accountnumber.grid(row = 1,
                    column = 0,
                    padx = 10,
@@ -561,9 +580,9 @@ accountnumberentry.grid(row = 1,
 
 amount = Label(withdrawframe,
                text = 'Amount',
-               font = ('Arial', 12))
+               font = ('Arial', 11))
 amountentry = Entry(withdrawframe, 
-                    font = ('Arial', 12))
+                    font = ('Arial', 11))
 amount.grid(row = 1,
             column = 2,
             padx = 10,
@@ -577,7 +596,7 @@ amountentry.grid(row = 1,
 
 withdrawbutton = Button(withdrawframe,
                         text = 'Withraw', 
-                        font = ('Arial', 12), 
+                        font = ('Arial', 11), 
                         command = withdraw_button)
 withdrawbutton.grid(row = 2,
                     column = 0, 
@@ -594,9 +613,9 @@ heading3.grid(row = 0,
 
 accountnumber = Label(loanframe,
                       text = 'Account Number',
-                      font = ('Arial', 12))
+                      font = ('Arial', 11))
 accountnumberentry = Entry(loanframe,
-                           font = ('Arial', 12))
+                           font = ('Arial', 11))
 accountnumber.grid(row = 1,
                    column = 0,
                    padx = 10,
@@ -610,9 +629,9 @@ accountnumberentry.grid(row = 1,
 
 loanamount = Label(loanframe,
                text = 'Amount',
-               font = ('Arial', 12))
+               font = ('Arial', 11))
 loanamountentry = Entry(loanframe, 
-                    font = ('Arial', 12))
+                    font = ('Arial', 11))
 loanamount.grid(row = 1,
                 column = 2,
                 padx = 10,
@@ -626,13 +645,13 @@ loanamountentry.grid(row = 1,
 
 sourceincome = Label(loanframe,
                      text = 'Source of Income',
-                     font = ('Arial', 12))
+                     font = ('Arial', 11))
 sourceincomeentry = ttk.Combobox(loanframe,
                                  values = ['',
                                            'Salaried',
                                            'Self-Employed',
                                            'Unemployed'],
-                                 font = ('Arial', 12))
+                                 font = ('Arial', 11))
 sourceincome.grid(row = 1,
                   column = 4,
                   padx = 10,
@@ -646,9 +665,9 @@ sourceincomeentry.grid(row = 1,
 
 totalincome = Label(loanframe,
                     text = 'Income per Year',
-                    font = ('Arial', 12))
+                    font = ('Arial', 11))
 totalincomeentry = Entry(loanframe,
-                         font = ('Arial', 12))
+                         font = ('Arial', 11))
 totalincome.grid(row = 2,
                  column = 0,
                  padx = 10,
@@ -662,7 +681,7 @@ totalincomeentry.grid(row = 2,
 
 loantype = Label(loanframe,
                  text = 'Loan Type',
-                 font = ('Arial', 12))
+                 font = ('Arial', 11))
 loantypeentry = ttk.Combobox(loanframe,
                              values = ['',
                                        'Personal',
@@ -670,7 +689,7 @@ loantypeentry = ttk.Combobox(loanframe,
                                        'Vehical',
                                        'Business',
                                        'Education'],
-                             font = ('Arial', 12))
+                             font = ('Arial', 11))
 loantype.grid(row = 2,
               column = 2,
               padx = 10,
@@ -684,7 +703,7 @@ loantypeentry.grid(row = 2,
 
 loanapplybutton = Button(loanframe,
                          text = 'Apply Loan', 
-                         font = ('Arial', 12), 
+                         font = ('Arial', 11), 
                          command = loan_apply)
 loanapplybutton.grid(row = 3,
                      column = 0, 
@@ -701,9 +720,9 @@ heading4.grid(row = 0,
 
 accountnumber = Label(transactionframe,
                       text = 'Account Number',
-                      font = ('Arial', 12))
+                      font = ('Arial', 11))
 accountnumberentry = Entry(transactionframe,
-                           font = ('Arial', 12))
+                           font = ('Arial', 11))
 accountnumber.grid(row = 1,
                    column = 0,
                    padx = 10,
@@ -717,7 +736,7 @@ accountnumberentry.grid(row = 1,
 
 accountdetailbutton = Button(transactionframe,
                             text = 'Account Detail',
-                            font = ('Arial', 12))
+                            font = ('Arial', 11))
 accountdetailbutton.grid(row = 2,
                          column = 0,
                          padx = 10,
@@ -725,7 +744,7 @@ accountdetailbutton.grid(row = 2,
 
 balanceenquirybutton = Button(transactionframe,
                               text = 'Balance Enquery',
-                              font = ('Arial', 12))
+                              font = ('Arial', 11))
 balanceenquirybutton.grid(row = 2,
                           column = 1,
                           padx = 10,
@@ -733,7 +752,7 @@ balanceenquirybutton.grid(row = 2,
 
 loanenquirybutton = Button(transactionframe,
                            text = 'Loan Enquery',
-                           font = ('Arial', 12))
+                           font = ('Arial', 11))
 loanenquirybutton.grid(row = 2,
                        column = 2,
                        padx = 10,
