@@ -21,6 +21,16 @@ def homebutton():
 def createaccount():
     show_frame(accountframe)
 
+def validate_button():
+    datetext = dobentry.get()
+    try:
+        datetime.strptime(datetext, "%d/%m/%Y")
+        messagebox.showinfo(title = 'Success',
+                            message = 'Valid Date Format: DD/MM/YYYY')
+    except:
+        messagebox.showerror(title = 'Error',
+                             message = 'Invalid Date! Use Format: DD/MM/YYYY')
+
 def gst_entry(event = None):
     if accounttypeentry.get() == 'Current':
         gstnumber.grid(row = 6,
@@ -71,18 +81,24 @@ def loan_apply():
     messagebox.showinfo(title = 'Success',
                         message = 'Your Loan is Applied.')
 
+def sourceincome_entry(event = None):
+    if sourceincomeentry.get() == 'Employed':
+        employertype.grid(row = 2,
+                          column = 4,
+                          padx = 10,
+                          pady = 10,
+                          sticky = 'e')
+        employertypeentry.grid(row = 2,
+                               column = 5,
+                               padx = 10,
+                               pady = 10,
+                               sticky = 'w')
+    else:
+        employertype.grid_remove()
+        employertypeentry.grid_remove()
+
 def transactionhistory():
     show_frame(transactionframe)
-
-def validate_button():
-    datetext = dobentry.get()
-    try:
-        datetime.strptime(datetext, "%d/%m/%Y")
-        messagebox.showinfo(title = 'Success',
-                            message = 'Valid Date Format: DD/MM/YYYY')
-    except:
-        messagebox.showerror(title = 'Error',
-                             message = 'Invalid Date! Use Format: DD/MM/YYYY')
 
 root = Tk()
 root.title('Bank Management System - Dashboard')
@@ -648,10 +664,12 @@ sourceincome = Label(loanframe,
                      font = ('Arial', 11))
 sourceincomeentry = ttk.Combobox(loanframe,
                                  values = ['',
-                                           'Salaried',
+                                           'Employed',
                                            'Self-Employed',
                                            'Unemployed'],
                                  font = ('Arial', 11))
+sourceincomeentry.bind('<<ComboboxSelected>>',
+                      gst_entry)
 sourceincome.grid(row = 1,
                   column = 4,
                   padx = 10,
@@ -701,13 +719,22 @@ loantypeentry.grid(row = 2,
                    pady = 5,
                    sticky = 'w')
 
+employertype = Label(loanframe, 
+                     text = 'Employer Type',
+                     font = ('Arial', 11))
+employertypeentry = ttk.Combobox(loanframe, 
+                                 values = ['', 
+                                           'Private Sector', 
+                                           'Government Sector'], 
+                                 font = ('Arial', 11))
+
 loanapplybutton = Button(loanframe,
                          text = 'Apply Loan', 
                          font = ('Arial', 11), 
                          command = loan_apply)
-loanapplybutton.grid(row = 3,
+loanapplybutton.grid(row = 6,
                      column = 0, 
-                     columnspan = 4,
+                     columnspan = 7,
                      pady = 10)
 
 heading4 = Label(transactionframe,
