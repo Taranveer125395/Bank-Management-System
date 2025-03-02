@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox
 import mysql.connector
 from datetime import datetime
@@ -44,10 +45,15 @@ def withdrawmoney():
     show_frame(withdrawframe)
 
 def withdraw_button():
-    messagebox.showinfo(title = 'Success', message = 'Your Money is Successfully Withdrawed.')
+    messagebox.showinfo(title = 'Success',
+                        message = 'Your Money is Successfully Withdrawed.')
 
 def loanapplication():
     show_frame(loanframe)
+
+def loan_apply():
+    messagebox.showinfo(title = 'Success',
+                        message = 'Your Loan is Applied.')
 
 def transactionhistory():
     show_frame(transactionframe)
@@ -588,10 +594,49 @@ loanamountentry.grid(row = 1,
                      pady = 10,
                      sticky = 'w')
 
+totalincome = Label(loanframe,
+                    text = 'Income per Year',
+                    font = ('Arial', 12))
+totalincomeentry = Entry(loanframe,
+                         font = ('Arial', 12),
+                         fg = 'blue')
+totalincome.grid(row = 2,
+                 column = 0,
+                 padx = 10,
+                 pady = 5,
+                 sticky = 'e')
+totalincomeentry.grid(row = 2,
+                      column = 1,
+                      padx = 10,
+                      pady = 5,
+                      sticky = 'w')
+
+loantype = Label(loanframe,
+                 text = 'Loan Type',
+                 font = ('Arial', 12))
+loantypeentry = ttk.Combobox(loanframe,
+                             values = ['',
+                                       'Personal',
+                                       'Home',
+                                       'Vehical',
+                                       'Business',
+                                       'Education'],
+                             font = ('Arial', 12))
+loantype.grid(row = 2,
+              column = 2,
+              padx = 10,
+              pady = 5,
+              sticky = 'e')
+loantypeentry.grid(row = 2,
+                   column = 3,
+                   padx = 10,
+                   pady = 5,
+                   sticky = 'w')
+
 loanapplybutton = Button(loanframe,
-                         text = 'Withraw', 
+                         text = 'Apply Loan', 
                          font = ('Arial', 12), 
-                         command = withdraw_button)
+                         command = loan_apply)
 loanapplybutton.grid(row = 3,
                      column = 0, 
                      columnspan = 4,
