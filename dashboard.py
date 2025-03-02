@@ -456,7 +456,11 @@ accountnumberentry.grid(row = 1,
                         pady = 5,
                         sticky = 'w')
 
-amount = Label(depositframe, text = 'Amount', font = ('Arial', 12))
-amountentry = Entry(depositframe, font = ('Arial', 12), fg = 'blue')
+amount = Label(depositframe,
+               text = 'Amount',
+               font = ('Arial', 12))
+amountentry = Entry(depositframe, 
+                    font = ('Arial', 12), 
+                    fg = 'blue')
 
 root.mainloop()
