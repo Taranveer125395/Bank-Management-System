@@ -546,4 +546,55 @@ withdrawbutton.grid(row = 2,
                     columnspan = 4,
                     pady = 10)
 
+heading3 = Label(loanframe,
+                 text = 'Loan Application',
+                 font = ('Arial', 14, 'bold'))
+heading3.grid(row = 0,
+              column = 0,
+              columnspan = 7,
+              pady = 20)
+
+accountnumber = Label(loanframe,
+                      text = 'Account Number',
+                      font = ('Arial', 12))
+accountnumberentry = Entry(loanframe,
+                           font = ('Arial', 12),
+                           fg= 'blue')
+accountnumber.grid(row = 1,
+                   column = 0,
+                   padx = 10,
+                   pady = 10,
+                   sticky = 'e')
+accountnumberentry.grid(row = 1,
+                        column = 1,
+                        padx = 10,
+                        pady = 10,
+                        sticky = 'w')
+
+loanamount = Label(loanframe,
+               text = 'Amount',
+               font = ('Arial', 12))
+loanamountentry = Entry(loanframe, 
+                    font = ('Arial', 12), 
+                    fg = 'blue')
+loanamount.grid(row = 1,
+                column = 2,
+                padx = 10,
+                pady = 10,
+                sticky = 'e')
+loanamountentry.grid(row = 1,
+                     column = 3,
+                     padx = 10,
+                     pady = 10,
+                     sticky = 'w')
+
+loanapplybutton = Button(loanframe,
+                         text = 'Withraw', 
+                         font = ('Arial', 12), 
+                         command = withdraw_button)
+loanapplybutton.grid(row = 3,
+                     column = 0, 
+                     columnspan = 4,
+                     pady = 10)
+
 root.mainloop()
