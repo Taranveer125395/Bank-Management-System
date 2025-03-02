@@ -41,7 +41,10 @@ def deposit_button():
                         message = ' Your Money is depositted Successfully.')
 
 def withdrawmoney():
-    show_frame(withdrawfram)
+    show_frame(withdrawframe)
+
+def withdraw_button():
+    messagebox.showinfo(title = 'Success', message = 'Your Money is Successfully Withdrawed.')
 
 def loanapplication():
     show_frame(loanframe)
@@ -142,14 +145,14 @@ accountframe = Frame(main_frame)
 vcmd = accountframe.register(mobile_number_validation)
 
 depositframe = Frame(main_frame)
-withdrawfram = Frame(main_frame)
+withdrawframe = Frame(main_frame)
 loanframe = Frame(main_frame)
 transactionframe = Frame(main_frame)
 
 for frame in (homeframe,
               accountframe,
               depositframe,
-              withdrawfram,
+              withdrawframe,
               loanframe,
               transactionframe):
     frame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
@@ -485,5 +488,56 @@ depositbutton.grid(row = 2,
                    column = 0, 
                    columnspan = 4,
                    pady = 10)
+
+heading2 = Label(withdrawframe,
+                 text = 'Deposit Cash',
+                 font = ('Arial', 14, 'bold'))
+heading2.grid(row = 0,
+              column = 0,
+              columnspan = 7,
+              pady = 20)
+
+accountnumber = Label(withdrawframe,
+                      text = 'Account Number',
+                      font = ('Arial', 12))
+accountnumberentry = Entry(withdrawframe,
+                           font = ('Arial', 12),
+                           fg= 'blue')
+accountnumber.grid(row = 1,
+                   column = 0,
+                   padx = 10,
+                   pady = 10,
+                   sticky = 'e')
+accountnumberentry.grid(row = 1,
+                        column = 1,
+                        padx = 10,
+                        pady = 10,
+                        sticky = 'w')
+
+amount = Label(withdrawframe,
+               text = 'Amount',
+               font = ('Arial', 12))
+amountentry = Entry(withdrawframe, 
+                    font = ('Arial', 12), 
+                    fg = 'blue')
+amount.grid(row = 1,
+            column = 2,
+            padx = 10,
+            pady = 10,
+            sticky = 'e')
+amountentry.grid(row = 1,
+                 column = 3,
+                 padx = 10,
+                 pady = 10,
+                 sticky = 'w')
+
+withdrawbutton = Button(withdrawframe,
+                        text = 'Deposit', 
+                        font = ('Arial', 12), 
+                        command = withdraw_button)
+withdrawbutton.grid(row = 2,
+                    column = 0, 
+                    columnspan = 4,
+                    pady = 10)
 
 root.mainloop()
