@@ -36,6 +36,10 @@ def mobile_number_validation(M):
 def depositmoney():
     show_frame(depositframe)
 
+def deposit_button():
+    messagebox.showinfo(title = 'Success',
+                        message = ' Your Money is depositted Successfully.')
+
 def withdrawmoney():
     show_frame(withdrawfram)
 
@@ -472,5 +476,8 @@ amountentry.grid(row = 1,
                  padx = 10,
                  pady = 10,
                  sticky = 'w')
+
+depositbutton = Button(depositframe,text = 'Deposit', font = ('Arial', 12), command = deposit_button)
+depositbutton.grid(row = 2,column = 0, columnspan = 4, pady = 10)
 
 root.mainloop()
