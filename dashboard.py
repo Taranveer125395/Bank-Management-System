@@ -453,7 +453,7 @@ accountnumber.grid(row = 1,
 accountnumberentry.grid(row = 1,
                         column = 1,
                         padx = 10,
-                        pady = 5,
+                        pady = 10,
                         sticky = 'w')
 
 amount = Label(depositframe,
@@ -462,5 +462,15 @@ amount = Label(depositframe,
 amountentry = Entry(depositframe, 
                     font = ('Arial', 12), 
                     fg = 'blue')
+amount.grid(row = 1,
+            column = 2,
+            padx = 10,
+            pady = 10,
+            sticky = 'e')
+amountentry.grid(row = 1,
+                 column = 3,
+                 padx = 10,
+                 pady = 10,
+                 sticky = 'w')
 
 root.mainloop()
