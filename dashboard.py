@@ -21,6 +21,22 @@ def homebutton():
 def createaccount():
     show_frame(accountframe)
 
+def gst_entry(event = None):
+    if accounttypeentry.get() == 'Current':
+        gstnumber.grid(row = 6,
+                       column = 3,
+                       padx = 5,
+                       pady = 5,
+                       sticky = 'e')
+        gstnumberentry.grid(row = 6,
+                            column = 4,
+                            padx = 5,
+                            pady = 5,
+                            sticky = 'w')
+    else:
+        gstnumber.grid_remove()
+        gstnumberentry.grid_remove()
+
 def account_button():
     messagebox.showinfo(title = 'Success',
                         message = ' Your account is created successfully.')
@@ -167,7 +183,10 @@ for frame in (homeframe,
               withdrawframe,
               loanframe,
               transactionframe):
-    frame.place(x = 0, y = 0, relwidth = 1, relheight = 1)
+    frame.place(x = 0,
+                y = 0,
+                relwidth = 1,
+                relheight = 1)
 
 heading = Label(accountframe,
                 text = 'New Account Application Form',
@@ -449,6 +468,7 @@ accounttypeentry = ttk.Combobox(accountframe,
                                           'Saving',
                                           'Current'],
                                 font = ('Arial', 12))
+accounttypeentry.bind('<<ComboboxSelected>>', gst_entry)
 accounttype.grid(row = 6,
                  column = 0,
                  padx = 10,
@@ -459,6 +479,13 @@ accounttypeentry.grid(row = 6,
                       padx = 5,
                       pady = 5,
                       sticky = 'w')
+
+gstnumber = Label(accountframe,
+                  text = 'GST Number',
+                  font = ('Arial', 12))
+gstnumberentry = Entry(accountframe,
+                       font = ('Arial', 12),
+                       fg = 'blue')
 
 accountbutton = Button(accountframe,
                        text = 'Create Account',
