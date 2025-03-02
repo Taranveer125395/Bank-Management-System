@@ -185,7 +185,8 @@ root.title('Bank Management System - Dashboard')
 root.geometry('1920x1080')
 
 headerpoint = Frame(root,
-                    bg = 'lightgreen',
+                    relief = 'solid',
+                    bd = 1,
                     width = 20)
 headerpoint.pack(fill = 'y',
                  side = 'left')
@@ -257,7 +258,8 @@ transaction_history.pack(side = 'top',
                          padx = 5)
 
 main_frame = Frame(root,
-                   bg = 'white')
+                   bd = 1,
+                   relief = 'solid')
 main_frame.pack(expand = True,
                 fill = 'both')
 
@@ -812,19 +814,43 @@ employertypeentry.bind('<<ComboboxSelected>>',
 employertypeentry.bind('<<ComboboxSelected>>',
                        private_sector)
 
-position = Label(loanframe, text = 'Position', font = ('Arial', 11))
-positionentry = Entry(loanframe, font = ('Arial', 11))
-department = Label(loanframe, text = 'Department', font = ('Arial', 11))
-departmententry = ttk.Combobox(loanframe, values = ['', 'Railway', 'Police', 'Revenue', 'Civil Services', 'Banking'], font = ('Arial', 11))
-officeaddress = Label(loanframe, text = 'Office Address', font = ('Arial', 11))
-officeaddressentry = Entry(loanframe, font = ('Arial', 11))
+position = Label(loanframe,
+                 text = 'Position',
+                 font = ('Arial', 11))
+positionentry = Entry(loanframe,
+                      font = ('Arial', 11))
+department = Label(loanframe,
+                   text = 'Department',
+                   font = ('Arial', 11))
+departmententry = ttk.Combobox(loanframe,
+                               values = ['',
+                                         'Railway', 
+                                         'Police', 
+                                         'Revenue', 
+                                         'Civil Services', 
+                                         'Banking'],
+                               font = ('Arial', 11))
+officeaddress = Label(loanframe, 
+                      text = 'Office Address', 
+                      font = ('Arial', 11))
+officeaddressentry = Entry(loanframe, 
+                           font = ('Arial', 11))
 
-employername = Label(loanframe, text = 'Employer Name', font = ('Arial', 11))
-employernameentry = Entry(loanframe, font = ('Arial', 11))
-position1 = Label(loanframe, text = 'Position', font = ('Arial', 11))
-positionentry1 = Entry(loanframe, font = ('Arial', 11))
-officeaddress1 = Label(loanframe, text = 'Office Address', font = ('Arial', 11))
-officeaddressentry1 = Entry(loanframe, font = ('Arial', 11))
+employername = Label(loanframe,
+                     text = 'Employer Name',
+                     font = ('Arial', 11))
+employernameentry = Entry(loanframe,
+                          font = ('Arial', 11))
+position1 = Label(loanframe,
+                  text = 'Position',
+                  font = ('Arial', 11))
+positionentry1 = Entry(loanframe,
+                       font = ('Arial', 11))
+officeaddress1 = Label(loanframe,
+                       text = 'Office Address', 
+                       font = ('Arial', 11))
+officeaddressentry1 = Entry(loanframe,
+                            font = ('Arial', 11))
 
 loanapplybutton = Button(loanframe,
                          text = 'Apply Loan', 
