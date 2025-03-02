@@ -190,6 +190,8 @@ for frame in (homeframe,
                 relwidth = 1,
                 relheight = 1)
 
+show_frame(homeframe)
+
 heading = Label(accountframe,
                 text = 'New Account Application Form',
                 font = ('Arial', 14, 'bold'))
@@ -688,5 +690,29 @@ loanapplybutton.grid(row = 3,
                      column = 0, 
                      columnspan = 4,
                      pady = 10)
+
+heading4 = Label(transactionframe,
+                 text = 'Account History',
+                 font = ('Arial', 14, 'bold'))
+heading4.grid(row = 0,
+              column = 0,
+              columnspan = 7,
+              pady = 20)
+
+accountnumber = Label(transactionframe,
+                      text = 'Account Number',
+                      font = ('Arial', 12))
+accountnumberentry = Entry(transactionframe,
+                           font = ('Arial', 12))
+accountnumber.grid(row = 1,
+                   column = 0,
+                   padx = 10,
+                   pady = 10,
+                   sticky = 'e')
+accountnumberentry.grid(row = 1,
+                        column = 1,
+                        padx = 10,
+                        pady = 10,
+                        sticky = 'w')
 
 root.mainloop()
