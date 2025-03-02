@@ -84,11 +84,13 @@ def validate_button():
         messagebox.showerror(title = 'Error',
                              message = 'Invalid Date! Use Format: DD/MM/YYYY')
 
-
-
 root = Tk()
 root.title('Bank Management System - Dashboard')
 root.geometry('1920x1080')
+style = ttk.Style()
+style.configure("Custom.TCombobox",
+                foreground="blue",
+                font=("Arial", 12))
 
 headerpoint = Frame(root,
                     bg = 'lightpink',
@@ -467,8 +469,10 @@ accounttypeentry = ttk.Combobox(accountframe,
                                 values = ['',
                                           'Saving',
                                           'Current'],
-                                font = ('Arial', 12))
-accounttypeentry.bind('<<ComboboxSelected>>', gst_entry)
+                                font = ('Arial', 12),
+                                foreground = 'blue')
+accounttypeentry.bind('<<ComboboxSelected>>',
+                      gst_entry)
 accounttype.grid(row = 6,
                  column = 0,
                  padx = 10,
