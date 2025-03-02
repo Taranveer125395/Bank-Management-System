@@ -99,12 +99,36 @@ def sourceincome_entry(event = None):
 
 def government_sector(event = None):
     if employertypeentry.get() == 'Government Sector':
-        position.grid(row = 3, column = 0, padx = 10, pady = 10, sticky = 'e')
-        positionentry.grid(row = 3, column = 1, padx = 10, pady = 10, sticky = 'w')
-        department.grid(row = 3, column = 2, padx = 10, pady = 10, sticky = 'e')
-        departmententry.grid(row = 3, column = 3, padx = 10, pady = 10, sticky = 'w')
-        officeaddress.grid(row = 3, column = 4, padx = 10, pady = 10, sticky = 'e')
-        officeaddressentry.grid(row = 3, column = 5, padx = 10, pady = 10, sticky = 'w')
+        position.grid(row = 3,
+                      column = 0, 
+                      padx = 10, 
+                      pady = 10, 
+                      sticky = 'e')
+        positionentry.grid(row = 3, 
+                           column = 1, 
+                           padx = 10, 
+                           pady = 10, 
+                           sticky = 'w')
+        department.grid(row = 3, 
+                        column = 2, 
+                        padx = 10, 
+                        pady = 10, 
+                        sticky = 'e')
+        departmententry.grid(row = 3, 
+                             column = 3, 
+                             padx = 10, 
+                             pady = 10, 
+                             sticky = 'w')
+        officeaddress.grid(row = 3, 
+                           column = 4, 
+                           padx = 10, 
+                           pady = 10, 
+                           sticky = 'e')
+        officeaddressentry.grid(row = 3, 
+                                column = 5, 
+                                padx = 10, 
+                                pady = 10, 
+                                sticky = 'w')
     else:
         position.grid_remove()
         positionentry.grid_remove()
@@ -121,14 +145,14 @@ root.title('Bank Management System - Dashboard')
 root.geometry('1920x1080')
 
 headerpoint = Frame(root,
-                    bg = 'lightpink',
+                    bg = 'lightgreen',
                     width = 20)
 headerpoint.pack(fill = 'y',
                  side = 'left')
 
 home = Button(headerpoint,
               text = 'Home',
-              bg = 'black',
+              bg = 'blue',
               fg = 'white',
               font = ('Arial', 11, 'bold'),
               command = homebutton,
@@ -139,7 +163,7 @@ home.pack(side = 'top',
 
 create_account = Button(headerpoint,
                         text = 'Create Account',
-                        bg = 'black',
+                        bg = 'blue',
                         fg = 'white',
                         font = ('Arial', 11, 'bold'),
                         command = createaccount,
@@ -150,7 +174,7 @@ create_account.pack(side = 'top',
 
 deposit_money = Button(headerpoint,
                        text = 'Deposit Money',
-                       bg = 'black',
+                       bg = 'blue',
                        fg = 'white',
                        font = ('Arial', 11, 'bold'),
                        command = depositmoney,
@@ -161,7 +185,7 @@ deposit_money.pack(side = 'top',
 
 withdraw_money = Button(headerpoint,
                         text = 'Withdraw Money', 
-                        bg = 'black',
+                        bg = 'blue',
                         fg = 'White',
                         font = ('Arial', 11, 'bold'),
                         command = withdrawmoney,
@@ -172,7 +196,7 @@ withdraw_money.pack(side = 'top',
 
 apply_for_loan = Button(headerpoint,
                         text = 'Apply For Loan',
-                        bg = 'black',
+                        bg = 'blue',
                         fg = 'white',
                         font = ('Arial', 11, 'bold'),
                         command = loanapplication,
@@ -183,7 +207,7 @@ apply_for_loan.pack(side = 'top',
 
 transaction_history = Button(headerpoint,
                              text = 'Transaction History',
-                             bg = 'black',
+                             bg = 'blue',
                              fg = 'white',
                              font = ('Arial', 11, 'bold'),
                              command = transactionhistory,
