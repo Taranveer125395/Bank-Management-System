@@ -97,6 +97,22 @@ def sourceincome_entry(event = None):
         employertype.grid_remove()
         employertypeentry.grid_remove()
 
+def government_sector(event = None):
+    if employertypeentry.get() == 'Government Sector':
+        position.grid(row = 3, column = 0, padx = 10, pady = 10, sticky = 'e')
+        positionentry.grid(row = 3, column = 1, padx = 10, pady = 10, sticky = 'w')
+        department.grid(row = 3, column = 2, padx = 10, pady = 10, sticky = 'e')
+        departmententry.grid(row = 3, column = 3, padx = 10, pady = 10, sticky = 'w')
+        officeaddress.grid(row = 3, column = 4, padx = 10, pady = 10, sticky = 'e')
+        officeaddressentry.grid(row = 3, column = 5, padx = 10, pady = 10, sticky = 'w')
+    else:
+        position.grid_remove()
+        positionentry.grid_remove()
+        department.grid_remove()
+        departmententry.grid_remove()
+        officeaddress.grid_remove()
+        officeaddressentry.grid_remove()
+
 def transactionhistory():
     show_frame(transactionframe)
 
@@ -669,7 +685,7 @@ sourceincomeentry = ttk.Combobox(loanframe,
                                            'Unemployed'],
                                  font = ('Arial', 11))
 sourceincomeentry.bind('<<ComboboxSelected>>',
-                      gst_entry)
+                       sourceincome_entry)
 sourceincome.grid(row = 1,
                   column = 4,
                   padx = 10,
@@ -727,12 +743,21 @@ employertypeentry = ttk.Combobox(loanframe,
                                            'Private Sector', 
                                            'Government Sector'], 
                                  font = ('Arial', 11))
+employertypeentry.bind('<<ComboboxSelected>>',
+                       government_sector)
+
+position = Label(loanframe, text = 'Position', font = ('Arial', 11))
+positionentry = Entry(loanframe, font = ('Arial', 11))
+department = Label(loanframe, text = 'Department', font = ('Arial', 11))
+departmententry = ttk.Combobox(loanframe, values = ['', 'Railway', 'Police', 'Revenue', 'Civil Services', 'Banking'], font = ('Arial', 11))
+officeaddress = Label(loanframe, text = 'Office Address', font = ('Arial', 11))
+officeaddressentry = Entry(loanframe, font = ('Arial', 11))
 
 loanapplybutton = Button(loanframe,
                          text = 'Apply Loan', 
                          font = ('Arial', 11), 
                          command = loan_apply)
-loanapplybutton.grid(row = 6,
+loanapplybutton.grid(row = 11,
                      column = 0, 
                      columnspan = 7,
                      pady = 10)
