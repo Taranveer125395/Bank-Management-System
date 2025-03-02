@@ -441,11 +441,30 @@ emailentry.grid(row = 5,
                 pady = 5,
                 sticky = 'w')
 
+accounttype = Label(accountframe,
+                    text = 'Account Type',
+                    font = ('Arial', 12))
+accounttypeentry = ttk.Combobox(accountframe,
+                                values = ['',
+                                          'Saving',
+                                          'Current'],
+                                font = ('Arial', 12))
+accounttype.grid(row = 6,
+                 column = 0,
+                 padx = 10,
+                 pady = 5,
+                 sticky = 'e')
+accounttypeentry.grid(row = 6,
+                      column = 1,
+                      padx = 5,
+                      pady = 5,
+                      sticky = 'w')
+
 accountbutton = Button(accountframe,
                        text = 'Create Account',
                        font = ('Arial', 12),
                        command = account_button)
-accountbutton.grid(row = 6,
+accountbutton.grid(row = 7,
                    column = 0,
                    columnspan = 7,
                    pady = 5)
