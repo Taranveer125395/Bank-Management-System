@@ -715,4 +715,28 @@ accountnumberentry.grid(row = 1,
                         pady = 10,
                         sticky = 'w')
 
+accountdetailbutton = Button(transactionframe,
+                            text = 'Account Detail',
+                            font = ('Arial', 12))
+accountdetailbutton.grid(row = 2,
+                         column = 0,
+                         padx = 10,
+                         pady = 10)
+
+balanceenquirybutton = Button(transactionframe,
+                              text = 'Balance Enquery',
+                              font = ('Arial', 12))
+balanceenquirybutton.grid(row = 2,
+                          column = 1,
+                          padx = 10,
+                          pady = 10)
+
+loanenquirybutton = Button(transactionframe,
+                           text = 'Loan Enquery',
+                           font = ('Arial', 12))
+loanenquirybutton.grid(row = 2,
+                       column = 2,
+                       padx = 10,
+                       pady = 10)
+
 root.mainloop()
