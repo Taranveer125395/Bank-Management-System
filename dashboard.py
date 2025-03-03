@@ -29,7 +29,7 @@ def get_user_details(username):
         )
         cursor = conn.cursor()
         
-        query = "SELECT * FROM staff_registeration WHERE username = %s"
+        query = "SELECT fullname, username, mobile_number, age, education_qualification, job_type FROM staff_registeration WHERE username = %s"
         cursor.execute(query, (username,))
         user_data = cursor.fetchone()
         
@@ -38,8 +38,7 @@ def get_user_details(username):
         return user_data
     
     except mysql.connector.Error as err:
-        messagebox.showerror(title = 'Error',
-                             message = err)
+        messagebox.showerror(title='Database Error', message=f'Error: {err}')
         return None
 
 def createaccount():
@@ -284,6 +283,11 @@ def unemployed(event = None):
 def transactionhistory():
     show_frame(transactionframe)
 
+if len(sys.argv) > 1:
+    logged_in_username = sys.argv[1]
+else:
+    logged_in_username = None
+
 root = Tk()
 root.title('Bank Management System - Dashboard')
 root.geometry('1920x1080')
@@ -390,31 +394,20 @@ for frame in (homeframe,
 
 show_frame(homeframe)
 
-if len(sys.argv) > 1:
-    logged_in_username = sys.argv[1]
+if logged_in_username:
+    user_details = get_user_details(logged_in_username)
+    if user_details:
+        fullname, username, mobile, age, qualification, job = user_details
+        Label(homeframe, text=f"Full Name: {fullname}", font=('Arial', 12)).pack(pady=5)
+        Label(homeframe, text=f"Username: {username}", font=('Arial', 12)).pack(pady=5)
+        Label(homeframe, text=f"Mobile Number: {mobile}", font=('Arial', 12)).pack(pady=5)
+        Label(homeframe, text=f"Age: {age}", font=('Arial', 12)).pack(pady=5)
+        Label(homeframe, text=f"Qualification: {qualification}", font=('Arial', 12)).pack(pady=5)
+        Label(homeframe, text=f"Job Type: {job}", font=('Arial', 12)).pack(pady=5)
+    else:
+        Label(homeframe, text="User details not found!", font=('Arial', 12, 'bold')).pack(pady=10)
 else:
-    logged_in_username = None
-
-user_details = get_user_details(logged_in_username)
-
-if user_details:
-    fullname, username, mobile, age, qualification, job, _, _ = user_details
-
-    name = Label(homeframe, text = f"Full Name: {fullname}", font = ('Arial', 12))
-    name.pack(pady = 5)
-    uname = Label(homeframe, text = f"Username: {username}", font = ('Arial', 12))
-    uname.pack(pady = 5)
-    mnumber = Label(homeframe, text = f"Mobile Number: {mobile}", font = ('Arial', 12))
-    mnumber.pack(pady = 5)
-    ag = Label(homeframe, text = f"Age: {age}", font = ('Arial', 12))
-    ag.pack(pady = 5)
-    qualify = Label(homeframe, text = f"Qualification: {qualification}", font = ('Arial', 12))
-    qualify.pack(pady = 5)
-    jt = Label(homeframe, text = f"Job Type: {job}", font = ('Arial', 12))
-    jt.pack(pady = 5)
-else:
-    error = Label(homeframe, text = "User details not found!", font = ('Arial', 12, 'bold'))
-    error.pack(pady = 10)
+    Label(homeframe, text="No username provided!", font=('Arial', 12, 'bold')).pack(pady=10)
 
 heading = Label(accountframe,
                 text = 'New Account Application Form',
@@ -440,34 +433,34 @@ name1entry.grid(row = 1,
                 pady = 10,
                 sticky = 'w')
 
-age1 = Label(accountframe,
+age2 = Label(accountframe,
              text = 'Age',
              font = ('Arial', 11))
-age1entry = Entry(accountframe,
+age2entry = Entry(accountframe,
                   font = ('Arial', 11))
-age1.grid(row = 1,
+age2.grid(row = 1,
           column = 3,
           padx = 5,
           pady = 10,
           sticky = 'e')
-age1entry.grid(row = 1,
+age2entry.grid(row = 1,
                column = 4,
                padx = 5,
                pady = 10,
                sticky = 'w')
 
-mobilenumber = Label(accountframe,
+mobilenumber1 = Label(accountframe,
                      text = 'Mobile Number',
                      font = ('Arial', 11))
-mobilenumberentry = Entry(accountframe,
+mobilenumber1entry = Entry(accountframe,
                           font = ('Arial', 11),
                           validatecommand = (vcmd, "%M"))
-mobilenumber.grid(row = 1,
+mobilenumber1.grid(row = 1,
                   column = 5,
                   padx = 5,
                   pady = 10,
                   sticky = 'e')
-mobilenumberentry.grid(row = 1,
+mobilenumber1entry.grid(row = 1,
                        column = 6,
                        padx = 5,
                        pady = 10,

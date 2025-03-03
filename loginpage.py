@@ -34,8 +34,14 @@ def loginbutton():
                 entry2.delete(0, END)
                 return
             
-            # Extract user details
-            fullname, username, mobile, age, qualification, job, _, _ = registered_user
+            # Extract user details dynamically
+            user_details = list(registered_user)  # Convert tuple to list
+            fullname = user_details[1]
+            username = user_details[2]
+            mobile = user_details[3]
+            age = user_details[4]
+            qualification = user_details[5]
+            job = user_details[6]
 
             messagebox.showinfo(title='Login Successful',
                                 message=f'Welcome {fullname}!')
