@@ -400,14 +400,21 @@ user_details = get_user_details(logged_in_username)
 if user_details:
     fullname, username, mobile, age, qualification, job, _, _ = user_details
 
-    Label(homeframe, text=f"Full Name: {fullname}", font=('Arial', 12)).pack(pady=5)
-    Label(homeframe, text=f"Username: {username}", font=('Arial', 12)).pack(pady=5)
-    Label(homeframe, text=f"Mobile Number: {mobile}", font=('Arial', 12)).pack(pady=5)
-    Label(homeframe, text=f"Age: {age}", font=('Arial', 12)).pack(pady=5)
-    Label(homeframe, text=f"Qualification: {qualification}", font=('Arial', 12)).pack(pady=5)
-    Label(homeframe, text=f"Job Type: {job}", font=('Arial', 12)).pack(pady=5)
+    name = Label(homeframe, text = f"Full Name: {fullname}", font = ('Arial', 12))
+    name.pack(pady = 5)
+    uname = Label(homeframe, text = f"Username: {username}", font = ('Arial', 12))
+    uname.pack(pady = 5)
+    mnumber = Label(homeframe, text = f"Mobile Number: {mobile}", font = ('Arial', 12))
+    mnumber.pack(pady = 5)
+    ag = Label(homeframe, text = f"Age: {age}", font = ('Arial', 12))
+    ag.pack(pady = 5)
+    qualify = Label(homeframe, text = f"Qualification: {qualification}", font = ('Arial', 12))
+    qualify.pack(pady = 5)
+    jt = Label(homeframe, text = f"Job Type: {job}", font = ('Arial', 12))
+    jt.pack(pady = 5)
 else:
-    Label(homeframe, text="User details not found!", font=('Arial', 12, 'bold')).pack(pady=10)
+    error = Label(homeframe, text = "User details not found!", font = ('Arial', 12, 'bold'))
+    error.pack(pady = 10)
 
 heading = Label(accountframe,
                 text = 'New Account Application Form',
