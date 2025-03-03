@@ -39,7 +39,7 @@ def get_user_details(username):
     
     except mysql.connector.Error as err:
         messagebox.showerror(title = 'Error',
-                             message = 'Database Error: {err}')
+                             message = err)
         return None
 
 def createaccount():
