@@ -177,7 +177,7 @@ def private_sector(event = None):
         officeaddress1.grid_remove()
         officeaddressentry1.grid_remove()
 
-def business_type():
+def business_type(event = None):
     if sourceincomeentry.get() == 'Self-Employed':
         businesstype.grid(row = 2, column = 4, padx = 10, pady = 10, sticky = 'e')
         businesstypeentry.grid(row = 2, column = 5, padx = 10, pady = 10, sticky = 'w')    
@@ -877,6 +877,16 @@ businesstypeentry = ttk.Combobox(loanframe,
                                            'Real Estate & Construction',
                                            'Entertainment & Media'],
                                  font = ('Arial', 11))
+productstype = Label(loanframe,
+                     text = 'Product Type',
+                     font = ('Arial', 11))
+productstypeentry = Entry(loanframe,
+                          font = ('Arial', 11))
+businessname = Label(loanframe,
+                     text = 'Business/Shop Name', 
+                     font = ('Arial', 11))
+businessnameentry = Entry(loanframe, 
+                          font = ('Arial', 11))
 
 loanapplybutton = Button(loanframe,
                          text = 'Apply Loan', 
