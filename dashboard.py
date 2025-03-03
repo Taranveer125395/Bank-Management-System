@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import mysql.connector
 from datetime import datetime
+import sys
 
 conn = mysql.connector.connect(
     host = 'localhost',
@@ -17,6 +18,29 @@ def show_frame(frame):
 
 def homebutton():
     show_frame(homeframe)
+
+def get_user_details(username):
+    try:
+        conn = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='20Bcs@125395',
+            database='Banking_Management_System'
+        )
+        cursor = conn.cursor()
+        
+        query = "SELECT * FROM staff_registeration WHERE username = %s"
+        cursor.execute(query, (username,))
+        user_data = cursor.fetchone()
+        
+        cursor.close()
+        conn.close()
+        return user_data
+    
+    except mysql.connector.Error as err:
+        messagebox.showerror(title = 'Error',
+                             message = 'Database Error: {err}')
+        return None
 
 def createaccount():
     show_frame(accountframe)
@@ -365,6 +389,25 @@ for frame in (homeframe,
                 relheight = 1)
 
 show_frame(homeframe)
+
+if len(sys.argv) > 1:
+    logged_in_username = sys.argv[1]
+else:
+    logged_in_username = None
+
+user_details = get_user_details(logged_in_username)
+
+if user_details:
+    fullname, username, mobile, age, qualification, job, _, _ = user_details
+
+    Label(homeframe, text=f"Full Name: {fullname}", font=('Arial', 12)).pack(pady=5)
+    Label(homeframe, text=f"Username: {username}", font=('Arial', 12)).pack(pady=5)
+    Label(homeframe, text=f"Mobile Number: {mobile}", font=('Arial', 12)).pack(pady=5)
+    Label(homeframe, text=f"Age: {age}", font=('Arial', 12)).pack(pady=5)
+    Label(homeframe, text=f"Qualification: {qualification}", font=('Arial', 12)).pack(pady=5)
+    Label(homeframe, text=f"Job Type: {job}", font=('Arial', 12)).pack(pady=5)
+else:
+    Label(homeframe, text="User details not found!", font=('Arial', 12, 'bold')).pack(pady=10)
 
 heading = Label(accountframe,
                 text = 'New Account Application Form',

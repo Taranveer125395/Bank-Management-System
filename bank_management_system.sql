@@ -48,11 +48,36 @@ CREATE TABLE Transactions (
     FOREIGN KEY (account_number) REFERENCES accounts(id)
 );
 
-create table loans(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    account_id INT,
-    amount DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (account_id) REFERENCES accounts(id)
+CREATE TABLE LoanApplication (
+    application_id INT PRIMARY KEY AUTO_INCREMENT,
+    account_number VARCHAR(20) NOT NULL,
+    loan_amount DECIMAL(15,2) NOT NULL,
+    total_income DECIMAL(15,2) NOT NULL,
+    loan_type ENUM('Personal', 'Home', 'Vehicle', 'Business', 'Education') NOT NULL,
+    source_income ENUM('Employed', 'Self-Employed', 'Unemployed') NOT NULL,
+    guarantor_name VARCHAR(100),
+    guarantor_account VARCHAR(20)
+);
+
+CREATE TABLE EmploymentDetails (
+    employment_id INT PRIMARY KEY AUTO_INCREMENT,
+    application_id INT,
+    employer_type ENUM('Private Sector', 'Government Sector'),
+    position VARCHAR(100),
+    department ENUM('Railway', 'Police', 'Revenue', 'Civil Services', 'Banking'),
+    office_address TEXT,
+    employer_name VARCHAR(100),
+    FOREIGN KEY (application_id) REFERENCES LoanApplication(application_id)
+);
+
+CREATE TABLE BusinessDetails (
+    business_id INT PRIMARY KEY AUTO_INCREMENT,
+    application_id INT,
+    business_type ENUM('Manufacturing', 'Service Based', 'Retail & E-Commerce', 'Wholesale', 'Agriculture & Farming', 'Technology & IT', 'Finance & Banking', 'Real Estate & Construction', 'Entertainment & Media'),
+    product_type VARCHAR(255),
+    business_name VARCHAR(255),
+    business_address TEXT,
+    FOREIGN KEY (application_id) REFERENCES LoanApplication(application_id)
 );
 
 select * from staff_registeration;

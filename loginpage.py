@@ -21,7 +21,6 @@ def loginbutton():
             )
             cursor = conn.cursor()
 
-            # Check if the user exists in the registration table
             query_check = "SELECT * FROM staff_registeration WHERE username = %s AND password = %s"
             cursor.execute(query_check, (username, password))
             registered_user = cursor.fetchone()
@@ -35,18 +34,18 @@ def loginbutton():
                 entry2.delete(0, END)
                 return
             
-            # Insert user data into staff_login table if not already present
-            query_insert = "INSERT IGNORE INTO staff_login (username, password) VALUES (%s, %s)"
-            cursor.execute(query_insert, (username, password))
-            conn.commit()
+            # Extract user details
+            fullname, username, mobile, age, qualification, job, _, _ = registered_user
 
             messagebox.showinfo(title='Login Successful',
-                                message='Welcome to the Banking Management System!')
+                                message=f'Welcome {fullname}!')
+
             cursor.close()
             conn.close()
             
+            # Pass user details as arguments to dashboard.py
             root.destroy()
-            subprocess.run(['python', 'dashboard.py'])
+            subprocess.run(['python', 'dashboard.py', username])
 
         except mysql.connector.Error as err:
             messagebox.showerror(title='Database Error',
