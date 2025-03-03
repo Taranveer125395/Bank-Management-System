@@ -882,6 +882,7 @@ productstype = Label(loanframe,
                      font = ('Arial', 11))
 productstypeentry = Entry(loanframe,
                           font = ('Arial', 11))
+
 businessname = Label(loanframe,
                      text = 'Business/Shop Name', 
                      font = ('Arial', 11))
