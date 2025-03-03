@@ -177,6 +177,14 @@ def private_sector(event = None):
         officeaddress1.grid_remove()
         officeaddressentry1.grid_remove()
 
+def business_type():
+    if sourceincomeentry.get() == 'Self-Employed':
+        businesstype.grid(row = 2, column = 4, padx = 10, pady = 10, sticky = 'e')
+        businesstypeentry.grid(row = 2, column = 5, padx = 10, pady = 10, sticky = 'w')    
+    else:
+        businesstype.grid_remove()
+        businesstypeentry.grid_remove()
+
 def transactionhistory():
     show_frame(transactionframe)
 
@@ -741,28 +749,6 @@ loanamountentry.grid(row = 1,
                      pady = 10,
                      sticky = 'w')
 
-sourceincome = Label(loanframe,
-                     text = 'Source of Income',
-                     font = ('Arial', 11))
-sourceincomeentry = ttk.Combobox(loanframe,
-                                 values = ['',
-                                           'Employed',
-                                           'Self-Employed',
-                                           'Unemployed'],
-                                 font = ('Arial', 11))
-sourceincomeentry.bind('<<ComboboxSelected>>',
-                       sourceincome_entry)
-sourceincome.grid(row = 1,
-                  column = 4,
-                  padx = 10,
-                  pady = 10,
-                  sticky = 'e')
-sourceincomeentry.grid(row = 1,
-                       column = 5,
-                       padx = 10,
-                       pady = 10,
-                       sticky = 'w')
-
 totalincome = Label(loanframe,
                     text = 'Income per Year',
                     font = ('Arial', 11))
@@ -800,6 +786,30 @@ loantypeentry.grid(row = 2,
                    padx = 10,
                    pady = 5,
                    sticky = 'w')
+
+sourceincome = Label(loanframe,
+                     text = 'Source of Income',
+                     font = ('Arial', 11))
+sourceincomeentry = ttk.Combobox(loanframe,
+                                 values = ['',
+                                           'Employed',
+                                           'Self-Employed',
+                                           'Unemployed'],
+                                 font = ('Arial', 11))
+sourceincomeentry.bind('<<ComboboxSelected>>',
+                       sourceincome_entry)
+sourceincomeentry.bind('<<ComboboxSelected>>',
+                       business_type)
+sourceincome.grid(row = 1,
+                  column = 4,
+                  padx = 10,
+                  pady = 10,
+                  sticky = 'e')
+sourceincomeentry.grid(row = 1,
+                       column = 5,
+                       padx = 10,
+                       pady = 10,
+                       sticky = 'w')
 
 employertype = Label(loanframe, 
                      text = 'Employer Type',
@@ -851,6 +861,22 @@ officeaddress1 = Label(loanframe,
                        font = ('Arial', 11))
 officeaddressentry1 = Entry(loanframe,
                             font = ('Arial', 11))
+
+businesstype = Label(loanframe,
+                     text = 'Business Type',
+                     font = ('Arial', 11))
+businesstypeentry = ttk.Combobox(loanframe,
+                                 values = ['',
+                                           'Manufacturing',
+                                           'Service Based',
+                                           'Retail & E-Commerce',
+                                           'Wholesale',
+                                           'Agriculture & Farming',
+                                           'Technology & IT',
+                                           'Finance & Banking',
+                                           'Real Estate & Construction',
+                                           'Entertainment & Media'],
+                                 font = ('Arial', 11))
 
 loanapplybutton = Button(loanframe,
                          text = 'Apply Loan', 
