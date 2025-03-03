@@ -229,6 +229,34 @@ def business_type(event = None):
         address1.grid_remove()
         address1entry.grid_remove()
 
+def unemployed(event = None):
+    if loantypeentry.get() != 'Education' and sourceincomeentry.get() == 'Unemployed':
+        guarantorname.grid(row = 2,
+                           column = 4,
+                           padx = 10,
+                           pady = 10,
+                           sticky = 'e')
+        guarantornameentry.grid(row = 2,
+                                column = 5,
+                                padx = 10,
+                                pady = 10,
+                                sticky = 'w')
+        guarantoraccount.grid(row = 3,
+                              column = 0,
+                              padx = 10,
+                              pady = 10,
+                              sticky = 'e')
+        guarantoraccountentry.grid(row = 3,
+                                   column = 1,
+                                   padx = 10,
+                                   pady = 10,
+                                   sticky = 'w')
+    else:
+        guarantorname.grid_remove()
+        guarantornameentry.grid_remove()
+        guarantoraccount.grid_remove()
+        guarantoraccountentry.grid_remove()
+
 def transactionhistory():
     show_frame(transactionframe)
 
@@ -820,13 +848,13 @@ loantypeentry = ttk.Combobox(loanframe,
                                        'Business',
                                        'Education'],
                              font = ('Arial', 11))
-loantype.grid(row = 2,
-              column = 2,
+loantype.grid(row = 1,
+              column = 4,
               padx = 10,
               pady = 5,
               sticky = 'e')
-loantypeentry.grid(row = 2,
-                   column = 3,
+loantypeentry.grid(row = 1,
+                   column = 5,
                    padx = 10,
                    pady = 5,
                    sticky = 'w')
@@ -844,16 +872,29 @@ sourceincomeentry.bind('<<ComboboxSelected>>',
                        sourceincome_entry)
 sourceincomeentry.bind('<<ComboboxSelected>>',
                        business_type)
-sourceincome.grid(row = 1,
-                  column = 4,
+sourceincomeentry.bind('<<ComboboxSelected>>',
+                       unemployed)
+sourceincome.grid(row = 2,
+                  column = 2,
                   padx = 10,
                   pady = 10,
                   sticky = 'e')
-sourceincomeentry.grid(row = 1,
-                       column = 5,
+sourceincomeentry.grid(row = 2,
+                       column = 3,
                        padx = 10,
                        pady = 10,
                        sticky = 'w')
+
+guarantorname = Label(loanframe,
+                      text = 'Guarantor Name', 
+                      font = ('Arial', 11))
+guarantornameentry = Entry(loanframe, 
+                           font = ('Arial', 11))
+guarantoraccount = Label(loanframe,
+                         text = 'Guarantor Account No.', 
+                         font = ('Arial', 11))
+guarantoraccountentry = Entry(loanframe, 
+                              font = ('Arial', 11))
 
 employertype = Label(loanframe, 
                      text = 'Employer Type',
