@@ -179,11 +179,55 @@ def private_sector(event = None):
 
 def business_type(event = None):
     if sourceincomeentry.get() == 'Self-Employed':
-        businesstype.grid(row = 2, column = 4, padx = 10, pady = 10, sticky = 'e')
-        businesstypeentry.grid(row = 2, column = 5, padx = 10, pady = 10, sticky = 'w')    
+        businesstype.grid(row = 2,
+                          column = 4, 
+                          padx = 10, 
+                          pady = 10, 
+                          sticky = 'e')
+        businesstypeentry.grid(row = 2, 
+                               column = 5, 
+                               padx = 10, 
+                               pady = 10, 
+                               sticky = 'w')
+        productstype.grid(row = 3,
+                          column = 0, 
+                          padx = 10, 
+                          pady = 10, 
+                          sticky = 'e')
+        productstypeentry.grid(row = 3, 
+                               column = 1, 
+                               padx = 10, 
+                               pady = 10, 
+                               sticky = 'w')
+        businessname.grid(row = 3, 
+                          column = 2, 
+                          padx = 10, 
+                          pady = 10, 
+                          sticky = 'e')
+        businessnameentry.grid(row = 3,
+                               column = 3, 
+                               padx = 10, 
+                               pady = 10, 
+                               sticky = 'w')
+        address1.grid(row = 3,
+                      column = 4, 
+                      padx = 10, 
+                      pady = 10, 
+                      sticky = 'e')
+        address1entry.grid(row = 3,
+                           column = 5, 
+                           padx = 10, 
+                           pady = 10, 
+                           sticky = 'w')
     else:
         businesstype.grid_remove()
         businesstypeentry.grid_remove()
+        productstype.grid_remove()
+        productstypeentry.grid_remove()
+        businessname.grid_remove()
+        businessnameentry.grid_remove()
+        address1.grid_remove()
+        address1entry.grid_remove()
 
 def transactionhistory():
     show_frame(transactionframe)
@@ -829,6 +873,7 @@ position = Label(loanframe,
                  font = ('Arial', 11))
 positionentry = Entry(loanframe,
                       font = ('Arial', 11))
+
 department = Label(loanframe,
                    text = 'Department',
                    font = ('Arial', 11))
@@ -840,6 +885,7 @@ departmententry = ttk.Combobox(loanframe,
                                          'Civil Services', 
                                          'Banking'],
                                font = ('Arial', 11))
+
 officeaddress = Label(loanframe, 
                       text = 'Office Address', 
                       font = ('Arial', 11))
@@ -851,11 +897,13 @@ employername = Label(loanframe,
                      font = ('Arial', 11))
 employernameentry = Entry(loanframe,
                           font = ('Arial', 11))
+
 position1 = Label(loanframe,
                   text = 'Position',
                   font = ('Arial', 11))
 positionentry1 = Entry(loanframe,
                        font = ('Arial', 11))
+
 officeaddress1 = Label(loanframe,
                        text = 'Office Address', 
                        font = ('Arial', 11))
@@ -888,6 +936,12 @@ businessname = Label(loanframe,
                      font = ('Arial', 11))
 businessnameentry = Entry(loanframe, 
                           font = ('Arial', 11))
+
+address1 = Label(loanframe,
+                 text = 'Business Address',
+                 font = ('Arial', 11))
+address1entry = Entry(loanframe,
+                      font = ('Arial', 11))
 
 loanapplybutton = Button(loanframe,
                          text = 'Apply Loan', 
