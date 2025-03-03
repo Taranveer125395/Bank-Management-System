@@ -29,7 +29,9 @@ def get_user_details(username):
         )
         cursor = conn.cursor()
         
-        query = "SELECT fullname, username, mobile_number, age, education_qualification, job_type FROM staff_registeration WHERE username = %s"
+        query = '''SELECT fullname, username, mobile_number,
+                age, education_qualification, job_type FROM 
+                staff_registeration WHERE username = %s'''
         cursor.execute(query, (username,))
         user_data = cursor.fetchone()
         
@@ -398,16 +400,40 @@ if logged_in_username:
     user_details = get_user_details(logged_in_username)
     if user_details:
         fullname, username, mobile, age, qualification, job = user_details
-        Label(homeframe, text=f"Full Name: {fullname}", font=('Arial', 12)).pack(pady=5)
-        Label(homeframe, text=f"Username: {username}", font=('Arial', 12)).pack(pady=5)
-        Label(homeframe, text=f"Mobile Number: {mobile}", font=('Arial', 12)).pack(pady=5)
-        Label(homeframe, text=f"Age: {age}", font=('Arial', 12)).pack(pady=5)
-        Label(homeframe, text=f"Qualification: {qualification}", font=('Arial', 12)).pack(pady=5)
-        Label(homeframe, text=f"Job Type: {job}", font=('Arial', 12)).pack(pady=5)
+        name = Label(homeframe,
+                     text = f"Full Name: {fullname}",
+                     font = ('Arial', 12))
+        name.pack(pady = 5)
+        uname = Label(homeframe,
+                      text = f"Username: {username}",
+                      font = ('Arial', 12))
+        uname.pack(pady = 5)
+        mno = Label(homeframe,
+                    text = f"Mobile Number: {mobile}",
+                    font = ('Arial', 12))
+        mno.pack(pady = 5)
+        ag = Label(homeframe,
+                   text = f"Age: {age}",
+                   font = ('Arial', 12))
+        ag.pack(pady = 5)
+        eq = Label(homeframe,
+                   text = f"Qualification: {qualification}",
+                   font = ('Arial', 12))
+        eq.pack(pady = 5)
+        jt = Label(homeframe,
+                   text = f"Job Type: {job}",
+                   font = ('Arial', 12))
+        jt.pack(pady = 5)
     else:
-        Label(homeframe, text="User details not found!", font=('Arial', 12, 'bold')).pack(pady=10)
+        ud  = Label(homeframe,
+                    text = "User details not found!",
+                    font = ('Arial', 12, 'bold'))
+        ud.pack(pady = 10)
 else:
-    Label(homeframe, text="No username provided!", font=('Arial', 12, 'bold')).pack(pady=10)
+    nu = Label(homeframe,
+               text = "No username provided!",
+               font = ('Arial', 12, 'bold'))
+    nu.pack(pady = 10)
 
 heading = Label(accountframe,
                 text = 'New Account Application Form',
