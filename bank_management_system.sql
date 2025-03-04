@@ -20,7 +20,7 @@ CREATE TABLE staff_registeration(
 );
 
 CREATE TABLE account_details(
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    account_number INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     age INT,
     mobile_number VARCHAR(15) NOT NULL,
@@ -40,38 +40,40 @@ CREATE TABLE account_details(
     account_type ENUM('Saving', 'Current'),
     gst_number VARCHAR(15),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)AUTO_INCREMENT = 1001;
+) AUTO_INCREMENT = 1001;
 
 CREATE TABLE Transactions(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    account_number VARCHAR(20) NOT NULL,
+    account_number INT NOT NULL,
     balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     amount DECIMAL(10,2) NOT NULL,
-    transaction_type ENUM('deposit', 'withdraw') NOT NULL,
+    transaction_type ENUM('Deposit', 'Withdraw') NOT NULL,
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (account_number) REFERENCES account_details(id)
-)AUTO_INCREMENT = 1;
+    FOREIGN KEY (account_number) REFERENCES account_details(account_number) ON DELETE CASCADE
+) AUTO_INCREMENT = 1;
 
-CREATE TABLE LoanApplication(
+CREATE TABLE loanapplication(
     id INT PRIMARY KEY AUTO_INCREMENT,
-    account_number VARCHAR(20) NOT NULL,
+    account_number INT NOT NULL,
     loan_amount DECIMAL(15,2) NOT NULL,
     income_per_year DECIMAL(15,2) NOT NULL,
     loan_type ENUM('Personal', 'Home', 'Vehicle', 'Business', 'Education') NOT NULL,
     source_of_income ENUM('Employed', 'Self-Employed', 'Unemployed') NOT NULL,
     guarantor_name VARCHAR(100),
-    guarantor_account_no VARCHAR(20),
-    employer_type ENUM('Private Sector', 'Government Sector'),
+    guarantor_account_no INT,
+    employer_type ENUM('Private Sector', 'Government Sector', 'None') DEFAULT 'None',
     position VARCHAR(100),
-    department ENUM('Railway', 'Police', 'Revenue', 'Civil Services', 'Banking'),
+    department ENUM('Railway', 'Police', 'Revenue', 'Civil Services', 'Banking', 'None') DEFAULT 'None',
     office_address VARCHAR(255),
     employer_name VARCHAR(100),
-    business_type ENUM('Manufacturing', 'Service Based', 'Retail & E-Commerce', 'Wholesale', 'Agriculture & Farming', 'Technology & IT', 'Finance & Banking', 'Real Estate & Construction', 'Entertainment & Media'),
+    business_type ENUM('Manufacturing', 'Service Based', 'Retail & E-Commerce', 'Wholesale', 'Agriculture & Farming', 'Technology & IT', 'Finance & Banking', 'Real Estate & Construction', 'Entertainment & Media', 'None') DEFAULT 'None',
     product_type VARCHAR(100),
     business_name VARCHAR(100),
     business_address VARCHAR(255),
-    FOREIGN KEY (account_number) REFERENCES account_details(id)
-)AUTO_INCREMENT = 10001;
+    FOREIGN KEY (account_number) REFERENCES account_details(account_number) ON DELETE CASCADE,
+    FOREIGN KEY (guarantor_account_no) REFERENCES account_details(account_number) ON DELETE SET NULL
+) AUTO_INCREMENT = 10001;
+
 
 SELECT * FROM staff_registeration;
 
