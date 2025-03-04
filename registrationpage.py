@@ -103,7 +103,7 @@ vcmd = root.register(mobile_number_validation)
 
 heading = Label(root, 
                 text = 'Bank Management System', 
-                font = ('Arial', 12, 'bold'))
+                font = ('Arial', 16, 'bold'))
 heading.grid(row = 0, 
              column = 0, 
              columnspan = 4, 
@@ -111,8 +111,10 @@ heading.grid(row = 0,
             )
 
 full_name = Label(root, 
-                  text = 'Full Name')
-full_name_entry = Entry(root)
+                  text = 'Full Name',
+                  font = ('Arial', 12))
+full_name_entry = Entry(root,
+                        font = ('Arial', 12))
 full_name.grid(row = 1, 
                column = 0, 
                padx = 5, 
@@ -125,8 +127,10 @@ full_name_entry.grid(row = 1,
                      sticky = 'w')
 
 user_name = Label(root, 
-                 text = 'Username')
-username_entry = Entry(root)
+                 text = 'Username',
+                 font = ('Arial', 12))
+username_entry = Entry(root,
+                       font = ('Arial', 12))
 user_name.grid(row = 1, 
               column = 2, 
               padx = 5, 
@@ -139,10 +143,12 @@ username_entry.grid(row = 1,
                     sticky = 'w')
 
 mobile_number = Label(root,
-                      text = 'Mobile Number')
+                      text = 'Mobile Number',
+                      font = ('Arial', 12))
 mobile_number_entry = Entry(root,
                             validate = "key", 
-                            validatecommand = (vcmd, "%P"))
+                            validatecommand = (vcmd, "%P"),
+                            font = ('Arial', 12))
 mobile_number.grid(row = 2,
                    column = 0,
                    padx = 5,
@@ -155,10 +161,12 @@ mobile_number_entry.grid(row = 2,
                          sticky = 'w')
 
 age = Label(root, 
-            text = 'Age')
+            text = 'Age',
+            font = ('Arial', 12))
 age_entry = Spinbox(root, 
                     from_ = 18, 
-                    to = 100)
+                    to = 100,
+                    font = ('Arial', 12))
 age.grid(row = 2, 
          column = 2, 
          padx = 5, 
@@ -171,16 +179,15 @@ age_entry.grid(row = 2,
                sticky = 'w')
 
 qualification_type = Label(root, 
-                      text = 'Education Qualification')
+                      text = 'Education Qualification',
+                      font = ('Arial', 12))
 qualification_entry = ttk.Combobox(root, 
-                                   values = [
-                                       '12th Pass', 
-                                       'Diploma', 
-                                       'Graduate', 
-                                       'PG Diploma', 
-                                       'PostGraduate'
-                                       ]
-                                       )
+                                   values = ['12th Pass', 
+                                             'Diploma', 
+                                             'Graduate', 
+                                             'PG Diploma', 
+                                             'PostGraduate'],
+                                   font = ('Arial', 12))
 qualification_type.grid(row = 3, 
                    column = 0, 
                    padx = 5, 
@@ -193,20 +200,17 @@ qualification_entry.grid(row = 3,
                          sticky = 'w')
 
 job_type = Label(root, 
-                 text = 'Job Type')
+                 text = 'Job Type',
+                 font = ('Arial', 12))
 job_type_entry = ttk.Combobox(root,
-                              values = [
-                                  'Probationary Officer(PO)',
-                                  'Clerk(Junior Associate)',
-                                  'Specilist Officer(SO)',
-                                  'Management Trainee',
-                                  'Assistent Manager',
-                                  'Relationship Manager',
-                                  'Risk Analyst / Credit Analyst',
-                                  'IT Officer',
-                                  'Legal Officer',
-                                  'Security Officer'
-                              ])
+                              values = ['Customer Service Officer(CSO)',
+                                        'Relationship Manager',
+                                        'Teller',
+                                        'Cashier',
+                                        'Loan Officer',
+                                        'Assistant Manager',
+                                        'Bank Manager',],
+                              font = ('Arial', 12))
 job_type.grid(row = 3, 
               column = 2, 
               padx = 5, 
@@ -219,9 +223,11 @@ job_type_entry.grid(row = 3,
                     sticky = 'w')
 
 password_type = Label(root,
-                      text = 'Password')
+                      text = 'Password',
+                      font = ('Arial', 12))
 password_type_entry = Entry(root,
-                            show = '*')
+                            show = '*',
+                            font = ('Arial', 12))
 password_type.grid(row = 4,
                    column = 0,
                    padx = 5,
@@ -234,9 +240,11 @@ password_type_entry.grid(row = 4,
                          sticky = 'w')
 
 confirm_password_type = Label(root,
-                              text = 'Confirm Password')
+                              text = 'Confirm Password',
+                              font = ('Arial', 12))
 confirm_password_type_entry = Entry(root,
-                                    show = '*')
+                                    show = '*',
+                                    font = ('Arial', 12))
 confirm_password_type.grid(row = 4,
                            column = 2,
                            padx = 5,
@@ -250,7 +258,8 @@ confirm_password_type_entry.grid(row = 4,
 
 registration_button = Button(root, 
                              text = 'Register',
-                             command = register_button)
+                             command = register_button,
+                             font = ('Arial', 12))
 registration_button.grid(row = 5, 
                          column = 0, 
                          columnspan = 4, 
