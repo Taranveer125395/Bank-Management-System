@@ -1,13 +1,13 @@
-Create database Banking_Management_System;
+CREATE DATABASE Banking_Management_System;
 
-Use Banking_Management_System;
+USE Banking_Management_System;
 
-create table staff_login(
+CREATE TABLE staff_login(
     username varchar(50),
     password varchar (50)
 );
 
-create table staff_registeration(
+CREATE TABLE staff_registeration(
     id int unique not null auto_increment,
     fullname varchar(50),
     username varchar(50),
@@ -19,7 +19,7 @@ create table staff_registeration(
     confirm_password varchar(50)
 );
 
-CREATE TABLE account_details (
+CREATE TABLE account_details(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     age INT,
@@ -42,7 +42,7 @@ CREATE TABLE account_details (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )AUTO_INCREMENT = 1001;
 
-CREATE TABLE Transactions (
+CREATE TABLE Transactions(
     id INT AUTO_INCREMENT PRIMARY KEY,
     account_number VARCHAR(20) NOT NULL,
     balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
@@ -51,7 +51,7 @@ CREATE TABLE Transactions (
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )AUTO_INCREMENT = 1;
 
-CREATE TABLE LoanApplication (
+CREATE TABLE LoanApplication(
     id INT PRIMARY KEY AUTO_INCREMENT,
     account_number VARCHAR(20) NOT NULL,
     loan_amount DECIMAL(15,2) NOT NULL,
@@ -71,12 +71,12 @@ CREATE TABLE LoanApplication (
     business_address VARCHAR(255)
 )AUTO_INCREMENT = 10001;
 
-select * from staff_registeration;
+SELECT * FROM staff_registeration;
 
-select * from staff_login;
+SELECT * FROM staff_login;
 
-select * from loans;
+SELECT * FROM LoanApplication;
 
-select * from transactions;
+SELECT * FROM transactions;
 
-select * from accounts;
+SELECT * FROM account_details;
