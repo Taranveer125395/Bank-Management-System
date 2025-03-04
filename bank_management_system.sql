@@ -19,66 +19,57 @@ create table staff_registeration(
     confirm_password varchar(50)
 );
 
-create table accounts(
+CREATE TABLE account_details (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    age int,
-    mobilenumber VARCHAR(255),
-    dob date,
-    aadhaarno bigint,
-    pancardno VARCHAR(255),
-    fathername varchar(255),
-    mothername varchar(255),
-    address varchar(255),
-    city varchar(255),
-    district varchar(255),
-    state varchar(255),
-    country varchar(255),
-    pincode int,
-    email varchar(255),
-    balance DECIMAL(10,2) NOT NULL
+    age INT,
+    mobile_number VARCHAR(15) NOT NULL,
+    date_of_birth DATE,
+    aadhar_number VARCHAR(12),
+    pan_card_number VARCHAR(10),
+    father_name VARCHAR(255),
+    mother_name VARCHAR(255),
+    address TEXT,
+    city VARCHAR(100),
+    district VARCHAR(100),
+    state VARCHAR(100),
+    country VARCHAR(100),
+    pin_code VARCHAR(10),
+    email VARCHAR(255) UNIQUE,
+    education_qualification ENUM('Below 12th', '12th Pass', 'Diploma Holder', 'Graduate', 'Post Graduate', 'Doctorate'),
+    account_type ENUM('Saving', 'Current'),
+    gst_number VARCHAR(15),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )AUTO_INCREMENT = 1001;
 
 CREATE TABLE Transactions (
-    transaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     account_number VARCHAR(20) NOT NULL,
-    transaction_type ENUM('Deposit', 'Withdraw') NOT NULL,
+    balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     amount DECIMAL(10,2) NOT NULL,
-    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (account_number) REFERENCES accounts(id)
-);
+    transaction_type ENUM('deposit', 'withdraw') NOT NULL,
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)AUTO_INCREMENT = 1;
 
 CREATE TABLE LoanApplication (
-    application_id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     account_number VARCHAR(20) NOT NULL,
     loan_amount DECIMAL(15,2) NOT NULL,
-    total_income DECIMAL(15,2) NOT NULL,
+    income_per_year DECIMAL(15,2) NOT NULL,
     loan_type ENUM('Personal', 'Home', 'Vehicle', 'Business', 'Education') NOT NULL,
-    source_income ENUM('Employed', 'Self-Employed', 'Unemployed') NOT NULL,
+    source_of_income ENUM('Employed', 'Self-Employed', 'Unemployed') NOT NULL,
     guarantor_name VARCHAR(100),
-    guarantor_account VARCHAR(20)
-);
-
-CREATE TABLE EmploymentDetails (
-    employment_id INT PRIMARY KEY AUTO_INCREMENT,
-    application_id INT,
+    guarantor_account_no VARCHAR(20),
     employer_type ENUM('Private Sector', 'Government Sector'),
     position VARCHAR(100),
     department ENUM('Railway', 'Police', 'Revenue', 'Civil Services', 'Banking'),
-    office_address TEXT,
+    office_address VARCHAR(255),
     employer_name VARCHAR(100),
-    FOREIGN KEY (application_id) REFERENCES LoanApplication(application_id)
-);
-
-CREATE TABLE BusinessDetails (
-    business_id INT PRIMARY KEY AUTO_INCREMENT,
-    application_id INT,
     business_type ENUM('Manufacturing', 'Service Based', 'Retail & E-Commerce', 'Wholesale', 'Agriculture & Farming', 'Technology & IT', 'Finance & Banking', 'Real Estate & Construction', 'Entertainment & Media'),
-    product_type VARCHAR(255),
-    business_name VARCHAR(255),
-    business_address TEXT,
-    FOREIGN KEY (application_id) REFERENCES LoanApplication(application_id)
-);
+    product_type VARCHAR(100),
+    business_name VARCHAR(100),
+    business_address VARCHAR(255)
+)AUTO_INCREMENT = 10001;
 
 select * from staff_registeration;
 
