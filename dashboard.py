@@ -285,6 +285,18 @@ def unemployed(event = None):
 def transactionhistory():
     show_frame(transactionframe)
 
+def account_detail():
+    messagebox.showinfo(title = 'Bank Detail',
+                        message = 'Your Bank Detail is Available.')
+
+def balance():
+    messagebox.showinfo(title = 'Balance',
+                        message = 'Your Bank Balance is Sufficient.')
+
+def loan():
+    messagebox.showwarning(title = 'Loan',
+                           message = 'Your Loan is Pending.')
+
 if len(sys.argv) > 1:
     logged_in_username = sys.argv[1]
 else:
@@ -303,8 +315,8 @@ headerpoint.pack(fill = 'y',
 
 home = Button(headerpoint,
               text = 'Home',
-              bg = 'blue',
-              fg = 'white',
+              bg = 'lightgrey',
+              fg = 'black',
               font = ('Arial', 11, 'bold'),
               command = homebutton,
               width = 15)
@@ -314,8 +326,8 @@ home.pack(side = 'top',
 
 create_account = Button(headerpoint,
                         text = 'Create Account',
-                        bg = 'blue',
-                        fg = 'white',
+                        bg = 'lightgrey',
+                        fg = 'black',
                         font = ('Arial', 11, 'bold'),
                         command = createaccount,
                         width = 15)
@@ -325,8 +337,8 @@ create_account.pack(side = 'top',
 
 deposit_money = Button(headerpoint,
                        text = 'Deposit Money',
-                       bg = 'blue',
-                       fg = 'white',
+                       bg = 'lightgrey',
+                       fg = 'black',
                        font = ('Arial', 11, 'bold'),
                        command = depositmoney,
                        width = 15)
@@ -336,8 +348,8 @@ deposit_money.pack(side = 'top',
 
 withdraw_money = Button(headerpoint,
                         text = 'Withdraw Money', 
-                        bg = 'blue',
-                        fg = 'White',
+                        bg = 'lightgrey',
+                        fg = 'black',
                         font = ('Arial', 11, 'bold'),
                         command = withdrawmoney,
                         width = 15)
@@ -347,8 +359,8 @@ withdraw_money.pack(side = 'top',
 
 apply_for_loan = Button(headerpoint,
                         text = 'Apply For Loan',
-                        bg = 'blue',
-                        fg = 'white',
+                        bg = 'lightgrey',
+                        fg = 'black',
                         font = ('Arial', 11, 'bold'),
                         command = loanapplication,
                         width = 15)
@@ -358,8 +370,8 @@ apply_for_loan.pack(side = 'top',
 
 transaction_history = Button(headerpoint,
                              text = 'Transaction History',
-                             bg = 'blue',
-                             fg = 'white',
+                             bg = 'lightgrey',
+                             fg = 'black',
                              font = ('Arial', 11, 'bold'),
                              command = transactionhistory,
                              width = 15)
@@ -1088,7 +1100,8 @@ accountnumberentry.grid(row = 1,
 
 accountdetailbutton = Button(transactionframe,
                             text = 'Account Detail',
-                            font = ('Arial', 11))
+                            font = ('Arial', 11),
+                            command = account_detail)
 accountdetailbutton.grid(row = 2,
                          column = 0,
                          padx = 10,
@@ -1096,7 +1109,8 @@ accountdetailbutton.grid(row = 2,
 
 balanceenquirybutton = Button(transactionframe,
                               text = 'Balance Enquery',
-                              font = ('Arial', 11))
+                              font = ('Arial', 11),
+                              command = balance)
 balanceenquirybutton.grid(row = 2,
                           column = 1,
                           padx = 10,
@@ -1104,7 +1118,8 @@ balanceenquirybutton.grid(row = 2,
 
 loanenquirybutton = Button(transactionframe,
                            text = 'Loan Enquery',
-                           font = ('Arial', 11))
+                           font = ('Arial', 11),
+                           command = loan)
 loanenquirybutton.grid(row = 2,
                        column = 2,
                        padx = 10,
