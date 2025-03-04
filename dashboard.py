@@ -182,36 +182,39 @@ def deposit_button():
     deposit_amount = amountentry.get().strip()
     
     if not account_number or not deposit_amount.isdigit():
-        messagebox.showwarning("Input Error", "Please enter valid account number and amount.")
+        messagebox.showwarning("Input Error",
+                               "Please enter a valid account number and amount.")
         return
     
     deposit_amount = float(deposit_amount)
-    
-    conn = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='20Bcs@125395',
-        database='Banking_Management_System'
-    )
-    cursor = conn.cursor()
-    
-    cursor.execute("SELECT id FROM account_details WHERE id = %s", (account_number,))
+
+    cursor.execute('''SELECT id FROM account_details 
+                   WHERE id = %s''', (account_number,))
     account = cursor.fetchone()
     if not account:
-        messagebox.showwarning("Error", "Account number not found.")
+        messagebox.showwarning("Error",
+                               "Account number not found.")
         conn.close()
         return
     
-    cursor.execute("SELECT balance FROM Transactions WHERE account_number = %s ORDER BY transaction_date DESC LIMIT 1", (account_number,))
+    cursor.execute('''SELECT balance FROM Transactions
+                   WHERE account_number = %s 
+                   ORDER BY transaction_date
+                   DESC LIMIT 1''', 
+                   (account_number,))
     result = cursor.fetchone()
     
     balance = result[0] + deposit_amount if result else deposit_amount
-    cursor.execute("INSERT INTO Transactions (account_number, balance, amount, transaction_type) VALUES (%s, %s, %s, 'deposit')", (account_number, balance, deposit_amount))
+    cursor.execute('''INSERT INTO Transactions
+                   (account_number, balance, amount, transaction_type)
+                   VALUES (%s, %s, %s, 'Deposit')''',
+                   (account_number, balance, deposit_amount))
     
     conn.commit()
     conn.close()
     
-    messagebox.showinfo("Success", "Your Money is deposited Successfully.")
+    messagebox.showinfo("Success",
+                        "Your money has been successfully deposited.")
     accountnumberentry.delete(0, END)
     amountentry.delete(0, END)
 
@@ -219,47 +222,51 @@ def withdrawmoney():
     show_frame(withdrawframe)
 
 def withdraw_button():
-    account_number = accountnumber1entry.get().strip()
-    withdraw_amount = amount1entry.get().strip()
-    
+    account_number = accountnumberentry.get().strip()
+    withdraw_amount = amountentry.get().strip()
+
     if not account_number or not withdraw_amount.isdigit():
-        messagebox.showwarning("Input Error", "Please enter valid account number and amount.")
-        return
-    
+        messagebox.showwarning(title = 'Input Error',
+                               message = 'Please enter a valid account number and amount.')
+        
     withdraw_amount = float(withdraw_amount)
-    
-    conn = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='20Bcs@125395',
-        database='Banking_Management_System'
-    )
-    cursor = conn.cursor()
-    
-    cursor.execute("SELECT id FROM account_details WHERE id = %s", (account_number,))
+
+    cursor.execute('''Select id from account_details
+                   where id = %s''', 
+                   (account_number,))
     account = cursor.fetchone()
     if not account:
-        messagebox.showwarning("Error", "Account number not found.")
+        messagebox.showwarning(title = 'Error',
+                               message = 'Account number not found')
         conn.close()
         return
     
-    cursor.execute("SELECT balance FROM Transactions WHERE account_number = %s ORDER BY transaction_date DESC LIMIT 1", (account_number,))
+    cursor.execute('''SELECT balance FROM Transactions 
+                   WHERE account_number = %s 
+                   ORDER BY transaction_date 
+                   DESC LIMIT 1''', 
+                   (account_number,))
     result = cursor.fetchone()
-    
+
     if not result or result[0] < withdraw_amount:
-        messagebox.showwarning("Insufficient Funds", "Not enough balance to withdraw.")
+        messagebox.showwarning(title = 'Insufficient Funds',
+                               message = 'Not enough balance to withdraw.')
         conn.close()
         return
     
     balance = result[0] - withdraw_amount
-    cursor.execute("INSERT INTO Transactions (account_number, balance, amount, transaction_type) VALUES (%s, %s, %s, 'withdraw')", (account_number, balance, withdraw_amount))
+    cursor.execute('''Insert into Transactions
+                   (account_number, balance, amount, transaction_type)
+                   values (%s, %s, %s, 'Withdraw')''',
+                   (account_number, balance, withdraw_amount))
     
     conn.commit()
     conn.close()
-    
-    messagebox.showinfo("Success", "Your Money is successfully withdrawn.")
-    accountnumber1entry.delete(0, END)
-    amount1entry.delete(0, END)
+
+    messagebox.showinfo(title = 'Success',
+                        message = 'Your money has been successfully withdrawn.')
+    accountnumberentry.delete(0, END)
+    amountentry.delete(0, END)
 
 def loanapplication():
     show_frame(loanframe)
@@ -933,7 +940,7 @@ accountbutton.grid(row = 7,
                    pady = 5)
 
 heading1 = Label(depositframe,
-                 text = 'Deposit Cash',
+                 text = 'Deposit and Withdraw Cash',
                  font = ('Arial', 14, 'bold'))
 heading1.grid(row = 0,
               column = 0,
@@ -978,56 +985,16 @@ depositbutton = Button(depositframe,
                        command = deposit_button)
 depositbutton.grid(row = 2,
                    column = 0, 
-                   columnspan = 4,
+                   columnspan = 2,
                    pady = 10)
 
-heading2 = Label(withdrawframe,
-                 text = 'Withdraw Cash',
-                 font = ('Arial', 14, 'bold'))
-heading2.grid(row = 0,
-              column = 0,
-              columnspan = 7,
-              pady = 20)
-
-accountnumber1 = Label(withdrawframe,
-                      text = 'Account Number',
-                      font = ('Arial', 11))
-accountnumber1entry = Entry(withdrawframe,
-                           font = ('Arial', 11))
-accountnumber1.grid(row = 1,
-                   column = 0,
-                   padx = 10,
-                   pady = 10,
-                   sticky = 'e')
-accountnumber1entry.grid(row = 1,
-                        column = 1,
-                        padx = 10,
-                        pady = 10,
-                        sticky = 'w')
-
-amount1 = Label(withdrawframe,
-               text = 'Amount',
-               font = ('Arial', 11))
-amount1entry = Entry(withdrawframe, 
-                    font = ('Arial', 11))
-amount1.grid(row = 1,
-            column = 2,
-            padx = 10,
-            pady = 10,
-            sticky = 'e')
-amount1entry.grid(row = 1,
-                 column = 3,
-                 padx = 10,
-                 pady = 10,
-                 sticky = 'w')
-
-withdrawbutton = Button(withdrawframe,
-                        text = 'Withraw', 
-                        font = ('Arial', 11), 
+withdrawbutton = Button(depositframe,
+                        text = 'Withdraw',
+                        font = ('Arial', 11),
                         command = withdraw_button)
 withdrawbutton.grid(row = 2,
-                    column = 0, 
-                    columnspan = 4,
+                    column = 2,
+                    columnspan = 2,
                     pady = 10)
 
 heading3 = Label(loanframe,

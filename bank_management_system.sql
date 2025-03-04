@@ -48,7 +48,8 @@ CREATE TABLE Transactions(
     balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     amount DECIMAL(10,2) NOT NULL,
     transaction_type ENUM('deposit', 'withdraw') NOT NULL,
-    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_number) REFERENCES account_details(id)
 )AUTO_INCREMENT = 1;
 
 CREATE TABLE LoanApplication(
@@ -68,7 +69,8 @@ CREATE TABLE LoanApplication(
     business_type ENUM('Manufacturing', 'Service Based', 'Retail & E-Commerce', 'Wholesale', 'Agriculture & Farming', 'Technology & IT', 'Finance & Banking', 'Real Estate & Construction', 'Entertainment & Media'),
     product_type VARCHAR(100),
     business_name VARCHAR(100),
-    business_address VARCHAR(255)
+    business_address VARCHAR(255),
+    FOREIGN KEY (account_number) REFERENCES account_details(id)
 )AUTO_INCREMENT = 10001;
 
 SELECT * FROM staff_registeration;
