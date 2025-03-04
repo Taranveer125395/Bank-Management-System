@@ -96,6 +96,10 @@ def mobile_number_validation(P):
         messagebox.showwarning(title = 'Error', 
                                message = 'Mobile number should be less than equal to 10')
 
+def login_button():
+    root.destroy()
+    subprocess.run(['python', 'loginpage.py'])
+
 root = Tk()
 root.title('Staff Registration')
 
@@ -262,7 +266,16 @@ registration_button = Button(root,
                              font = ('Arial', 12))
 registration_button.grid(row = 5, 
                          column = 0, 
-                         columnspan = 4, 
+                         columnspan = 2, 
                          pady = 10)
+
+login_button = Button(root,
+                      text = 'Login Here!',
+                      font = ('Arial', 12),
+                      command = login_button)
+login_button.grid(row = 5,
+                  column = 2,
+                  columnspan = 2,
+                  pady = 10)
 
 root.mainloop()
