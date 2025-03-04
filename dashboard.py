@@ -5,14 +5,6 @@ import mysql.connector
 from datetime import datetime
 import sys
 
-conn = mysql.connector.connect(
-    host = 'localhost',
-    user = 'root',
-    password = '20Bcs@125395',
-    database = 'Banking_Management_System'
-)
-cursor = conn.cursor()
-
 def show_frame(frame):
     frame.tkraise()
 
@@ -49,12 +41,22 @@ def createaccount():
 def validate_button():
     datetext = dobentry.get()
     try:
-        datetime.strptime(datetext, "%d/%m/%Y")
+        datetime.strptime(datetext, "%Y-%m-%d")
         messagebox.showinfo(title = 'Success',
-                            message = 'Valid Date Format: DD/MM/YYYY')
-    except:
+                            message = 'Valid Date Format: YYYY-MM-DD')
+    except ValueError:
         messagebox.showerror(title = 'Error',
-                             message = 'Invalid Date! Use Format: DD/MM/YYYY')
+                             message = 'Invalid Date! Use Format: YYYY-MM-DD')
+
+def on_entry_focus_in(event):
+    if dobentry.get() == "yyyy-mm-dd":
+        dobentry.delete(0, END)
+        dobentry.config(fg = "black")
+
+def on_entry_focus_out(event):
+    if dobentry.get() == "":
+        dobentry.insert(0, "yyyy-mm-dd")
+        dobentry.config(fg = "grey")
 
 def gst_entry(event = None):
     if accounttypeentry.get() == 'Current':
@@ -73,8 +75,87 @@ def gst_entry(event = None):
         gstnumberentry.grid_remove()
 
 def account_button():
-    messagebox.showinfo(title = 'Success',
-                        message = ' Your account is created successfully.')
+    conn = mysql.connector.connect(
+        host = 'localhost',
+        user = 'root',
+        password = '20Bcs@125395',
+        database = 'Banking_Management_System'
+    )
+    cursor = conn.cursor()
+    # Fetch values from entry fields
+    name = name1entry.get()
+    age = age2entry.get()
+    mobile_number = mobilenumber1entry.get()
+    date_of_birth = dobentry.get()
+    aadhar_number = aadharnumberentry.get()
+    pan_card_number = pancardnumberentry.get()
+    father_name = fathernameentry.get()
+    mother_name = mothernameentry.get()
+    address = addressentry.get()
+    city = cityentry.get()
+    district = districtentry.get()
+    state = stateentry.get()
+    country = countryentry.get()
+    pin_code = pincodeentry.get()
+    email = emailentry.get()
+    education_qualification = educationentry.get()
+    account_type = accounttypeentry.get()
+    gst_number = gstnumberentry.get()
+
+    # SQL query to insert data
+    sql = """
+    INSERT INTO account_details (
+        name, age, mobile_number, date_of_birth,
+        aadhar_number, pan_card_number, father_name,
+        mother_name, address, city, district, state,
+        country, pin_code, email, education_qualification,
+        account_type, gst_number
+    ) VALUES (%s, %s, %s, %s,
+              %s, %s, %s,
+              %s, %s, %s, %s, %s,
+              %s, %s, %s, %s,
+              %s, %s)
+    """
+
+    values = (name, age, mobile_number,
+              date_of_birth, aadhar_number, 
+              pan_card_number, father_name,
+              mother_name, address, city, 
+              district, state, country, 
+              pin_code, email, education_qualification,
+              account_type, gst_number)
+
+    try:
+        cursor.execute(sql, values)
+        conn.commit()
+        messagebox.showinfo(title="Success",
+                            message="Your account has been created successfully!")
+        
+        name1entry.delete(0, END)
+        age2entry.delete(0, END)
+        mobilenumber1entry.delete(0, END)
+        dobentry.delete(0, END)
+        aadharnumberentry.delete(0, END)
+        pancardnumberentry.delete(0, END)
+        fathernameentry.delete(0, END)
+        mothernameentry.delete(0, END)
+        addressentry.delete(0, END)
+        cityentry.delete(0, END)
+        stateentry.delete(0, END)
+        countryentry.delete(0, END)
+        pincodeentry.delete(0, END)
+        emailentry.delete(0, END)
+        educationentry.set('')
+        accounttypeentry.set('')
+        gstnumberentry.delete(0, END)
+    
+    except mysql.connector.Error as err:
+        messagebox.showerror(title="Error",
+                             message=f"Error: {err}")
+    
+    finally:
+        cursor.close()
+        conn.close()
 
 def mobile_number_validation(M):
     if M.isdigit() and len(M) <= 10:
@@ -505,29 +586,35 @@ mobilenumber1entry.grid(row = 1,
                        sticky = 'w')
 
 dob = Label(accountframe,
-            text = 'Date of Birth',
-            font = ('Arial', 11))
-dobentry = Entry(accountframe,
-                 textvariable = 'dd/mm/yyyy',
-                 font = ('Arial', 11))
+            text = "Date of Birth",
+            font = ("Arial", 11))
 dob.grid(row = 2,
          column = 0,
          padx = 10,
          pady = 5,
-         sticky = 'e')
+         sticky = "e")
+
+dobentry = Entry(accountframe,
+                 font = ("Arial", 11),
+                 fg = "grey")
+dobentry.insert(0,
+                "yyyy-mm-dd")
+dobentry.bind("<FocusIn>",
+              on_entry_focus_in)
+dobentry.bind("<FocusOut>",
+              on_entry_focus_out)
 dobentry.grid(row = 2,
               column = 1,
               padx = 5,
               pady = 5,
-              sticky = 'w')
+              sticky = "w")
+
 validate = Button(accountframe,
-                  text = 'Validate',
-                  command = validate_button,
-                  font = ('Arial', 10))
+                  text = "Validate",
+                  command = validate_button, 
+                  font = ("Arial", 10))
 validate.grid(row = 2,
-              column = 2,
-              padx = 5,
-              pady = 5)
+              column = 2)
 
 aadharnumber = Label(accountframe,
                      text = 'Aadhaar No.',
