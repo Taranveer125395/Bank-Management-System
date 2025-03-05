@@ -3,6 +3,21 @@ from tkinter import ttk
 from tkinter import messagebox
 import mysql.connector
 import subprocess
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+
+def generate_pdf(fullname, username, mobilenumber, age1, qualification, job):
+    pdf_filename = f"{username}_registration.pdf"
+    c = canvas.Canvas(pdf_filename, pagesize = A4)
+    c.drawString(100, 750, "Staff Registration Details")
+    c.drawString(100, 730, f"Full Name: {fullname}")
+    c.drawString(100, 710, f"Username: {username}")
+    c.drawString(100, 690, f"Mobile Number: {mobilenumber}")
+    c.drawString(100, 670, f"Age: {age1}")
+    c.drawString(100, 650, f"Education Qualification: {qualification}")
+    c.drawString(100, 630, f"Job Type: {job}")
+    c.save()
+    messagebox.showinfo("PDF Generated", f"PDF saved as {pdf_filename}")
 
 def register_button():
     fullname = full_name_entry.get()
@@ -86,6 +101,30 @@ def register_button():
         messagebox.showerror(title = 'Database Error',
                              message = f'Error: {err}')
 
+def generatepdf_registerbutton():
+    fullname = full_name_entry.get()
+    username = username_entry.get()
+    mobilenumber = mobile_number_entry.get()
+    age1 = age_entry.get()
+    qualification = qualification_entry.get()
+    job = job_type_entry.get()
+    if not (fullname and 
+            username and 
+            mobilenumber and 
+            age1 and 
+            qualification and 
+            job):
+        messagebox.showwarning(title = 'Error', 
+                               message = 'Enter Your Data Properly.')
+        return
+
+    generate_pdf(fullname, 
+                 username, 
+                 mobilenumber, 
+                 age1, 
+                 qualification, 
+                 job)
+    register_button()
 
 def mobile_number_validation(P):
     if P.isdigit() and len(P) <= 10:
@@ -106,7 +145,7 @@ root.title('Staff Registration')
 vcmd = root.register(mobile_number_validation)
 
 heading = Label(root, 
-                text = 'Bank Management System', 
+                text = 'Online Banking System', 
                 font = ('Arial', 16, 'bold'))
 heading.grid(row = 0, 
              column = 0, 
@@ -262,7 +301,7 @@ confirm_password_type_entry.grid(row = 4,
 
 registration_button = Button(root, 
                              text = 'Register',
-                             command = register_button,
+                             command = generatepdf_registerbutton,
                              font = ('Arial', 12))
 registration_button.grid(row = 5, 
                          column = 0, 

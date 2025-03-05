@@ -65,7 +65,7 @@ root.title('Staff Login')
 root.geometry('300x150')
 
 heading = Label(root,
-                text='Bank Management System',
+                text='Online Banking System',
                 font=('Arial', 16, 'bold'))
 heading.grid(row=0,
              column=0,
