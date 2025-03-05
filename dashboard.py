@@ -182,51 +182,69 @@ def deposit_button():
     deposit_amount = amountentry.get().strip()
 
     if not account_number or not deposit_amount:
-        messagebox.showwarning(title='Error', message='Please enter account number and amount.')
+        messagebox.showwarning(title = 'Error', 
+                               message = 'Please enter account number and amount.')
         return
 
     if not account_number.isdigit():
-        messagebox.showwarning(title='Error', message='Account number must be numeric.')
+        messagebox.showwarning(title = 'Error', 
+                               message = 'Account number must be numeric.')
         return
 
     try:
         deposit_amount = float(deposit_amount)
         if deposit_amount <= 0:
-            messagebox.showwarning(title='Error', message='Enter a valid deposit amount.')
+            messagebox.showwarning(title = 'Error', 
+                                   message = 'Enter a valid deposit amount.')
             return
 
-        cursor = conn.cursor()  # Reinitialize cursor
+        cursor = conn.cursor()
 
-        cursor.execute("SELECT account_number FROM account_details WHERE account_number = %s", (account_number,))
+        cursor.execute(
+            '''SELECT account_number 
+            FROM account_details 
+            WHERE account_number = %s''', 
+            (account_number,)
+        )
         if not cursor.fetchone():
-            messagebox.showwarning(title='Error', message='Invalid Account Number')
+            messagebox.showwarning(title = 'Error', 
+                                   message = 'Invalid Account Number')
             accountnumberentry.delete(0, END)
             amountentry.delete(0, END)
-            cursor.close()  # Close cursor after use
+            cursor.close()
             return
 
         cursor.execute(
-            "SELECT balance FROM Transactions WHERE account_number = %s ORDER BY transaction_date DESC LIMIT 1",
+            '''SELECT balance 
+            FROM Transactions 
+            WHERE account_number = %s 
+            ORDER BY transaction_date 
+            DESC LIMIT 1''',
             (account_number,))
         current_balance = cursor.fetchone()
         last_balance = current_balance[0] if current_balance else 0
         new_balance = float(last_balance) + deposit_amount
 
         cursor.execute(
-            "INSERT INTO Transactions (account_number, balance, amount, transaction_type) VALUES (%s, %s, %s, 'Deposit')",
+            '''INSERT INTO Transactions
+            (account_number, balance, amount, transaction_type)
+            VALUES (%s, %s, %s, 'Deposit')''',
             (account_number, new_balance, deposit_amount)
         )
         conn.commit()
 
-        messagebox.showinfo(title='Success', message='Deposit Successful')
+        messagebox.showinfo(title = 'Success',
+                            message = 'Deposit Successful')
         accountnumberentry.delete(0, END)
         amountentry.delete(0, END)
 
     except ValueError:
-        messagebox.showwarning(title='Error', message='Enter a valid numeric amount.')
+        messagebox.showwarning(title = 'Error',
+                               message = 'Enter a valid numeric amount.')
 
     except mysql.connector.Error as db_error:
-        messagebox.showerror(title='Database Error', message=f'Database error: {db_error}')
+        messagebox.showerror(title = 'Database Error', 
+                             message = f'Database error: {db_error}')
         conn.rollback()
 
     finally:
@@ -236,49 +254,87 @@ def withdraw_button():
     account_number = accountnumberentry.get().strip()
     withdraw_amount = amountentry.get().strip()
 
-    cursor.execute('''Select account_number from account_details
-                   where account_number = %s''', 
-                   (account_number,))
+    if not account_number or not withdraw_amount:
+        messagebox.showwarning(title = 'Error', 
+                               message = 'Please enter account number and amount.')
+        return
 
-    if not account_number or not withdraw_amount.isdigit():
-        messagebox.showwarning(title = 'Input Error',
-                               message = 'Please enter a valid account number and amount.')
+    if not account_number.isdigit():
+        messagebox.showwarning(title = 'Error', 
+                               message = 'Account number must be numeric.')
+        return
+
+    try:
+        withdraw_amount = float(withdraw_amount)
+        if withdraw_amount <= 0:
+            messagebox.showwarning(title = 'Error',
+                                   message = 'Enter a valid withdrawal amount.')
+            return
+
+        if conn is None:
+            messagebox.showerror(title = 'Database Error', 
+                                 message = 'Database connection is not established.')
+            return
         
-    withdraw_amount = float(withdraw_amount)
+        cursor = conn.cursor(buffered=True)
 
-    account = cursor.fetchone()
-    if not account:
+        cursor.execute(
+            '''SELECT account_number 
+            FROM account_details 
+            WHERE account_number = %s''', 
+            (account_number,)
+        )
+        if not cursor.fetchone():
+            messagebox.showwarning(title = 'Error', 
+                                   message = 'Invalid Account Number')
+            accountnumberentry.delete(0, END)
+            amountentry.delete(0, END)
+            cursor.close()
+            return
+
+        cursor.execute(
+            '''SELECT balance FROM Transactions 
+            WHERE account_number = %s 
+            ORDER BY transaction_date 
+            DESC LIMIT 1''',
+            (account_number,)
+        )
+        current_balance = cursor.fetchone()
+        last_balance = current_balance[0] if current_balance else 0
+
+        if last_balance < withdraw_amount:
+            messagebox.showwarning(title = 'Error',
+                                   message = 'Insufficient balance.')
+            cursor.close()
+            return
+
+        new_balance = float(last_balance) - withdraw_amount
+
+        cursor.execute(
+            '''INSERT INTO Transactions
+            (account_number, balance, amount, transaction_type) 
+            VALUES (%s, %s, %s, 'Withdraw')''',
+            (account_number, new_balance, withdraw_amount)
+        )
+        conn.commit()
+
+        messagebox.showinfo(title = 'Success',
+                            message = 'Withdrawal Successful')
+        accountnumberentry.delete(0, END)
+        amountentry.delete(0, END)
+
+    except ValueError:
         messagebox.showwarning(title = 'Error',
-                               message = 'Account number not found')
-        conn.close()
-        return
-    
-    cursor.execute('''SELECT balance FROM Transactions 
-                   WHERE account_number = %s 
-                   ORDER BY transaction_date 
-                   DESC LIMIT 1''', 
-                   (account_number,))
-    result = cursor.fetchone()
+                               message = 'Enter a valid numeric amount.')
 
-    if not result or result[0] < withdraw_amount:
-        messagebox.showwarning(title = 'Insufficient Funds',
-                               message = 'Not enough balance to withdraw.')
-        conn.close()
-        return
-    
-    balance = result[0] - withdraw_amount
-    cursor.execute('''Insert into Transactions
-                   (account_number, balance, amount, transaction_type)
-                   values (%s, %s, %s, 'Withdraw')''',
-                   (account_number, balance, withdraw_amount))
-    
-    conn.commit()
-    conn.close()
+    except mysql.connector.Error as db_error:
+        messagebox.showerror(title = 'Database Error', 
+                             message = f'Database error: {db_error}')
+        conn.rollback()
 
-    messagebox.showinfo(title = 'Success',
-                        message = 'Your money has been successfully withdrawn.')
-    accountnumberentry.delete(0, END)
-    amountentry.delete(0, END)
+    finally:
+        if cursor:
+            cursor.close()
 
 def loanapplication():
     show_frame(loanframe)
