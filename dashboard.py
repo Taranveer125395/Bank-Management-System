@@ -180,50 +180,65 @@ def depositmoney():
 def deposit_button():
     account_number = accountnumberentry.get().strip()
     deposit_amount = amountentry.get().strip()
-    
-    if not account_number or not deposit_amount.isdigit():
-        messagebox.showwarning("Input Error",
-                               "Please enter a valid account number and amount.")
-        return
-    
-    deposit_amount = float(deposit_amount)
 
-    cursor.execute('''SELECT id FROM account_details 
-                   WHERE id = %s''', (account_number,))
-    account = cursor.fetchone()
-    if not account:
-        messagebox.showwarning("Error",
-                               "Account number not found.")
-        conn.close()
+    if not account_number or not deposit_amount:
+        messagebox.showwarning(title='Error', message='Please enter account number and amount.')
         return
-    
-    cursor.execute('''SELECT balance FROM Transactions
-                   WHERE account_number = %s 
-                   ORDER BY transaction_date
-                   DESC LIMIT 1''', 
-                   (account_number,))
-    result = cursor.fetchone()
-    
-    balance = result[0] + deposit_amount if result else deposit_amount
-    cursor.execute('''INSERT INTO Transactions
-                   (account_number, balance, amount, transaction_type)
-                   VALUES (%s, %s, %s, 'Deposit')''',
-                   (account_number, balance, deposit_amount))
-    
-    conn.commit()
-    conn.close()
-    
-    messagebox.showinfo("Success",
-                        "Your money has been successfully deposited.")
-    accountnumberentry.delete(0, END)
-    amountentry.delete(0, END)
 
-def withdrawmoney():
-    show_frame(withdrawframe)
+    if not account_number.isdigit():
+        messagebox.showwarning(title='Error', message='Account number must be numeric.')
+        return
+
+    try:
+        deposit_amount = float(deposit_amount)
+        if deposit_amount <= 0:
+            messagebox.showwarning(title='Error', message='Enter a valid deposit amount.')
+            return
+
+        cursor = conn.cursor()  # Reinitialize cursor
+
+        cursor.execute("SELECT account_number FROM account_details WHERE account_number = %s", (account_number,))
+        if not cursor.fetchone():
+            messagebox.showwarning(title='Error', message='Invalid Account Number')
+            accountnumberentry.delete(0, END)
+            amountentry.delete(0, END)
+            cursor.close()  # Close cursor after use
+            return
+
+        cursor.execute(
+            "SELECT balance FROM Transactions WHERE account_number = %s ORDER BY transaction_date DESC LIMIT 1",
+            (account_number,))
+        current_balance = cursor.fetchone()
+        last_balance = current_balance[0] if current_balance else 0
+        new_balance = float(last_balance) + deposit_amount
+
+        cursor.execute(
+            "INSERT INTO Transactions (account_number, balance, amount, transaction_type) VALUES (%s, %s, %s, 'Deposit')",
+            (account_number, new_balance, deposit_amount)
+        )
+        conn.commit()
+
+        messagebox.showinfo(title='Success', message='Deposit Successful')
+        accountnumberentry.delete(0, END)
+        amountentry.delete(0, END)
+
+    except ValueError:
+        messagebox.showwarning(title='Error', message='Enter a valid numeric amount.')
+
+    except mysql.connector.Error as db_error:
+        messagebox.showerror(title='Database Error', message=f'Database error: {db_error}')
+        conn.rollback()
+
+    finally:
+        cursor.close()
 
 def withdraw_button():
     account_number = accountnumberentry.get().strip()
     withdraw_amount = amountentry.get().strip()
+
+    cursor.execute('''Select account_number from account_details
+                   where account_number = %s''', 
+                   (account_number,))
 
     if not account_number or not withdraw_amount.isdigit():
         messagebox.showwarning(title = 'Input Error',
@@ -231,9 +246,6 @@ def withdraw_button():
         
     withdraw_amount = float(withdraw_amount)
 
-    cursor.execute('''Select id from account_details
-                   where id = %s''', 
-                   (account_number,))
     account = cursor.fetchone()
     if not account:
         messagebox.showwarning(title = 'Error',
@@ -505,7 +517,7 @@ create_account.pack(side = 'top',
                     padx = 5)
 
 deposit_money = Button(headerpoint,
-                       text = 'Deposit Money',
+                       text = 'D and W Cash',
                        bg = 'lightgrey',
                        fg = 'black',
                        font = ('Arial', 11, 'bold'),
@@ -514,17 +526,6 @@ deposit_money = Button(headerpoint,
 deposit_money.pack(side = 'top',
                    pady = 5,
                    padx = 5)
-
-withdraw_money = Button(headerpoint,
-                        text = 'Withdraw Money', 
-                        bg = 'lightgrey',
-                        fg = 'black',
-                        font = ('Arial', 11, 'bold'),
-                        command = withdrawmoney,
-                        width = 15)
-withdraw_money.pack(side = 'top', 
-                    pady = 5,
-                    padx = 5)
 
 apply_for_loan = Button(headerpoint,
                         text = 'Apply For Loan',
@@ -560,14 +561,12 @@ accountframe = Frame(main_frame)
 vcmd = accountframe.register(mobile_number_validation)
 
 depositframe = Frame(main_frame)
-withdrawframe = Frame(main_frame)
 loanframe = Frame(main_frame)
 transactionframe = Frame(main_frame)
 
 for frame in (homeframe,
               accountframe,
               depositframe,
-              withdrawframe,
               loanframe,
               transactionframe):
     frame.place(x = 0,
@@ -1005,17 +1004,17 @@ heading3.grid(row = 0,
               columnspan = 7,
               pady = 20)
 
-accountnumber = Label(loanframe,
+accountnumber1 = Label(loanframe,
                       text = 'Account Number',
                       font = ('Arial', 11))
-accountnumberentry = Entry(loanframe,
+accountnumber1entry = Entry(loanframe,
                            font = ('Arial', 11))
-accountnumber.grid(row = 1,
+accountnumber1.grid(row = 1,
                    column = 0,
                    padx = 10,
                    pady = 10,
                    sticky = 'e')
-accountnumberentry.grid(row = 1,
+accountnumber1entry.grid(row = 1,
                         column = 1,
                         padx = 10,
                         pady = 10,
@@ -1217,17 +1216,17 @@ heading4.grid(row = 0,
               columnspan = 7,
               pady = 20)
 
-accountnumber = Label(transactionframe,
+accountnumber2 = Label(transactionframe,
                       text = 'Account Number',
                       font = ('Arial', 11))
-accountnumberentry = Entry(transactionframe,
+accountnumber2entry = Entry(transactionframe,
                            font = ('Arial', 11))
-accountnumber.grid(row = 1,
+accountnumber2.grid(row = 1,
                    column = 0,
                    padx = 10,
                    pady = 10,
                    sticky = 'e')
-accountnumberentry.grid(row = 1,
+accountnumber2entry.grid(row = 1,
                         column = 1,
                         padx = 10,
                         pady = 10,
