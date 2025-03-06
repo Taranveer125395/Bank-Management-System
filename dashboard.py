@@ -542,9 +542,76 @@ def unemployed(event = None):
 def transactionhistory():
     show_frame(transactionframe)
 
+def fetch_account_detail(account_number):
+    try:
+        query = '''
+        SELECT * FROM account_details 
+        WHERE account_number = %s
+        '''
+        cursor.execute(query, (account_number,))
+        account_data = cursor.fetchone()
+        conn.close()
+        return account_data
+    except mysql.connector.Error as e:
+        messagebox.showerror(title = 'Database Error',
+                             message = f'Error fetching account details: {str(e)}')
+        return None
+    
+def generate_pdf3(account_data):
+    if not account_data:
+        messagebox.showerror(title = 'Error',
+                             message = 'No account detail found!')
+        return
+    
+    pdf_file10 = f'AccountDetail_{account_data[0]}.pdf'
+    c = canvas.Canvas(pdf_file10, pagesize = A4)
+    width, height = A4
+
+    c.setFont('Helvetica-Bold', 16)
+    c.drawCentredString(width / 2, height - 50, 'Account Details')
+    
+    c.setFont('Helvetica', 12)
+    y_position = height - 100
+    labels = [
+        'Account Number',
+        'Name',
+        'Age',
+        'Mobile Number',
+        'Date of Birth',
+        'Aadhar Number',
+        'Pan Card Number',
+        'Father Name',
+        'Mother Name',
+        'Address',
+        'City',
+        'District',
+        'State',
+        'Country',
+        'Pin Code',
+        'Email',
+        'Education Qualification',
+        'Account Type',
+        'GST Number',
+        'Created At'
+    ]
+
+    for i, label in enumerate(labels):
+        c.drawString(50, y_position, f'{label} : {account_data[i]}')
+        y_position -= 20
+
+    c.save()
+    messagebox.showinfo(title = 'PDF Generated',
+                        message = f'PDF saved as {pdf_file10}')
+    
 def account_detail():
-    messagebox.showinfo(title = 'Bank Detail',
-                        message = 'Your Bank Detail is Available.')
+    account_number = accountnumber2entry.get()
+    if not account_number.isdigit():
+        messagebox.showerror(title = 'Invalid Input',
+                             message = 'Please enter a valid Account Number.')
+        return
+    
+    account_data = fetch_account_detail(account_number)
+    generate_pdf3(account_data)
 
 def balance():
     messagebox.showinfo(title = 'Balance',
