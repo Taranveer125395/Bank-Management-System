@@ -568,7 +568,8 @@ def generate_pdf(account_data):
         return
     
     pdf_file = f'AccountDetail_{account_data[0]}.pdf'
-    doc = SimpleDocTemplate(pdf_file, pagesize = A4)
+    doc = SimpleDocTemplate(pdf_file,
+                            pagesize = A4)
     elements = []
     styles = getSampleStyleSheet()
     bold_style = ParagraphStyle(name = "BoldStyle",
@@ -601,10 +602,12 @@ def generate_pdf(account_data):
     ]
     
     for i, label in enumerate(labels):
-        data.append([Paragraph(label, bold_style), str(account_data[i])])
+        data.append([Paragraph(label, bold_style),
+                     str(account_data[i])])
 
     
-    table = Table(data, colWidths=[150, 300])
+    table = Table(data,
+                  colWidths = [150, 300])
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
