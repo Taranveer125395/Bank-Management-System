@@ -550,13 +550,12 @@ def fetch_account_detail(account_number):
         '''
         cursor.execute(query, (account_number,))
         account_data = cursor.fetchone()
-        conn.close()
         return account_data
     except mysql.connector.Error as e:
         messagebox.showerror(title = 'Database Error',
                              message = f'Error fetching account details: {str(e)}')
         return None
-    
+
 def generate_pdf3(account_data):
     if not account_data:
         messagebox.showerror(title = 'Error',
@@ -570,7 +569,7 @@ def generate_pdf3(account_data):
     c.setFont('Helvetica-Bold', 16)
     c.drawCentredString(width / 2, height - 50, 'Account Details')
     
-    c.setFont('Helvetica', 12)
+    c.setFont('Helvetica-Bold', 12)
     y_position = height - 100
     labels = [
         'Account Number',
@@ -595,14 +594,18 @@ def generate_pdf3(account_data):
         'Created At'
     ]
 
+    c.setFont('Helvetica', 12)
     for i, label in enumerate(labels):
-        c.drawString(50, y_position, f'{label} : {account_data[i]}')
+        c.setFont('Helvetica-Bold', 12)
+        c.drawString(50, y_position, f'{label} : ')
+        c.setFont('Helvetica', 12)
+        c.drawString(200, y_position, f'{account_data[i]}')
         y_position -= 20
 
     c.save()
     messagebox.showinfo(title = 'PDF Generated',
                         message = f'PDF saved as {pdf_file10}')
-    
+
 def account_detail():
     account_number = accountnumber2entry.get()
     if not account_number.isdigit():
@@ -612,6 +615,35 @@ def account_detail():
     
     account_data = fetch_account_detail(account_number)
     generate_pdf3(account_data)
+
+    if account_data:
+        details = '\n'.join(
+            [f'{label}: {account_data[i]}' 
+             for i, label in enumerate([
+                 'Account Number',
+                 'Name',
+                 'Age',
+                 'Mobile Number',
+                 'Date Of Birth',
+                 'Aadhar Number',
+                 'Pan Card Number',
+                 'Father Name',
+                 'Mother Name',
+                 'Address',
+                 'City',
+                 'District',
+                 'State',
+                 'Country',
+                 'Pin Code',
+                 'Email',
+                 'Education Qualification', 
+                 'Account Type', 
+                 'GST Number', 
+                 'Created At'
+             ])]
+        )
+        accountdetails_label.config(text=details)
+        accountnumber2entry.delete(0, END)
 
 def balance():
     messagebox.showinfo(title = 'Balance',
@@ -1383,6 +1415,15 @@ accountdetailbutton.grid(row = 2,
                          column = 0,
                          padx = 10,
                          pady = 10)
+
+accountdetails_label = Label(transactionframe,
+                             text = '',
+                             font = ('Arial', 10),
+                             justify = 'left')
+accountdetails_label.grid(row = 3,
+                          column = 0,
+                          padx = 10,
+                          pady = 10)
 
 balanceenquirybutton = Button(transactionframe,
                               text = 'Balance Enquery',
