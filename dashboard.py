@@ -6,9 +6,11 @@ from datetime import datetime
 import sys
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
-from prettytable import PrettyTable
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 conn = mysql.connector.connect(
     host = 'localhost',
@@ -555,61 +557,93 @@ def fetch_account_detail(account_number):
         account_data = cursor.fetchone()
         return account_data
     except mysql.connector.Error as e:
-        messagebox.showerror(title='Database Error', message=f'Error fetching account details: {str(e)}')
+        messagebox.showerror(title = 'Database Error', 
+                             message = f'Error fetching account details: {str(e)}')
         return None
 
 def generate_pdf(account_data):
     if not account_data:
-        messagebox.showerror(title='Error', message='No account detail found!')
+        messagebox.showerror(title = 'Error',
+                             message = 'No account detail found!')
         return
     
     pdf_file = f'AccountDetail_{account_data[0]}.pdf'
-    doc = SimpleDocTemplate(pdf_file, pagesize=A4)
+    doc = SimpleDocTemplate(pdf_file, pagesize = A4)
     elements = []
+    styles = getSampleStyleSheet()
+    bold_style = ParagraphStyle(name = "BoldStyle",
+                                parent = styles["Normal"], 
+                                fontName = "Helvetica-Bold",
+                                fontSize = 10)
     
-    data = [['Field', 'Value']]
+    data = [['Field', 'Data']]
     labels = [
-        'Account Number', 'Name', 'Age', 'Mobile Number', 'Date of Birth', 'Aadhar Number',
-        'Pan Card Number', 'Father Name', 'Mother Name', 'Address', 'City', 'District', 'State',
-        'Country', 'Pin Code', 'Email', 'Education Qualification', 'Account Type', 'GST Number', 'Created At'
+        'Account Number',
+        'Name',
+        'Age',
+        'Mobile Number',
+        'Date of Birth',
+        'Aadhar Number',
+        'Pan Card Number',
+        'Father Name',
+        'Mother Name',
+        'Address',
+        'City',
+        'District',
+        'State',
+        'Country',
+        'Pin Code',
+        'Email',
+        'Education Qualification',
+        'Account Type',
+        'GST Number',
+        'Created At'
     ]
     
     for i, label in enumerate(labels):
-        data.append([label, str(account_data[i])])
+        data.append([Paragraph(label, bold_style), str(account_data[i])])
+
     
     table = Table(data, colWidths=[150, 300])
     table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
         ('GRID', (0, 0), (-1, -1), 1, colors.black)
     ]))
     
     elements.append(table)
     doc.build(elements)
-    messagebox.showinfo(title='PDF Generated', message=f'PDF saved as {pdf_file}')
+    messagebox.showinfo(title = 'PDF Generated',
+                        message = f'PDF saved as {pdf_file}')
 
 def account_detail():
     account_number = accountnumber2entry.get()
+    
     if not account_number.isdigit():
-        messagebox.showerror(title='Invalid Input', message='Please enter a valid Account Number.')
+        messagebox.showerror(title = 'Invalid Input',
+                             message = 'Please enter a valid Account Number.')
         return
     
     account_data = fetch_account_detail(account_number)
     
     if not account_data:
-        messagebox.showerror(title='Error', message='No account found with this number.')
+        messagebox.showerror(title = 'Error',
+                             message = 'No account found with this number.')
         return
     
     if isinstance(account_data, dict):
         account_data = tuple(account_data.values())
+
     elif isinstance(account_data, list) and isinstance(account_data[0], (list, tuple)):
         account_data = account_data[0]
+
     elif not isinstance(account_data, (list, tuple)):
-        messagebox.showerror(title='Error', message='Invalid account data format.')
+        messagebox.showerror(title = 'Error',
+                             message = 'Invalid account data format.')
         return
     
     generate_pdf(account_data)
