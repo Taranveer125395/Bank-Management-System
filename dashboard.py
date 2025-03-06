@@ -23,14 +23,6 @@ def homebutton():
 
 def get_user_details(username):
     try:
-        conn = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='20Bcs@125395',
-            database='Banking_Management_System'
-        )
-        cursor = conn.cursor()
-        
         query = '''SELECT fullname, username, mobile_number,
                 age, education_qualification, job_type FROM 
                 staff_registeration WHERE username = %s'''
