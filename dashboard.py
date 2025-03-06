@@ -6,6 +6,9 @@ from datetime import datetime
 import sys
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
+from prettytable import PrettyTable
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 
 conn = mysql.connector.connect(
     host = 'localhost',
@@ -552,98 +555,65 @@ def fetch_account_detail(account_number):
         account_data = cursor.fetchone()
         return account_data
     except mysql.connector.Error as e:
-        messagebox.showerror(title = 'Database Error',
-                             message = f'Error fetching account details: {str(e)}')
+        messagebox.showerror(title='Database Error', message=f'Error fetching account details: {str(e)}')
         return None
 
-def generate_pdf3(account_data):
+def generate_pdf(account_data):
     if not account_data:
-        messagebox.showerror(title = 'Error',
-                             message = 'No account detail found!')
+        messagebox.showerror(title='Error', message='No account detail found!')
         return
     
-    pdf_file10 = f'AccountDetail_{account_data[0]}.pdf'
-    c = canvas.Canvas(pdf_file10, pagesize = A4)
-    width, height = A4
-
-    c.setFont('Helvetica-Bold', 16)
-    c.drawCentredString(width / 2, height - 50, 'Account Details')
+    pdf_file = f'AccountDetail_{account_data[0]}.pdf'
+    doc = SimpleDocTemplate(pdf_file, pagesize=A4)
+    elements = []
     
-    c.setFont('Helvetica-Bold', 12)
-    y_position = height - 100
+    data = [['Field', 'Value']]
     labels = [
-        'Account Number',
-        'Name',
-        'Age',
-        'Mobile Number',
-        'Date of Birth',
-        'Aadhar Number',
-        'Pan Card Number',
-        'Father Name',
-        'Mother Name',
-        'Address',
-        'City',
-        'District',
-        'State',
-        'Country',
-        'Pin Code',
-        'Email',
-        'Education Qualification',
-        'Account Type',
-        'GST Number',
-        'Created At'
+        'Account Number', 'Name', 'Age', 'Mobile Number', 'Date of Birth', 'Aadhar Number',
+        'Pan Card Number', 'Father Name', 'Mother Name', 'Address', 'City', 'District', 'State',
+        'Country', 'Pin Code', 'Email', 'Education Qualification', 'Account Type', 'GST Number', 'Created At'
     ]
-
-    c.setFont('Helvetica', 12)
+    
     for i, label in enumerate(labels):
-        c.setFont('Helvetica-Bold', 12)
-        c.drawString(50, y_position, f'{label} : ')
-        c.setFont('Helvetica', 12)
-        c.drawString(200, y_position, f'{account_data[i]}')
-        y_position -= 20
-
-    c.save()
-    messagebox.showinfo(title = 'PDF Generated',
-                        message = f'PDF saved as {pdf_file10}')
+        data.append([label, str(account_data[i])])
+    
+    table = Table(data, colWidths=[150, 300])
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    ]))
+    
+    elements.append(table)
+    doc.build(elements)
+    messagebox.showinfo(title='PDF Generated', message=f'PDF saved as {pdf_file}')
 
 def account_detail():
     account_number = accountnumber2entry.get()
     if not account_number.isdigit():
-        messagebox.showerror(title = 'Invalid Input',
-                             message = 'Please enter a valid Account Number.')
+        messagebox.showerror(title='Invalid Input', message='Please enter a valid Account Number.')
         return
     
     account_data = fetch_account_detail(account_number)
-    generate_pdf3(account_data)
-
-    if account_data:
-        details = '\n'.join(
-            [f'{label}: {account_data[i]}' 
-             for i, label in enumerate([
-                 'Account Number',
-                 'Name',
-                 'Age',
-                 'Mobile Number',
-                 'Date Of Birth',
-                 'Aadhar Number',
-                 'Pan Card Number',
-                 'Father Name',
-                 'Mother Name',
-                 'Address',
-                 'City',
-                 'District',
-                 'State',
-                 'Country',
-                 'Pin Code',
-                 'Email',
-                 'Education Qualification', 
-                 'Account Type', 
-                 'GST Number', 
-                 'Created At'
-             ])]
-        )
-        accountdetails_label.config(text=details)
-        accountnumber2entry.delete(0, END)
+    
+    if not account_data:
+        messagebox.showerror(title='Error', message='No account found with this number.')
+        return
+    
+    if isinstance(account_data, dict):
+        account_data = tuple(account_data.values())
+    elif isinstance(account_data, list) and isinstance(account_data[0], (list, tuple)):
+        account_data = account_data[0]
+    elif not isinstance(account_data, (list, tuple)):
+        messagebox.showerror(title='Error', message='Invalid account data format.')
+        return
+    
+    generate_pdf(account_data)
+    accountnumber2entry.delete(0, 'end')
 
 def balance():
     messagebox.showinfo(title = 'Balance',
@@ -1400,7 +1370,7 @@ accountnumber2.grid(row = 1,
                    column = 0,
                    padx = 10,
                    pady = 10,
-                   sticky = 'e')
+                   sticky = 'w')
 accountnumber2entry.grid(row = 1,
                         column = 1,
                         padx = 10,
@@ -1414,16 +1384,8 @@ accountdetailbutton = Button(transactionframe,
 accountdetailbutton.grid(row = 2,
                          column = 0,
                          padx = 10,
-                         pady = 10)
-
-accountdetails_label = Label(transactionframe,
-                             text = '',
-                             font = ('Arial', 10),
-                             justify = 'left')
-accountdetails_label.grid(row = 3,
-                          column = 0,
-                          padx = 10,
-                          pady = 10)
+                         pady = 10,
+                         sticky = 'w')
 
 balanceenquirybutton = Button(transactionframe,
                               text = 'Balance Enquery',
@@ -1432,7 +1394,8 @@ balanceenquirybutton = Button(transactionframe,
 balanceenquirybutton.grid(row = 2,
                           column = 1,
                           padx = 10,
-                          pady = 10)
+                          pady = 10,
+                          sticky = 'w')
 
 loanenquirybutton = Button(transactionframe,
                            text = 'Loan Enquery',
@@ -1441,6 +1404,7 @@ loanenquirybutton = Button(transactionframe,
 loanenquirybutton.grid(row = 2,
                        column = 2,
                        padx = 10,
-                       pady = 10)
+                       pady = 10,
+                       sticky = 'w')
 
 root.mainloop()
