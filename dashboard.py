@@ -652,9 +652,75 @@ def account_detail():
     generate_pdf(account_data)
     accountnumber2entry.delete(0, 'end')
 
-def balance():
-    messagebox.showinfo(title = 'Balance',
-                        message = 'Your Bank Balance is Sufficient.')
+def generate_balance_pdf(account_number):
+    try:
+        cursor.execute('''SELECT account_number, name 
+                       FROM account_details 
+                       WHERE account_number = %s''', 
+                       (account_number,))
+        account = cursor.fetchone()
+
+        if not account:
+            messagebox.showwarning(title = 'Warning',
+                                   message = 'Account not found!')
+            return
+
+        account_num, account_name = account
+
+        query = """
+        SELECT id, transaction_date, 
+               CASE WHEN transaction_type = 'Deposit' THEN amount ELSE NULL END AS deposit,
+               CASE WHEN transaction_type = 'Withdraw' THEN amount ELSE NULL END AS withdraw,
+               balance
+        FROM Transactions
+        WHERE account_number = %s
+        ORDER BY id ASC
+        """
+        cursor.execute(query, (account_number,))
+        transactions = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        pdf_filename = f"Balance_Enquiry_{account_number}.pdf"
+        doc = SimpleDocTemplate(pdf_filename, pagesize=A4)
+        elements = []
+        styles = getSampleStyleSheet()
+
+        elements.append(Paragraph(f"<b>Account Number:</b> {account_num}", styles["Normal"]))
+        elements.append(Paragraph(f"<b>Account Name:</b> {account_name}", styles["Normal"]))
+
+        table_data = [["ID", "Transaction Date", "Deposit", "Withdraw", "Balance"]]
+        for row in transactions:
+            table_data.append([row[0], row[1], row[2] or "", row[3] or "", row[4]])
+
+        table = Table(table_data, colWidths=[50, 120, 80, 80, 80])
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ]))
+
+        elements.append(table)
+
+        doc.build(elements)
+        messagebox.showinfo(title = 'Success',
+                            message = f"PDF generated: {pdf_filename}")
+
+    except Exception as e:
+        messagebox.showerror(title = 'Error',
+                             message = f"Error: {e}")
+
+def on_generate_pdf():
+    account_number = accountnumber2entry.get()
+    if account_number.isdigit():
+        generate_balance_pdf(account_number)
+    else:
+        messagebox.showerror(title = "Error",
+                             message = "Please enter a valid account number")
 
 def loan():
     messagebox.showwarning(title = 'Loan',
@@ -1427,7 +1493,7 @@ accountdetailbutton.grid(row = 2,
 balanceenquirybutton = Button(transactionframe,
                               text = 'Balance Enquery',
                               font = ('Arial', 11),
-                              command = balance)
+                              command = on_generate_pdf)
 balanceenquirybutton.grid(row = 2,
                           column = 1,
                           padx = 10,
