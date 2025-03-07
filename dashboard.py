@@ -654,78 +654,66 @@ def account_detail():
 
 def generate_balance_pdf(account_number):
     try:
-        with conn.cursor() as cursor:
-            cursor.execute(
-                '''SELECT account_number, name 
-                FROM account_details 
-                WHERE account_number = %s''',
-                (account_number,)
-            )
-            account = cursor.fetchone()
+        cursor = conn.cursor(dictionary=True)  # Use dictionary cursor for better readability
 
-            if not account:
-                messagebox.showerror(title = "Error",
-                                     message = "Account not found!")
-                return
+        cursor.execute(
+            '''SELECT account_number, name 
+            FROM account_details 
+            WHERE account_number = %s''',
+            (account_number,)
+        )
+        account = cursor.fetchone()
 
-            account_num, account_name = account
+        if not account:
+            messagebox.showerror(title="Error", message="Account not found!")
+            return
 
-            query = """
-            SELECT id, transaction_date, 
-                   CASE
-                   WHEN transaction_type = 'Deposit'
-                   THEN amount
-                   ELSE NULL
-                   END AS deposit,
+        account_num, account_name = account["account_number"], account["name"]
 
-                   CASE
-                   WHEN transaction_type = 'Withdraw'
-                   THEN amount
-                   ELSE NULL
-                   END AS withdraw,
-                   
-                   balance
-            
-            FROM Transactions
-            WHERE account_number = %s
-            ORDER BY id ASC
-            """
-            cursor.execute(query, (account_number,))
-            transactions = cursor.fetchall()
+        query = """
+        SELECT id, transaction_date, 
+               CASE WHEN transaction_type = 'Deposit' THEN amount ELSE NULL END AS deposit,
+               CASE WHEN transaction_type = 'Withdraw' THEN amount ELSE NULL END AS withdraw,
+               balance
+        FROM Transactions
+        WHERE account_number = %s
+        ORDER BY id ASC
+        """
+        cursor.execute(query, (account_number,))
+        transactions = cursor.fetchall()
 
-        conn.close()
+        # Ensure cursor is closed properly
+        cursor.close()
 
+        # PDF Generation
         pdf_filename = f"Balance_Enquiry_{account_number}.pdf"
-        doc = SimpleDocTemplate(pdf_filename,
-                                pagesize = A4)
-        
+        doc = SimpleDocTemplate(pdf_filename, pagesize=A4)
+
         elements = []
         styles = getSampleStyleSheet()
-        
+
         elements.append(Paragraph(f"<b>Account Number:</b> {account_num}", styles["Normal"]))
         elements.append(Paragraph(f"<b>Name:</b> {account_name}", styles["Normal"]))
         elements.append(Spacer(1, 15))
 
-        table_data = [["ID", 
-                       "Transaction Date",
-                       "Deposit",
-                       "Withdraw",
-                       "Balance"]]
-        
-        for row in transactions:
-            table_data.append([row[0],
-                               row[1],
-                               row[2] or "",
-                               row[3] or "",
-                               row[4]])
+        table_data = [["ID", "Date", "Time", "Deposit", "Withdraw", "Balance"]]
 
-        table = Table(table_data,
-                      colWidths = [50, 
-                                   120, 
-                                   80, 
-                                   80, 
-                                   80])
-        
+        for row in transactions:
+            transaction_date = row["transaction_date"]
+            date_str = transaction_date.strftime("%Y-%m-%d")  # Extract date
+            time_str = transaction_date.strftime("%H:%M:%S")  # Extract time
+
+            table_data.append([
+                row["id"],
+                date_str,
+                time_str,
+                row["deposit"] if row["deposit"] else "",
+                row["withdraw"] if row["withdraw"] else "",
+                row["balance"]
+            ])
+
+        table = Table(table_data, colWidths=[50, 80, 80, 80, 80, 80])
+
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
@@ -736,18 +724,16 @@ def generate_balance_pdf(account_number):
         ]))
 
         elements.append(table)
-
         doc.build(elements)
-        messagebox.showinfo(title = "Success",
-                            message = f"PDF generated: {pdf_filename}")
+
+        messagebox.showinfo(title="Success", message=f"PDF generated: {pdf_filename}")
 
         accountnumber2entry.delete(0, END)
 
     except mysql.connector.Error as db_error:
-        messagebox.showerror(title = "Database Error",
-                             message = f"Error: {db_error}")
+        messagebox.showerror(title="Database Error", message=f"Error: {db_error}")
     except Exception as e:
-        messagebox.showerror("Error", str(e))
+        messagebox.showerror(title="Error", message=str(e))
 
 def on_generate_pdf():
     account_number = accountnumber2entry.get()
