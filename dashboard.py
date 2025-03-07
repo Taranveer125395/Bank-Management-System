@@ -81,96 +81,47 @@ def gst_entry(event = None):
         gstnumber.grid_remove()
         gstnumberentry.grid_remove()
 
-def get_next_account_number():
-    cursor.execute('''SELECT MAX(account_number)
-                   FROM account_details''')
-    last_account = cursor.fetchone()[0]
-    
-    if last_account is None:
-        return 1001
-    else:
-        return last_account + 1
-
-def generate_pdf(account_data):
-    account_number = account_data[0]
-    pdf_filename = f'Account_{account_number}.pdf'
-    
-    c = canvas.Canvas(pdf_filename, pagesize = A4)
-    
-    c.setFont('Helvetica', 12)
-    c.drawString(100, 750, 'Account Details')
-    c.drawString(100, 730, f'Account Number: {account_number}')
-    
-    labels = ['Name', 'Age', 'Mobile Number', 'Date of Birth',
-              'Aadhar Number', 'PAN Card Number', 'Father Name',
-              'Mother Name', 'Address', 'City', 'District',
-              'State', 'Country', 'Pin Code', 'Email',
-              'Education Qualification', 'Account Type',
-              'GST Number']
-    
-    y_position = 710
-    for i, label in enumerate(labels):
-        c.drawString(100, y_position,
-                     f'{label} : {account_data[i + 1]}')
-        y_position -= 20
-    
-    c.save()
-    messagebox.showinfo(title = 'PDF Generated', 
-                        message = f'Account details saved as {pdf_filename}')
-
 def account_button():
-    account_number = get_next_account_number()
-    name = name1entry.get()
-    age = age2entry.get()
-    mobile_number = mobilenumber1entry.get()
-    date_of_birth = dobentry.get()
-    aadhar_number = aadharnumberentry.get()
-    pan_card_number = pancardnumberentry.get()
-    father_name = fathernameentry.get()
-    mother_name = mothernameentry.get()
-    address = addressentry.get()
-    city = cityentry.get()
-    district = districtentry.get()
-    state = stateentry.get()
-    country = countryentry.get()
-    pin_code = pincodeentry.get()
-    email = emailentry.get()
-    education_qualification = educationentry.get()
-    account_type = accounttypeentry.get()
-    gst_number = gstnumberentry.get()
-
-    sql = '''INSERT INTO account_details
-             (account_number, name, age,
-             mobile_number, date_of_birth,
-             aadhar_number, pan_card_number,
-             father_name, mother_name,
-             address, city, district,
-             state, country, pin_code,
-             email, education_qualification,
-             account_type, gst_number)
-             VALUES
-             (%s, %s, %s, %s,
-             %s, %s, %s, %s,
-             %s, %s, %s, %s,
-             %s, %s, %s, %s,
-             %s, %s, %s)'''
-
-    values = (account_number, name, age, mobile_number,
-              date_of_birth, aadhar_number, pan_card_number,
-              father_name, mother_name, address, city, district,
-              state, country, pin_code, email,
-              education_qualification, account_type, gst_number)
-
     try:
+        name = name1entry.get()
+        age = age2entry.get()
+        mobile_number = mobilenumber1entry.get()
+        date_of_birth = dobentry.get()
+        aadhar_number = aadharnumberentry.get()
+        pan_card_number = pancardnumberentry.get()
+        father_name = fathernameentry.get()
+        mother_name = mothernameentry.get()
+        address = addressentry.get()
+        city = cityentry.get()
+        district = districtentry.get()
+        state = stateentry.get()
+        country = countryentry.get()
+        pin_code = pincodeentry.get()
+        email = emailentry.get()
+        education_qualification = educationentry.get()
+        account_type = accounttypeentry.get()
+        gst_number = gstnumberentry.get()
+
+        sql = '''INSERT INTO account_details
+                 (name, age, mobile_number, date_of_birth, aadhar_number, 
+                  pan_card_number, father_name, mother_name, address, city, 
+                  district, state, country, pin_code, email, education_qualification, 
+                  account_type, gst_number)
+                 VALUES (%s, %s, %s, %s,
+                 %s, %s, %s, %s, %s, %s,
+                 %s, %s, %s, %s, %s, %s,
+                 %s, %s)'''
+
+        values = (name, age, mobile_number, date_of_birth, aadhar_number, 
+                  pan_card_number, father_name, mother_name, address, city, 
+                  district, state, country, pin_code, email, 
+                  education_qualification, account_type, gst_number)
+
         cursor.execute(sql, values)
         conn.commit()
+        
         messagebox.showinfo(title = 'Success',
                             message = 'Your account has been created successfully.')
-
-        generate_pdf((account_number, name, age, mobile_number, date_of_birth,
-                      aadhar_number, pan_card_number, father_name, mother_name,
-                      address, city, district, state, country, pin_code, email,
-                      education_qualification, account_type, gst_number))
 
         name1entry.delete(0, tk.END)
         age2entry.delete(0, tk.END)
@@ -190,14 +141,16 @@ def account_button():
         educationentry.set('')
         accounttypeentry.set('')
         gstnumberentry.delete(0, tk.END)
-    
+
     except mysql.connector.Error as err:
         messagebox.showerror(title = 'Error',
                              message = f'Error: {err}')
     
     finally:
-        cursor.close()
-        conn.close()
+        if 'cursor' in locals() and cursor:
+            cursor.close()
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
 
 def mobile_number_validation(M):
     if M.isdigit() and len(M) <= 10:
