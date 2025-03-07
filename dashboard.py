@@ -100,26 +100,12 @@ def generate_pdf(account_data):
     c.drawString(100, 750, 'Account Details')
     c.drawString(100, 730, f'Account Number: {account_number}')
     
-    labels = [
-        "Name",
-        "Age",
-        "Mobile Number",
-        "Date of Birth",
-        "Aadhar Number",
-        "PAN Card Number",
-        "Father's Name",
-        "Mother's Name",
-        "Address",
-        "City",
-        "District",
-        "State",
-        "Country",
-        "Pin Code",
-        "Email",
-        "Education Qualification",
-        "Account Type",
-        "GST Number"
-    ]
+    labels = ['Name', 'Age', 'Mobile Number', 'Date of Birth',
+              'Aadhar Number', 'PAN Card Number', 'Father Name',
+              'Mother Name', 'Address', 'City', 'District',
+              'State', 'Country', 'Pin Code', 'Email',
+              'Education Qualification', 'Account Type',
+              'GST Number']
     
     y_position = 710
     for i, label in enumerate(labels):
@@ -168,9 +154,11 @@ def account_button():
              %s, %s, %s, %s,
              %s, %s, %s)'''
 
-    values = (account_number, name, age, mobile_number, date_of_birth, aadhar_number,
-              pan_card_number, father_name, mother_name, address, city, district, state,
-              country, pin_code, email, education_qualification, account_type, gst_number)
+    values = (account_number, name, age, mobile_number,
+              date_of_birth, aadhar_number, pan_card_number,
+              father_name, mother_name, address, city, district,
+              state, country, pin_code, email,
+              education_qualification, account_type, gst_number)
 
     try:
         cursor.execute(sql, values)
@@ -580,7 +568,7 @@ else:
     logged_in_username = None
 
 root = Tk()
-root.title('Bank Management System - Dashboard')
+root.title('Online Banking System - Dashboard')
 root.geometry('1920x1080')
 
 headerpoint = Frame(root,
@@ -664,7 +652,7 @@ if logged_in_username:
     if user_details:
         fullname, username, mobile, age, qualification, job = user_details
         name = Label(homeframe,
-                     text = f"Full Name: {fullname}",
+                     text = f'Full Name: {fullname}',
                      font = ('Arial', 12))
         name.pack(pady = 5)
         uname = Label(homeframe,

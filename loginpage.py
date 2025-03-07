@@ -33,9 +33,8 @@ def loginbutton():
                 entry1.delete(0, END)
                 entry2.delete(0, END)
                 return
-            
-            # Extract user details dynamically
-            user_details = list(registered_user)  # Convert tuple to list
+
+            user_details = list(registered_user)
             fullname = user_details[1]
             username = user_details[2]
             mobile = user_details[3]
@@ -48,8 +47,7 @@ def loginbutton():
 
             cursor.close()
             conn.close()
-            
-            # Pass user details as arguments to dashboard.py
+
             root.destroy()
             subprocess.run(['python', 'dashboard.py', username])
 

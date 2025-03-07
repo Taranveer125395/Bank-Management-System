@@ -6,18 +6,27 @@ import subprocess
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
+conn = mysql.connector.connect(
+            host = 'localhost',
+            user = 'root',
+            password = '20Bcs@125395',
+            database = 'Banking_Management_System'
+        )
+cursor = conn.cursor()
+
 def generate_pdf(fullname, username, mobilenumber, age1, qualification, job):
-    pdf_filename = f"{username}_registration.pdf"
+    pdf_filename = 'f{username}_registration.pdf'
     c = canvas.Canvas(pdf_filename, pagesize = A4)
-    c.drawString(100, 750, "Staff Registration Details")
-    c.drawString(100, 730, f"Full Name: {fullname}")
-    c.drawString(100, 710, f"Username: {username}")
-    c.drawString(100, 690, f"Mobile Number: {mobilenumber}")
-    c.drawString(100, 670, f"Age: {age1}")
-    c.drawString(100, 650, f"Education Qualification: {qualification}")
-    c.drawString(100, 630, f"Job Type: {job}")
+    c.drawString(100, 750, 'Staff Registration Details')
+    c.drawString(100, 730, f'Full Name: {fullname}')
+    c.drawString(100, 710, f'Username: {username}')
+    c.drawString(100, 690, f'Mobile Number: {mobilenumber}')
+    c.drawString(100, 670, f'Age: {age1}')
+    c.drawString(100, 650, f'Education Qualification: {qualification}')
+    c.drawString(100, 630, f'Job Type: {job}')
     c.save()
-    messagebox.showinfo("PDF Generated", f"PDF saved as {pdf_filename}")
+    messagebox.showinfo(title = 'PDF Generated',
+                        message = f'PDF saved as {pdf_filename}')
 
 def register_button():
     fullname = full_name_entry.get()
@@ -47,15 +56,7 @@ def register_button():
         return
 
     try:
-        conn = mysql.connector.connect(
-            host = 'localhost',
-            user = 'root',
-            password = '20Bcs@125395',
-            database = 'Banking_Management_System'
-        )
-        cursor = conn.cursor()
-
-        cursor.execute("SELECT username FROM staff_registeration WHERE username = %s", (username,))
+        cursor.execute('SELECT username FROM staff_registeration WHERE username = %s', (username,))
         existing_user = cursor.fetchone()
 
         if existing_user:
@@ -118,12 +119,9 @@ def generatepdf_registerbutton():
                                message = 'Enter Your Data Properly.')
         return
 
-    generate_pdf(fullname, 
-                 username, 
-                 mobilenumber, 
-                 age1, 
-                 qualification, 
-                 job)
+    generate_pdf(fullname, username,
+                 mobilenumber, age1,
+                 qualification, job)
     register_button()
 
 def mobile_number_validation(P):
@@ -135,7 +133,7 @@ def mobile_number_validation(P):
         messagebox.showwarning(title = 'Error', 
                                message = 'Mobile number should be less than equal to 10')
 
-def login_button():
+def loginbutton():
     root.destroy()
     subprocess.run(['python', 'loginpage.py'])
 
@@ -189,8 +187,8 @@ mobile_number = Label(root,
                       text = 'Mobile Number',
                       font = ('Arial', 12))
 mobile_number_entry = Entry(root,
-                            validate = "key", 
-                            validatecommand = (vcmd, "%P"),
+                            validate = 'key', 
+                            validatecommand = (vcmd, '%P'),
                             font = ('Arial', 12))
 mobile_number.grid(row = 2,
                    column = 0,
@@ -311,7 +309,7 @@ registration_button.grid(row = 5,
 login_button = Button(root,
                       text = 'Login Here!',
                       font = ('Arial', 12),
-                      command = login_button)
+                      command = loginbutton)
 login_button.grid(row = 5,
                   column = 2,
                   columnspan = 2,
