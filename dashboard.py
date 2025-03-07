@@ -28,6 +28,7 @@ def get_user_details(username):
         query = '''SELECT fullname, username, mobile_number,
                 age, education_qualification, job_type FROM 
                 staff_registeration WHERE username = %s'''
+        
         cursor.execute(query, (username,))
         user_data = cursor.fetchone()
         
@@ -36,7 +37,8 @@ def get_user_details(username):
         return user_data
     
     except mysql.connector.Error as err:
-        messagebox.showerror(title='Database Error', message=f'Error: {err}')
+        messagebox.showerror(title = 'Database Error',
+                             message = f'Error: {err}')
         return None
 
 def createaccount():
@@ -45,7 +47,7 @@ def createaccount():
 def validate_button():
     datetext = dobentry.get()
     try:
-        datetime.strptime(datetext, "%Y-%m-%d")
+        datetime.strptime(datetext, '%Y-%m-%d')
         messagebox.showinfo(title = 'Success',
                             message = 'Valid Date Format: YYYY-MM-DD')
     except ValueError:
@@ -53,14 +55,14 @@ def validate_button():
                              message = 'Invalid Date! Use Format: YYYY-MM-DD')
 
 def on_entry_focus_in(event):
-    if dobentry.get() == "yyyy-mm-dd":
+    if dobentry.get() == 'yyyy-mm-dd':
         dobentry.delete(0, END)
-        dobentry.config(fg = "black")
+        dobentry.config(fg = 'black')
 
 def on_entry_focus_out(event):
-    if dobentry.get() == "":
-        dobentry.insert(0, "yyyy-mm-dd")
-        dobentry.config(fg = "grey")
+    if dobentry.get() == '':
+        dobentry.insert(0, 'yyyy-mm-dd')
+        dobentry.config(fg = 'grey')
 
 def gst_entry(event = None):
     if accounttypeentry.get() == 'Current':
@@ -79,7 +81,8 @@ def gst_entry(event = None):
         gstnumberentry.grid_remove()
 
 def get_next_account_number():
-    cursor.execute("SELECT MAX(account_number) FROM account_details")
+    cursor.execute('''SELECT MAX(account_number)
+                   FROM account_details''')
     last_account = cursor.fetchone()[0]
     
     if last_account is None:
@@ -89,26 +92,44 @@ def get_next_account_number():
 
 def generate_pdf(account_data):
     account_number = account_data[0]
-    pdf_filename = f"Account_{account_number}.pdf"
+    pdf_filename = f'Account_{account_number}.pdf'
     
     c = canvas.Canvas(pdf_filename, pagesize = A4)
-    c.setFont("Helvetica", 12)
-    c.drawString(100, 750, "Account Details")
-    c.drawString(100, 730, f"Account Number: {account_number}")
     
-    labels = ["Name", "Age", "Mobile Number", "Date of Birth", "Aadhar Number",
-              "PAN Card Number", "Father's Name", "Mother's Name", "Address",
-              "City", "District", "State", "Country", "Pin Code", "Email",
-              "Education Qualification", "Account Type", "GST Number"]
+    c.setFont('Helvetica', 12)
+    c.drawString(100, 750, 'Account Details')
+    c.drawString(100, 730, f'Account Number: {account_number}')
+    
+    labels = [
+        "Name",
+        "Age",
+        "Mobile Number",
+        "Date of Birth",
+        "Aadhar Number",
+        "PAN Card Number",
+        "Father's Name",
+        "Mother's Name",
+        "Address",
+        "City",
+        "District",
+        "State",
+        "Country",
+        "Pin Code",
+        "Email",
+        "Education Qualification",
+        "Account Type",
+        "GST Number"
+    ]
     
     y_position = 710
     for i, label in enumerate(labels):
-        c.drawString(100, y_position, f"{label}: {account_data[i+1]}")
+        c.drawString(100, y_position,
+                     f'{label} : {account_data[i + 1]}')
         y_position -= 20
     
     c.save()
-    messagebox.showinfo(title = "PDF Generated", 
-                        message = f"Account details saved as {pdf_filename}")
+    messagebox.showinfo(title = 'PDF Generated', 
+                        message = f'Account details saved as {pdf_filename}')
 
 def account_button():
     account_number = get_next_account_number()
@@ -131,19 +152,21 @@ def account_button():
     account_type = accounttypeentry.get()
     gst_number = gstnumberentry.get()
 
-    sql = """
-    INSERT INTO account_details (
-        account_number, name, age, mobile_number, date_of_birth,
-        aadhar_number, pan_card_number, father_name, mother_name,
-        address, city, district, state, country, pin_code, email,
-        education_qualification, account_type, gst_number
-    ) VALUES (
-        %s, %s, %s, %s, %s, 
-        %s, %s, %s, %s, 
-        %s, %s, %s, %s, %s, %s, %s, 
-        %s, %s, %s
-    )
-    """
+    sql = '''INSERT INTO account_details
+             (account_number, name, age,
+             mobile_number, date_of_birth,
+             aadhar_number, pan_card_number,
+             father_name, mother_name,
+             address, city, district,
+             state, country, pin_code,
+             email, education_qualification,
+             account_type, gst_number)
+             VALUES
+             (%s, %s, %s, %s,
+             %s, %s, %s, %s,
+             %s, %s, %s, %s,
+             %s, %s, %s, %s,
+             %s, %s, %s)'''
 
     values = (account_number, name, age, mobile_number, date_of_birth, aadhar_number,
               pan_card_number, father_name, mother_name, address, city, district, state,
@@ -152,8 +175,8 @@ def account_button():
     try:
         cursor.execute(sql, values)
         conn.commit()
-        messagebox.showinfo(title = "Success",
-                            message = "Your account has been created successfully!")
+        messagebox.showinfo(title = 'Success',
+                            message = 'Your account has been created successfully.')
 
         generate_pdf((account_number, name, age, mobile_number, date_of_birth,
                       aadhar_number, pan_card_number, father_name, mother_name,
@@ -180,8 +203,8 @@ def account_button():
         gstnumberentry.delete(0, END)
     
     except mysql.connector.Error as err:
-        messagebox.showerror(title = "Error",
-                             message = f"Error: {err}")
+        messagebox.showerror(title = 'Error',
+                             message = f'Error: {err}')
     
     finally:
         cursor.close()
@@ -364,8 +387,8 @@ def transactionhistory():
 def fetch_account_detail(account_number):
     try:
         query = '''
-        SELECT * FROM account_details 
-        WHERE account_number = %s
+            SELECT * FROM account_details 
+            WHERE account_number = %s
         '''
         cursor.execute(query, (account_number,))
         account_data = cursor.fetchone()
@@ -386,57 +409,26 @@ def generate_pdf(account_data):
                             pagesize = A4)
     elements = []
     styles = getSampleStyleSheet()
-    bold_style = ParagraphStyle(name = "BoldStyle",
-                                parent = styles["Normal"], 
-                                fontName = "Helvetica-Bold",
+    bold_style = ParagraphStyle(name = 'BoldStyle',
+                                parent = styles['Normal'], 
+                                fontName = 'Helvetica-Bold',
                                 fontSize = 10)
     
-    data = [
-        [
-            'Field',
-            'Data'
-        ]
-    ]
-    labels = [
-        'Account Number',
-        'Name',
-        'Age',
-        'Mobile Number',
-        'Date of Birth',
-        'Aadhar Number',
-        'Pan Card Number',
-        'Father Name',
-        'Mother Name',
-        'Address',
-        'City',
-        'District',
-        'State',
-        'Country',
-        'Pin Code',
-        'Email',
-        'Education Qualification',
-        'Account Type',
-        'GST Number',
-        'Created At'
-    ]
+    data = [['Field', 'Data']]
+    labels = ['Account Number', 'Name', 'Age',
+              'Mobile Number', 'Date of Birth',
+              'Aadhar Number', 'Pan Card Number',
+              'Father Name', 'Mother Name', 'Address',
+              'City', 'District', 'State', 'Country',
+              'Pin Code', 'Email', 'Education Qualification',
+              'Account Type', 'GST Number', 'Created At']
     
     for i, label in enumerate(labels):
-        data.append(
-            [
-                Paragraph(
-                    label,
-                    bold_style
-                ),
-                str(account_data[i])
-            ]
-        )
+        data.append([Paragraph(label, bold_style),
+                     str(account_data[i])])
 
     
-    table = Table(data,
-                  colWidths = [
-                      150,
-                      300
-                  ])
+    table = Table(data, colWidths = [150, 300])
     
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
@@ -495,31 +487,23 @@ def generate_balance_pdf(account_number):
         account = cursor.fetchone()
 
         if not account:
-            messagebox.showerror(title = "Error",
-                                 message = "Account not found!")
+            messagebox.showerror(title = 'Error',
+                                 message = 'Account not found!')
             return
 
-        account_num, account_name = account["account_number"], account["name"]
+        account_num, account_name = account['account_number'], account['name']
 
         query = '''SELECT id, transaction_date,
                 CASE
-                    WHEN
-                        transaction_type = 'Deposit' 
-                    THEN
-                        amount 
-                    ELSE
-                        NULL 
-                    END AS
-                        deposit,
+                    WHEN transaction_type = 'Deposit' 
+                    THEN amount 
+                    ELSE NULL 
+                    END AS deposit,
                 CASE
-                    WHEN
-                        transaction_type = 'Withdraw' 
-                    THEN
-                        amount
-                    ELSE
-                        NULL 
-                    END AS
-                        withdraw,
+                    WHEN transaction_type = 'Withdraw' 
+                    THEN amount
+                    ELSE NULL 
+                    END AS withdraw,
                 balance
                 FROM Transactions
                 WHERE account_number = %s
@@ -530,63 +514,33 @@ def generate_balance_pdf(account_number):
 
         cursor.close()
 
-        pdf_filename = f"Balance_Enquiry_{account_number}.pdf"
+        pdf_filename = f'Balance_Enquiry_{account_number}.pdf'
         doc = SimpleDocTemplate(pdf_filename,
                                 pagesize = A4)
 
         elements = []
         styles = getSampleStyleSheet()
 
-        elements.append(
-            Paragraph(
-                f"<b>Account Number:</b> {account_num}",
-                styles["Normal"]
-            )
-        )
-        elements.append(
-            Paragraph(
-                f"<b>Name:</b> {account_name}",
-                styles["Normal"]
-            )
-        )
+        elements.append(Paragraph(f'<b>Account Number:</b> {account_num}',
+                                  styles['Normal']))
+        elements.append(Paragraph(f'<b>Name:</b> {account_name}',
+                                  styles['Normal']))
         elements.append(Spacer(1, 15))
 
-        table_data = [
-            [
-                "ID",
-                "Date",
-                "Time",
-                "Deposit",
-                "Withdraw",
-                "Balance"
-            ]
-        ]
+        table_data = [['ID', 'Date', 'Time',
+                       'Deposit', 'Withdraw', 'Balance']]
 
         for row in transactions:
-            transaction_date = row["transaction_date"]
-            date_str = transaction_date.strftime("%Y-%m-%d")
-            time_str = transaction_date.strftime("%H:%M:%S")
+            transaction_date = row['transaction_date']
+            date_str = transaction_date.strftime('%Y-%m-%d')
+            time_str = transaction_date.strftime('%H:%M:%S')
 
-            table_data.append(
-                [
-                    row["id"],
-                    date_str,
-                    time_str,
-                    row["deposit"] if row["deposit"] else "",
-                    row["withdraw"] if row["withdraw"] else "",
-                    row["balance"]
-                ]
-            )
+            table_data.append([row['id'], date_str, time_str,
+                               row['deposit'] if row['deposit'] else '',
+                               row['withdraw'] if row['withdraw'] else '',
+                               row['balance']])
 
-        table = Table(table_data,
-                      colWidths = [
-                          50,
-                          80,
-                          80,
-                          80,
-                          80,
-                          80
-                      ])
+        table = Table(table_data, colWidths = [50, 80, 80, 80, 80, 80])
 
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
@@ -600,16 +554,16 @@ def generate_balance_pdf(account_number):
         elements.append(table)
         doc.build(elements)
 
-        messagebox.showinfo(title = "Success",
-                            message = f"PDF generated: {pdf_filename}")
+        messagebox.showinfo(title = 'Success',
+                            message = f'PDF generated: {pdf_filename}')
 
         accountnumber2entry.delete(0, END)
 
     except mysql.connector.Error as db_error:
-        messagebox.showerror(title = "Database Error",
-                             message = f"Error: {db_error}")
+        messagebox.showerror(title = 'Database Error',
+                             message = f'Error: {db_error}')
     except Exception as e:
-        messagebox.showerror(title = "Error",
+        messagebox.showerror(title = 'Error',
                              message = str(e))
 
 def on_generate_pdf():
@@ -617,8 +571,8 @@ def on_generate_pdf():
     if account_number.isdigit():
         generate_balance_pdf(account_number)
     else:
-        messagebox.showerror(title = "Error",
-                             message = "Please enter a valid account number")
+        messagebox.showerror(title = 'Error',
+                             message = 'Please enter a valid account number')
 
 if len(sys.argv) > 1:
     logged_in_username = sys.argv[1]
