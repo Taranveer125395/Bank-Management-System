@@ -8,7 +8,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib import colors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
@@ -654,41 +654,38 @@ def account_detail():
 
 def generate_balance_pdf(account_number):
     try:
-        cursor.execute('''SELECT account_number, name 
-                       FROM account_details 
-                       WHERE account_number = %s''', 
-                       (account_number,))
-        account = cursor.fetchone()
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT account_number, name FROM account_details WHERE account_number = %s", (account_number,))
+            account = cursor.fetchone()
 
-        if not account:
-            messagebox.showwarning(title = 'Warning',
-                                   message = 'Account not found!')
-            return
+            if not account:
+                messagebox.showerror("Error", "Account not found!")
+                return
 
-        account_num, account_name = account
+            account_num, account_name = account
 
-        query = """
-        SELECT id, transaction_date, 
-               CASE WHEN transaction_type = 'Deposit' THEN amount ELSE NULL END AS deposit,
-               CASE WHEN transaction_type = 'Withdraw' THEN amount ELSE NULL END AS withdraw,
-               balance
-        FROM Transactions
-        WHERE account_number = %s
-        ORDER BY id ASC
-        """
-        cursor.execute(query, (account_number,))
-        transactions = cursor.fetchall()
+            query = """
+            SELECT id, transaction_date, 
+                   CASE WHEN transaction_type = 'Deposit' THEN amount ELSE NULL END AS deposit,
+                   CASE WHEN transaction_type = 'Withdraw' THEN amount ELSE NULL END AS withdraw,
+                   balance
+            FROM Transactions
+            WHERE account_number = %s
+            ORDER BY id ASC
+            """
+            cursor.execute(query, (account_number,))
+            transactions = cursor.fetchall()
 
-        cursor.close()
         conn.close()
 
         pdf_filename = f"Balance_Enquiry_{account_number}.pdf"
         doc = SimpleDocTemplate(pdf_filename, pagesize=A4)
         elements = []
         styles = getSampleStyleSheet()
-
+        
         elements.append(Paragraph(f"<b>Account Number:</b> {account_num}", styles["Normal"]))
         elements.append(Paragraph(f"<b>Account Name:</b> {account_name}", styles["Normal"]))
+        elements.append(Spacer(1, 15))  # Add space between account details and table
 
         table_data = [["ID", "Transaction Date", "Deposit", "Withdraw", "Balance"]]
         for row in transactions:
@@ -707,12 +704,14 @@ def generate_balance_pdf(account_number):
         elements.append(table)
 
         doc.build(elements)
-        messagebox.showinfo(title = 'Success',
-                            message = f"PDF generated: {pdf_filename}")
+        messagebox.showinfo("Success", f"PDF generated: {pdf_filename}")
 
+        accountnumber2entry.delete(0, END)
+
+    except mysql.connector.Error as db_error:
+        messagebox.showerror("Database Error", f"Error: {db_error}")
     except Exception as e:
-        messagebox.showerror(title = 'Error',
-                             message = f"Error: {e}")
+        messagebox.showerror("Error", str(e))
 
 def on_generate_pdf():
     account_number = accountnumber2entry.get()
