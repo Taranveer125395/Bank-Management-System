@@ -52,34 +52,9 @@ CREATE TABLE Transactions(
     FOREIGN KEY (account_number) REFERENCES account_details(account_number) ON DELETE CASCADE
 ) AUTO_INCREMENT = 1;
 
-CREATE TABLE loanapplication(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    account_number INT NOT NULL,
-    loan_amount DECIMAL(15,2) NOT NULL,
-    income_per_year DECIMAL(15,2) NOT NULL,
-    loan_type ENUM('Personal', 'Home', 'Vehicle', 'Business', 'Education') NOT NULL,
-    source_of_income ENUM('Employed', 'Self-Employed', 'Unemployed') NOT NULL,
-    guarantor_name VARCHAR(100),
-    guarantor_account_no INT,
-    employer_type ENUM('Private Sector', 'Government Sector', 'None') DEFAULT 'None',
-    position VARCHAR(100),
-    department ENUM('Railway', 'Police', 'Revenue', 'Civil Services', 'Banking', 'None') DEFAULT 'None',
-    office_address VARCHAR(255),
-    employer_name VARCHAR(100),
-    business_type ENUM('Manufacturing', 'Service Based', 'Retail & E-Commerce', 'Wholesale', 'Agriculture & Farming', 'Technology & IT', 'Finance & Banking', 'Real Estate & Construction', 'Entertainment & Media', 'None') DEFAULT 'None',
-    product_type VARCHAR(100),
-    business_name VARCHAR(100),
-    business_address VARCHAR(255),
-    FOREIGN KEY (account_number) REFERENCES account_details(account_number) ON DELETE CASCADE,
-    FOREIGN KEY (guarantor_account_no) REFERENCES account_details(account_number) ON DELETE SET NULL
-) AUTO_INCREMENT = 10001;
-
-
 SELECT * FROM staff_registeration;
 
 SELECT * FROM staff_login;
-
-SELECT * FROM LoanApplication;
 
 SELECT * FROM transactions;
 

@@ -358,189 +358,6 @@ def withdraw_button():
         if cursor:
             cursor.close()
 
-def loanapplication():
-    show_frame(loanframe)
-
-def loan_apply():
-    messagebox.showinfo(title = 'Success',
-                        message = 'Your Loan is Applied.')
-
-def sourceincome_entry(event = None):
-    if sourceincomeentry.get() == 'Employed':
-        employertype.grid(row = 2,
-                          column = 4,
-                          padx = 10,
-                          pady = 10,
-                          sticky = 'e')
-        employertypeentry.grid(row = 2,
-                               column = 5,
-                               padx = 10,
-                               pady = 10,
-                               sticky = 'w')
-    else:
-        employertype.grid_remove()
-        employertypeentry.grid_remove()
-
-def government_sector(event = None):
-    if employertypeentry.get() == 'Government Sector':
-        position.grid(row = 3,
-                      column = 0, 
-                      padx = 10, 
-                      pady = 10, 
-                      sticky = 'e')
-        positionentry.grid(row = 3, 
-                           column = 1, 
-                           padx = 10, 
-                           pady = 10, 
-                           sticky = 'w')
-        department.grid(row = 3, 
-                        column = 2, 
-                        padx = 10, 
-                        pady = 10, 
-                        sticky = 'e')
-        departmententry.grid(row = 3, 
-                             column = 3, 
-                             padx = 10, 
-                             pady = 10, 
-                             sticky = 'w')
-        officeaddress.grid(row = 3, 
-                           column = 4, 
-                           padx = 10, 
-                           pady = 10, 
-                           sticky = 'e')
-        officeaddressentry.grid(row = 3, 
-                                column = 5, 
-                                padx = 10, 
-                                pady = 10, 
-                                sticky = 'w')
-    else:
-        position.grid_remove()
-        positionentry.grid_remove()
-        department.grid_remove()
-        departmententry.grid_remove()
-        officeaddress.grid_remove()
-        officeaddressentry.grid_remove()
-
-def private_sector(event = None):
-    if employertypeentry.get() == 'Private Sector':
-        employername.grid(row = 3,
-                          column = 0, 
-                          padx = 10, 
-                          pady = 10, 
-                          sticky = 'e')
-        employernameentry.grid(row = 3, 
-                               column = 1, 
-                               padx = 10, 
-                               pady = 10, 
-                               sticky = 'w')
-        position1.grid(row = 3, 
-                       column = 2, 
-                       padx = 10, 
-                       pady = 10, 
-                       sticky = 'e')
-        positionentry1.grid(row = 3, 
-                            column = 3, 
-                            padx = 10, 
-                            pady = 10, 
-                            sticky = 'w')
-        officeaddress1.grid(row = 3, 
-                            column = 4, 
-                            padx = 10, 
-                            pady = 10, 
-                            sticky = 'e')
-        officeaddressentry1.grid(row = 3, 
-                                 column = 5, 
-                                 padx = 10, 
-                                 pady = 10, 
-                                 sticky = 'w')
-    else:
-        employername.grid_remove()
-        employernameentry.grid_remove()
-        position1.grid_remove()
-        positionentry1.grid_remove()
-        officeaddress1.grid_remove()
-        officeaddressentry1.grid_remove()
-
-def business_type(event = None):
-    if sourceincomeentry.get() == 'Self-Employed':
-        businesstype.grid(row = 2,
-                          column = 4, 
-                          padx = 10, 
-                          pady = 10, 
-                          sticky = 'e')
-        businesstypeentry.grid(row = 2, 
-                               column = 5, 
-                               padx = 10, 
-                               pady = 10, 
-                               sticky = 'w')
-        productstype.grid(row = 3,
-                          column = 0, 
-                          padx = 10, 
-                          pady = 10, 
-                          sticky = 'e')
-        productstypeentry.grid(row = 3, 
-                               column = 1, 
-                               padx = 10, 
-                               pady = 10, 
-                               sticky = 'w')
-        businessname.grid(row = 3, 
-                          column = 2, 
-                          padx = 10, 
-                          pady = 10, 
-                          sticky = 'e')
-        businessnameentry.grid(row = 3,
-                               column = 3, 
-                               padx = 10, 
-                               pady = 10, 
-                               sticky = 'w')
-        address1.grid(row = 3,
-                      column = 4, 
-                      padx = 10, 
-                      pady = 10, 
-                      sticky = 'e')
-        address1entry.grid(row = 3,
-                           column = 5, 
-                           padx = 10, 
-                           pady = 10, 
-                           sticky = 'w')
-    else:
-        businesstype.grid_remove()
-        businesstypeentry.grid_remove()
-        productstype.grid_remove()
-        productstypeentry.grid_remove()
-        businessname.grid_remove()
-        businessnameentry.grid_remove()
-        address1.grid_remove()
-        address1entry.grid_remove()
-
-def unemployed(event = None):
-    if loantypeentry.get() != 'Education' and sourceincomeentry.get() == 'Unemployed':
-        guarantorname.grid(row = 2,
-                           column = 4,
-                           padx = 10,
-                           pady = 10,
-                           sticky = 'e')
-        guarantornameentry.grid(row = 2,
-                                column = 5,
-                                padx = 10,
-                                pady = 10,
-                                sticky = 'w')
-        guarantoraccount.grid(row = 3,
-                              column = 0,
-                              padx = 10,
-                              pady = 10,
-                              sticky = 'e')
-        guarantoraccountentry.grid(row = 3,
-                                   column = 1,
-                                   padx = 10,
-                                   pady = 10,
-                                   sticky = 'w')
-    else:
-        guarantorname.grid_remove()
-        guarantornameentry.grid_remove()
-        guarantoraccount.grid_remove()
-        guarantoraccountentry.grid_remove()
-
 def transactionhistory():
     show_frame(transactionframe)
 
@@ -713,7 +530,6 @@ def generate_balance_pdf(account_number):
 
         cursor.close()
 
-        # PDF Generation
         pdf_filename = f"Balance_Enquiry_{account_number}.pdf"
         doc = SimpleDocTemplate(pdf_filename,
                                 pagesize = A4)
@@ -804,10 +620,6 @@ def on_generate_pdf():
         messagebox.showerror(title = "Error",
                              message = "Please enter a valid account number")
 
-def loan():
-    messagebox.showwarning(title = 'Loan',
-                           message = 'Your Loan is Pending.')
-
 if len(sys.argv) > 1:
     logged_in_username = sys.argv[1]
 else:
@@ -857,17 +669,6 @@ deposit_money.pack(side = 'top',
                    pady = 5,
                    padx = 5)
 
-apply_for_loan = Button(headerpoint,
-                        text = 'Apply For Loan',
-                        bg = 'lightgrey',
-                        fg = 'black',
-                        font = ('Arial', 11, 'bold'),
-                        command = loanapplication,
-                        width = 15)
-apply_for_loan.pack(side = 'top',
-                    pady = 5,
-                    padx = 5)
-
 transaction_history = Button(headerpoint,
                              text = 'Transaction History',
                              bg = 'lightgrey',
@@ -891,13 +692,11 @@ accountframe = Frame(main_frame)
 vcmd = accountframe.register(mobile_number_validation)
 
 depositframe = Frame(main_frame)
-loanframe = Frame(main_frame)
 transactionframe = Frame(main_frame)
 
 for frame in (homeframe,
               accountframe,
               depositframe,
-              loanframe,
               transactionframe):
     frame.place(x = 0,
                 y = 0,
@@ -1326,218 +1125,6 @@ withdrawbutton.grid(row = 2,
                     columnspan = 2,
                     pady = 10)
 
-heading3 = Label(loanframe,
-                 text = 'Loan Application',
-                 font = ('Arial', 14, 'bold'))
-heading3.grid(row = 0,
-              column = 0,
-              columnspan = 7,
-              pady = 20)
-
-accountnumber1 = Label(loanframe,
-                      text = 'Account Number',
-                      font = ('Arial', 11))
-accountnumber1entry = Entry(loanframe,
-                           font = ('Arial', 11))
-accountnumber1.grid(row = 1,
-                   column = 0,
-                   padx = 10,
-                   pady = 10,
-                   sticky = 'e')
-accountnumber1entry.grid(row = 1,
-                        column = 1,
-                        padx = 10,
-                        pady = 10,
-                        sticky = 'w')
-
-loanamount = Label(loanframe,
-               text = 'Amount',
-               font = ('Arial', 11))
-loanamountentry = Entry(loanframe, 
-                    font = ('Arial', 11))
-loanamount.grid(row = 1,
-                column = 2,
-                padx = 10,
-                pady = 10,
-                sticky = 'e')
-loanamountentry.grid(row = 1,
-                     column = 3,
-                     padx = 10,
-                     pady = 10,
-                     sticky = 'w')
-
-totalincome = Label(loanframe,
-                    text = 'Income per Year',
-                    font = ('Arial', 11))
-totalincomeentry = Entry(loanframe,
-                         font = ('Arial', 11))
-totalincome.grid(row = 2,
-                 column = 0,
-                 padx = 10,
-                 pady = 5,
-                 sticky = 'e')
-totalincomeentry.grid(row = 2,
-                      column = 1,
-                      padx = 10,
-                      pady = 5,
-                      sticky = 'w')
-
-loantype = Label(loanframe,
-                 text = 'Loan Type',
-                 font = ('Arial', 11))
-loantypeentry = ttk.Combobox(loanframe,
-                             values = ['',
-                                       'Personal',
-                                       'Home',
-                                       'Vehical',
-                                       'Business',
-                                       'Education'],
-                             font = ('Arial', 11))
-loantype.grid(row = 1,
-              column = 4,
-              padx = 10,
-              pady = 5,
-              sticky = 'e')
-loantypeentry.grid(row = 1,
-                   column = 5,
-                   padx = 10,
-                   pady = 5,
-                   sticky = 'w')
-
-sourceincome = Label(loanframe,
-                     text = 'Source of Income',
-                     font = ('Arial', 11))
-sourceincomeentry = ttk.Combobox(loanframe,
-                                 values = ['',
-                                           'Employed',
-                                           'Self-Employed',
-                                           'Unemployed'],
-                                 font = ('Arial', 11))
-sourceincomeentry.bind('<<ComboboxSelected>>',
-                       sourceincome_entry)
-sourceincomeentry.bind('<<ComboboxSelected>>',
-                       business_type)
-sourceincomeentry.bind('<<ComboboxSelected>>',
-                       unemployed)
-sourceincome.grid(row = 2,
-                  column = 2,
-                  padx = 10,
-                  pady = 10,
-                  sticky = 'e')
-sourceincomeentry.grid(row = 2,
-                       column = 3,
-                       padx = 10,
-                       pady = 10,
-                       sticky = 'w')
-
-guarantorname = Label(loanframe,
-                      text = 'Guarantor Name', 
-                      font = ('Arial', 11))
-guarantornameentry = Entry(loanframe, 
-                           font = ('Arial', 11))
-guarantoraccount = Label(loanframe,
-                         text = 'Guarantor Account No.', 
-                         font = ('Arial', 11))
-guarantoraccountentry = Entry(loanframe, 
-                              font = ('Arial', 11))
-
-employertype = Label(loanframe, 
-                     text = 'Employer Type',
-                     font = ('Arial', 11))
-employertypeentry = ttk.Combobox(loanframe, 
-                                 values = ['', 
-                                           'Private Sector', 
-                                           'Government Sector'], 
-                                 font = ('Arial', 11))
-employertypeentry.bind('<<ComboboxSelected>>',
-                       government_sector)
-employertypeentry.bind('<<ComboboxSelected>>',
-                       private_sector)
-
-position = Label(loanframe,
-                 text = 'Position',
-                 font = ('Arial', 11))
-positionentry = Entry(loanframe,
-                      font = ('Arial', 11))
-
-department = Label(loanframe,
-                   text = 'Department',
-                   font = ('Arial', 11))
-departmententry = ttk.Combobox(loanframe,
-                               values = ['',
-                                         'Railway', 
-                                         'Police', 
-                                         'Revenue', 
-                                         'Civil Services', 
-                                         'Banking'],
-                               font = ('Arial', 11))
-
-officeaddress = Label(loanframe, 
-                      text = 'Office Address', 
-                      font = ('Arial', 11))
-officeaddressentry = Entry(loanframe, 
-                           font = ('Arial', 11))
-
-employername = Label(loanframe,
-                     text = 'Employer Name',
-                     font = ('Arial', 11))
-employernameentry = Entry(loanframe,
-                          font = ('Arial', 11))
-
-position1 = Label(loanframe,
-                  text = 'Position',
-                  font = ('Arial', 11))
-positionentry1 = Entry(loanframe,
-                       font = ('Arial', 11))
-
-officeaddress1 = Label(loanframe,
-                       text = 'Office Address', 
-                       font = ('Arial', 11))
-officeaddressentry1 = Entry(loanframe,
-                            font = ('Arial', 11))
-
-businesstype = Label(loanframe,
-                     text = 'Business Type',
-                     font = ('Arial', 11))
-businesstypeentry = ttk.Combobox(loanframe,
-                                 values = ['',
-                                           'Manufacturing',
-                                           'Service Based',
-                                           'Retail & E-Commerce',
-                                           'Wholesale',
-                                           'Agriculture & Farming',
-                                           'Technology & IT',
-                                           'Finance & Banking',
-                                           'Real Estate & Construction',
-                                           'Entertainment & Media'],
-                                 font = ('Arial', 11))
-productstype = Label(loanframe,
-                     text = 'Product Type',
-                     font = ('Arial', 11))
-productstypeentry = Entry(loanframe,
-                          font = ('Arial', 11))
-
-businessname = Label(loanframe,
-                     text = 'Business/Shop Name', 
-                     font = ('Arial', 11))
-businessnameentry = Entry(loanframe, 
-                          font = ('Arial', 11))
-
-address1 = Label(loanframe,
-                 text = 'Business Address',
-                 font = ('Arial', 11))
-address1entry = Entry(loanframe,
-                      font = ('Arial', 11))
-
-loanapplybutton = Button(loanframe,
-                         text = 'Apply Loan', 
-                         font = ('Arial', 11), 
-                         command = loan_apply)
-loanapplybutton.grid(row = 11,
-                     column = 0, 
-                     columnspan = 7,
-                     pady = 10)
-
 heading4 = Label(transactionframe,
                  text = 'Account History',
                  font = ('Arial', 14, 'bold'))
@@ -1581,15 +1168,5 @@ balanceenquirybutton.grid(row = 2,
                           padx = 10,
                           pady = 10,
                           sticky = 'w')
-
-loanenquirybutton = Button(transactionframe,
-                           text = 'Loan Enquery',
-                           font = ('Arial', 11),
-                           command = loan)
-loanenquirybutton.grid(row = 2,
-                       column = 2,
-                       padx = 10,
-                       pady = 10,
-                       sticky = 'w')
 
 root.mainloop()
