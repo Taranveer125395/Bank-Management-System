@@ -1147,7 +1147,7 @@ accountnumber2entry.grid(row = 1,
                         column = 1,
                         padx = 10,
                         pady = 10,
-                        sticky = 'w')
+                        sticky = 'e')
 
 accountdetailbutton = Button(transactionframe,
                             text = 'Account Detail',
