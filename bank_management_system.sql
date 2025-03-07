@@ -36,8 +36,18 @@ CREATE TABLE account_details(
     country VARCHAR(100),
     pin_code VARCHAR(10),
     email VARCHAR(255) UNIQUE,
-    education_qualification ENUM('Below 12th', '12th Pass', 'Diploma Holder', 'Graduate', 'Post Graduate', 'Doctorate'),
-    account_type ENUM('Saving', 'Current'),
+    education_qualification ENUM(
+        'Below 12th',
+        '12th Pass',
+        'Diploma Holder',
+        'Graduate',
+        'Post Graduate',
+        'Doctorate'
+    ),
+    account_type ENUM(
+        'Saving',
+        'Current'
+    ),
     gst_number VARCHAR(15),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) AUTO_INCREMENT = 1001;
@@ -47,7 +57,10 @@ CREATE TABLE Transactions(
     account_number INT NOT NULL,
     balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     amount DECIMAL(10,2) NOT NULL,
-    transaction_type ENUM('Deposit', 'Withdraw') NOT NULL,
+    transaction_type ENUM(
+        'Deposit',
+        'Withdraw'
+    ) NOT NULL,
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (account_number) REFERENCES account_details(account_number) ON DELETE CASCADE
 ) AUTO_INCREMENT = 1;
