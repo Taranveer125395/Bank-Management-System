@@ -62,7 +62,9 @@ CREATE TABLE Transactions(
         'Withdraw'
     ) NOT NULL,
     transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (account_number) REFERENCES account_details(account_number) ON DELETE CASCADE
+    FOREIGN KEY (account_number)
+    REFERENCES account_details(account_number)
+    ON DELETE CASCADE
 ) AUTO_INCREMENT = 1;
 
 SELECT * FROM staff_registeration;
