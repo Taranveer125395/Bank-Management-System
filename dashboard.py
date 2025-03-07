@@ -655,20 +655,37 @@ def account_detail():
 def generate_balance_pdf(account_number):
     try:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT account_number, name FROM account_details WHERE account_number = %s", (account_number,))
+            cursor.execute(
+                '''SELECT account_number, name 
+                FROM account_details 
+                WHERE account_number = %s''',
+                (account_number,)
+            )
             account = cursor.fetchone()
 
             if not account:
-                messagebox.showerror("Error", "Account not found!")
+                messagebox.showerror(title = "Error",
+                                     message = "Account not found!")
                 return
 
             account_num, account_name = account
 
             query = """
             SELECT id, transaction_date, 
-                   CASE WHEN transaction_type = 'Deposit' THEN amount ELSE NULL END AS deposit,
-                   CASE WHEN transaction_type = 'Withdraw' THEN amount ELSE NULL END AS withdraw,
+                   CASE
+                   WHEN transaction_type = 'Deposit'
+                   THEN amount
+                   ELSE NULL
+                   END AS deposit,
+
+                   CASE
+                   WHEN transaction_type = 'Withdraw'
+                   THEN amount
+                   ELSE NULL
+                   END AS withdraw,
+                   
                    balance
+            
             FROM Transactions
             WHERE account_number = %s
             ORDER BY id ASC
@@ -679,19 +696,36 @@ def generate_balance_pdf(account_number):
         conn.close()
 
         pdf_filename = f"Balance_Enquiry_{account_number}.pdf"
-        doc = SimpleDocTemplate(pdf_filename, pagesize=A4)
+        doc = SimpleDocTemplate(pdf_filename,
+                                pagesize = A4)
+        
         elements = []
         styles = getSampleStyleSheet()
         
         elements.append(Paragraph(f"<b>Account Number:</b> {account_num}", styles["Normal"]))
-        elements.append(Paragraph(f"<b>Account Name:</b> {account_name}", styles["Normal"]))
-        elements.append(Spacer(1, 15))  # Add space between account details and table
+        elements.append(Paragraph(f"<b>Name:</b> {account_name}", styles["Normal"]))
+        elements.append(Spacer(1, 15))
 
-        table_data = [["ID", "Transaction Date", "Deposit", "Withdraw", "Balance"]]
+        table_data = [["ID", 
+                       "Transaction Date",
+                       "Deposit",
+                       "Withdraw",
+                       "Balance"]]
+        
         for row in transactions:
-            table_data.append([row[0], row[1], row[2] or "", row[3] or "", row[4]])
+            table_data.append([row[0],
+                               row[1],
+                               row[2] or "",
+                               row[3] or "",
+                               row[4]])
 
-        table = Table(table_data, colWidths=[50, 120, 80, 80, 80])
+        table = Table(table_data,
+                      colWidths = [50, 
+                                   120, 
+                                   80, 
+                                   80, 
+                                   80])
+        
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
@@ -704,12 +738,14 @@ def generate_balance_pdf(account_number):
         elements.append(table)
 
         doc.build(elements)
-        messagebox.showinfo("Success", f"PDF generated: {pdf_filename}")
+        messagebox.showinfo(title = "Success",
+                            message = f"PDF generated: {pdf_filename}")
 
         accountnumber2entry.delete(0, END)
 
     except mysql.connector.Error as db_error:
-        messagebox.showerror("Database Error", f"Error: {db_error}")
+        messagebox.showerror(title = "Database Error",
+                             message = f"Error: {db_error}")
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
