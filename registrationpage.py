@@ -3,15 +3,13 @@ from tkinter import ttk
 from tkinter import messagebox
 import mysql.connector
 import subprocess
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
 
 conn = mysql.connector.connect(
-            host = 'localhost',
-            user = 'root',
-            password = '20Bcs@125395',
-            database = 'Banking_Management_System'
-        )
+    host = 'localhost',
+    user = 'root',
+    password = '20Bcs@125395',
+    database = 'Banking_Management_System'
+)
 cursor = conn.cursor()
 
 def register_button():
