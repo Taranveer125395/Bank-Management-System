@@ -332,6 +332,11 @@ def generate_pdf(account_data):
                             pagesize = A4)
     elements = []
     styles = getSampleStyleSheet()
+    
+    elements.append(Paragraph('<b>Account Details</b>',
+                              styles['Normal']))
+    elements.append(Spacer(1, 15))
+    
     bold_style = ParagraphStyle(name = 'BoldStyle',
                                 parent = styles['Normal'], 
                                 fontName = 'Helvetica-Bold',
