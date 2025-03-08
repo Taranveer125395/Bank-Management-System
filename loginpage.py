@@ -3,6 +3,14 @@ from tkinter import messagebox
 import mysql.connector
 import subprocess
 
+conn = mysql.connector.connect(
+    host = 'localhost',
+    user = 'root',
+    password = '20Bcs@125395',
+    database = 'Banking_Management_System'
+)
+cursor = conn.cursor()
+
 def forregistration():
     root.destroy()
     subprocess.run(['python', 'registrationpage.py'])
@@ -13,14 +21,6 @@ def loginbutton():
     
     if username and password:
         try:
-            conn = mysql.connector.connect(
-                host='localhost',
-                user='root',
-                password='20Bcs@125395',
-                database='Banking_Management_System'
-            )
-            cursor = conn.cursor()
-
             query_check = "SELECT * FROM staff_registeration WHERE username = %s AND password = %s"
             cursor.execute(query_check, (username, password))
             registered_user = cursor.fetchone()
@@ -34,22 +34,14 @@ def loginbutton():
                 entry2.delete(0, END)
                 return
 
-            user_details = list(registered_user)
-            fullname = user_details[1]
-            username = user_details[2]
-            mobile = user_details[3]
-            age = user_details[4]
-            qualification = user_details[5]
-            job = user_details[6]
-
             messagebox.showinfo(title='Login Successful',
-                                message=f'Welcome {fullname}!')
+                                message=f'Welcome {username}!')
 
             cursor.close()
             conn.close()
 
             root.destroy()
-            subprocess.run(['python', 'dashboard.py', username])
+            subprocess.run(['python', 'dashboard.py'])
 
         except mysql.connector.Error as err:
             messagebox.showerror(title='Database Error',

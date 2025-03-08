@@ -2,11 +2,6 @@ CREATE DATABASE Banking_Management_System;
 
 USE Banking_Management_System;
 
-CREATE TABLE staff_login(
-    username varchar(50),
-    password varchar (50)
-);
-
 CREATE TABLE staff_registeration(
     id int unique not null auto_increment,
     fullname varchar(50),
@@ -68,8 +63,6 @@ CREATE TABLE Transactions(
 ) AUTO_INCREMENT = 1;
 
 SELECT * FROM staff_registeration;
-
-SELECT * FROM staff_login;
 
 SELECT * FROM transactions;
 

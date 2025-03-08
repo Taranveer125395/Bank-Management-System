@@ -4,7 +4,6 @@ import mysql.connector
 from datetime import datetime
 import sys
 from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.platypus import *
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -23,24 +22,6 @@ def show_frame(frame):
 
 def homebutton():
     show_frame(homeframe)
-
-def get_user_details(username):
-    try:
-        query = '''SELECT fullname, username, mobile_number,
-                age, education_qualification, job_type FROM 
-                staff_registeration WHERE username = %s'''
-        
-        cursor.execute(query, (username,))
-        user_data = cursor.fetchone()
-        
-        cursor.close()
-        conn.close()
-        return user_data
-    
-    except mysql.connector.Error as err:
-        messagebox.showerror(title = 'Database Error',
-                             message = f'Error: {err}')
-        return None
 
 def createaccount():
     show_frame(accountframe)
@@ -263,7 +244,7 @@ def withdraw_button():
                                  message = 'Database connection is not established.')
             return
         
-        cursor = conn.cursor(buffered=True)
+        cursor = conn.cursor(buffered = True)
 
         cursor.execute(
             '''SELECT account_number 
@@ -604,49 +585,10 @@ for frame in (homeframe,
 
 show_frame(homeframe)
 
-if logged_in_username:
-    user_details = get_user_details(logged_in_username)
-    if user_details:
-        fullname, username, mobile, age, qualification, job = user_details
-        name = tk.Label(homeframe,
-                        text = f'Full Name: {fullname}',
-                        font = ('Arial', 12))
-        name.pack(pady = 5)
-
-        uname = tk.Label(homeframe,
-                         text = f'Username: {username}',
-                         font = ('Arial', 12))
-        uname.pack(pady = 5)
-        
-        mno = tk.Label(homeframe,
-                       text = f'Mobile Number: {mobile}',
-                       font = ('Arial', 12))
-        mno.pack(pady = 5)
-        
-        ag = tk.Label(homeframe,
-                      text = f'Age: {age}',
-                      font = ('Arial', 12))
-        ag.pack(pady = 5)
-        
-        eq = tk.Label(homeframe,
-                      text = f'Qualification: {qualification}',
-                      font = ('Arial', 12))
-        eq.pack(pady = 5)
-        
-        jt = tk.Label(homeframe,
-                      text = f'Job Type: {job}',
-                      font = ('Arial', 12))
-        jt.pack(pady = 5)
-    else:
-        ud  = tk.Label(homeframe,
-                       text = 'User details not found!',
-                       font = ('Arial', 12, 'bold'))
-        ud.pack(pady = 10)
-else:
-    nu = tk.Label(homeframe,
-                  text = 'No username provided!',
-                  font = ('Arial', 12, 'bold'))
-    nu.pack(pady = 10)
+welcome = tk.Label(homeframe,
+                   text = 'Welcome to System & Start Your Work',
+                   font = ('Arial', 18, 'bold'))
+welcome.pack(pady = 100)
 
 heading = tk.Label(accountframe,
                    text = 'New Account Application Form',
