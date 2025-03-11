@@ -1,13 +1,7 @@
-import tkinter as tk
+from tkinter import *
 from tkinter import ttk, messagebox
 import mysql.connector
 from datetime import datetime
-import sys
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors
-from reportlab.platypus import *
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER
 
 conn = mysql.connector.connect(
     host = 'localhost',
@@ -26,35 +20,15 @@ def homebutton():
 def createaccount():
     show_frame(accountframe)
 
-def validate_button():
-    datetext = dobentry.get()
-    try:
-        datetime.strptime(datetext, '%Y-%m-%d')
-        messagebox.showinfo(title = 'Success',
-                            message = 'Valid Date Format: YYYY-MM-DD')
-    except ValueError:
-        messagebox.showerror(title = 'Error',
-                             message = 'Invalid Date! Use Format: YYYY-MM-DD')
-
-def on_entry_focus_in(event):
-    if dobentry.get() == 'yyyy-mm-dd':
-        dobentry.delete(0, tk.END)
-        dobentry.config(fg = 'black')
-
-def on_entry_focus_out(event):
-    if dobentry.get() == '':
-        dobentry.insert(0, 'yyyy-mm-dd')
-        dobentry.config(fg = 'grey')
-
 def gst_entry(event = None):
     if accounttypeentry.get() == 'Current':
         gstnumber.grid(row = 6,
-                       column = 5,
+                       column = 6,
                        padx = 5,
                        pady = 5,
                        sticky = 'e')
         gstnumberentry.grid(row = 6,
-                            column = 6,
+                            column = 7,
                             padx = 5,
                             pady = 5,
                             sticky = 'w')
@@ -67,7 +41,14 @@ def account_button():
         name = name1entry.get()
         age = age2entry.get()
         mobile_number = mobilenumber1entry.get()
-        date_of_birth = dobentry.get()
+        day = selected_day.get()
+        month = selected_month.get()
+        year = selected_year.get()
+        if day == 'Day' or month == 'Month' or year == 'Year':
+            date_of_birth = None
+        else:
+            date_of_birth = f"{year}-{months.index(month) + 1:02d}-{int(day):02d}"
+
         aadhar_number = aadharnumberentry.get()
         pan_card_number = pancardnumberentry.get()
         father_name = fathernameentry.get()
@@ -83,13 +64,14 @@ def account_button():
         account_type = accounttypeentry.get()
         gst_number = gstnumberentry.get()
 
-        sql = '''INSERT INTO account_details
+        sql = '''INSERT INTO account_details 
                  (name, age, mobile_number, date_of_birth, aadhar_number, 
                   pan_card_number, father_name, mother_name, address, city, 
                   district, state, country, pin_code, email, education_qualification, 
                   account_type, gst_number)
-                 VALUES (%s, %s, %s, %s,
-                 %s, %s, %s, %s, %s, %s,
+                 VALUES
+                 (%s, %s, %s, %s, %s,
+                 %s, %s, %s, %s, %s,
                  %s, %s, %s, %s, %s, %s,
                  %s, %s)'''
 
@@ -104,24 +86,26 @@ def account_button():
         messagebox.showinfo(title = 'Success',
                             message = 'Your account has been created successfully.')
 
-        name1entry.delete(0, tk.END)
-        age2entry.delete(0, tk.END)
-        mobilenumber1entry.delete(0, tk.END)
-        dobentry.delete(0, tk.END)
-        aadharnumberentry.delete(0, tk.END)
-        pancardnumberentry.delete(0, tk.END)
-        fathernameentry.delete(0, tk.END)
-        mothernameentry.delete(0, tk.END)
-        addressentry.delete(0, tk.END)
-        cityentry.delete(0, tk.END)
-        districtentry.delete(0, tk.END)
-        stateentry.delete(0, tk.END)
-        countryentry.delete(0, tk.END)
-        pincodeentry.delete(0, tk.END)
-        emailentry.delete(0, tk.END)
+        name1entry.delete(0, END)
+        age2entry.delete(0, END)
+        mobilenumber1entry.delete(0, END)
+        selected_day.set('Day')
+        selected_month.set('Month')
+        selected_year.set('Year')
+        aadharnumberentry.delete(0, END)
+        pancardnumberentry.delete(0, END)
+        fathernameentry.delete(0, END)
+        mothernameentry.delete(0, END)
+        addressentry.delete(0, END)
+        cityentry.delete(0, END)
+        districtentry.delete(0, END)
+        stateentry.delete(0, END)
+        countryentry.delete(0, END)
+        pincodeentry.delete(0, END)
+        emailentry.delete(0, END)
         educationentry.set('')
         accounttypeentry.set('')
-        gstnumberentry.delete(0, tk.END)
+        gstnumberentry.delete(0, END)
 
     except mysql.connector.Error as err:
         messagebox.showerror(title = 'Error',
@@ -133,14 +117,6 @@ def account_button():
         if 'conn' in locals() and conn.is_connected():
             conn.close()
 
-def mobile_number_validation(M):
-    if M.isdigit() and len(M) <= 10:
-        return True
-    elif M == ' ':
-        return True
-    else:
-        messagebox.showerror(title = 'Error',
-                             message = 'Mobile number shoul be equal to 10 digits')
 
 def depositmoney():
     show_frame(depositframe)
@@ -177,8 +153,8 @@ def deposit_button():
         if not cursor.fetchone():
             messagebox.showwarning(title = 'Error', 
                                    message = 'Invalid Account Number')
-            accountnumberentry.delete(0, tk.END)
-            amountentry.delete(0, tk.END)
+            accountnumberentry.delete(0, END)
+            amountentry.delete(0, END)
             cursor.close()
             return
 
@@ -203,8 +179,8 @@ def deposit_button():
 
         messagebox.showinfo(title = 'Success',
                             message = 'Deposit Successful')
-        accountnumberentry.delete(0, tk.END)
-        amountentry.delete(0, tk.END)
+        accountnumberentry.delete(0, END)
+        amountentry.delete(0, END)
 
     except ValueError:
         messagebox.showwarning(title = 'Error',
@@ -255,8 +231,8 @@ def withdraw_button():
         if not cursor.fetchone():
             messagebox.showwarning(title = 'Error', 
                                    message = 'Invalid Account Number')
-            accountnumberentry.delete(0, tk.END)
-            amountentry.delete(0, tk.END)
+            accountnumberentry.delete(0, END)
+            amountentry.delete(0, END)
             cursor.close()
             return
 
@@ -288,8 +264,8 @@ def withdraw_button():
 
         messagebox.showinfo(title = 'Success',
                             message = 'Withdrawal Successful')
-        accountnumberentry.delete(0, tk.END)
-        amountentry.delete(0, tk.END)
+        accountnumberentry.delete(0, END)
+        amountentry.delete(0, END)
 
     except ValueError:
         messagebox.showwarning(title = 'Error',
@@ -304,254 +280,20 @@ def withdraw_button():
         if cursor:
             cursor.close()
 
-def transactionhistory():
-    show_frame(transactionframe)
-
-def fetch_account_detail(account_number):
-    try:
-        query = '''
-            SELECT * FROM account_details 
-            WHERE account_number = %s
-        '''
-        cursor.execute(query, (account_number,))
-        account_data = cursor.fetchone()
-        return account_data
-    except mysql.connector.Error as e:
-        messagebox.showerror(title = 'Database Error', 
-                             message = f'Error fetching account details: {str(e)}')
-        return None
-
-def display_account_detail(account_data):
-    for widget in transactionframe.winfo_children():
-        if isinstance(widget, tk.Label) and widget not in [accountnumber2, accountnumber2entry]:
-            widget.destroy()
-    
-    if not account_data:
-        messagebox.showerror(title = 'Error',
-                             message = 'No account detail found!')
-        return
-    
-    accountnumber2entry.config(state = 'disabled')
-    
-    labels = ['Account Number', 'Name', 'Age', 'Mobile Number', 'Date of Birth',
-              'Aadhar Number', 'Pan Card Number', 'Father Name', 'Mother Name',
-              'Address', 'City', 'District', 'State', 'Country', 'Pin Code',
-              'Email', 'Education Qualification', 'Account Type', 'GST Number',
-              'Created At']
-    
-    canvas = tk.Canvas(transactionframe)
-    scrollbar = tk.Scrollbar(transactionframe,
-                             orient = 'vertical',
-                             command = canvas.yview)
-    scrollable_frame = tk.Frame(canvas)
-    
-    scrollable_frame.bind(
-        "<Configure>",
-        lambda e: canvas.configure(
-            scrollregion = canvas.bbox("all")
-        )
-    )
-    
-    canvas.create_window((0, 0),
-                         window = scrollable_frame,
-                         anchor = 'nw')
-    canvas.configure(yscrollcommand = scrollbar.set)
-    
-    for i, label in enumerate(labels):
-        tk.Label(scrollable_frame,
-                 text = f"{label}:",
-                 font = ('Arial', 12, 'bold')).grid(row = i,
-                                                    column = 0,
-                                                    sticky = 'w',
-                                                    padx = 10,
-                                                    pady = 2)
-        tk.Label(scrollable_frame,
-                 text = f"{account_data[i]}",
-                 font = ('Arial', 12, 'italic')).grid(row = i,
-                                                      column = 1,
-                                                      sticky = 'w',
-                                                      padx = 10,
-                                                      pady = 2)
-    
-    canvas.grid(row = 3,
-                column = 0,
-                columnspan = 2,
-                sticky = 'nsew')
-    scrollbar.grid(row = 3,
-                   column = 2,
-                   sticky = 'ns')
-    
-    remove_button = tk.Button(transactionframe,
-                              text = 'Remove Details',
-                              font = ('Arial', 12, 'bold'),
-                              command = lambda: remove_account_details(canvas,
-                                                                       scrollbar,
-                                                                       remove_button),
-                              bg = 'red',
-                              fg = 'white')
-    remove_button.grid(row = 4,
-                       column = 0,
-                       columnspan = 2,
-                       padx = 10,
-                       pady = 10)
-
-def remove_account_details(canvas, scrollbar, remove_button):
-    canvas.destroy()
-    scrollbar.destroy()
-    remove_button.destroy()
-    accountnumber2entry.config(state = 'normal')
-    accountnumber2entry.delete(0, tk.END)
-
-def account_detail():
-    account_number = accountnumber2entry.get()
-    
-    if not account_number.isdigit():
-        messagebox.showerror(title = 'Invalid Input',
-                             message = 'Please enter a valid Account Number.')
-        return
-    
-    account_data = fetch_account_detail(account_number)
-    
-    if not account_data:
-        messagebox.showerror(title = 'Error',
-                             message = 'No account found with this number.')
-        return
-    
-    if isinstance(account_data, dict):
-        account_data = tuple(account_data.values())
-
-    elif isinstance(account_data, list) and isinstance(account_data[0], (list, tuple)):
-        account_data = account_data[0]
-
-    elif not isinstance(account_data, (list, tuple)):
-        messagebox.showerror(title = 'Error',
-                             message = 'Invalid account data format.')
-        return
-    
-    display_account_detail(account_data)
-
-def generate_balance_pdf(account_number):
-    try:
-        cursor = conn.cursor(dictionary = True)
-
-        cursor.execute(
-            '''SELECT account_number, name 
-            FROM account_details 
-            WHERE account_number = %s''',
-            (account_number,)
-        )
-        account = cursor.fetchone()
-
-        if not account:
-            messagebox.showerror(title = 'Error',
-                                 message = 'Account not found!')
-            return
-
-        account_num, account_name = account['account_number'], account['name']
-
-        query = '''SELECT id, transaction_date,
-                CASE
-                    WHEN transaction_type = 'Deposit' 
-                    THEN amount 
-                    ELSE NULL 
-                    END AS deposit,
-                CASE
-                    WHEN transaction_type = 'Withdraw' 
-                    THEN amount
-                    ELSE NULL 
-                    END AS withdraw,
-                balance
-                FROM Transactions
-                WHERE account_number = %s
-                ORDER BY id ASC'''
-        
-        cursor.execute(query, (account_number,))
-        transactions = cursor.fetchall()
-
-        cursor.close()
-
-        pdf_filename = f'Balance_Enquiry_{account_number}.pdf'
-        doc = SimpleDocTemplate(pdf_filename,
-                                pagesize = A4)
-
-        elements = []
-        styles = getSampleStyleSheet()
-
-        styles['Normal'].alignment = TA_CENTER
-        elements.append(Paragraph('<b>Online Banking System</b>',
-                                  styles['Normal']))
-        elements.append(Paragraph(f'<b>Account Number:</b> {account_num}',
-                                  styles['Normal']))
-        elements.append(Paragraph(f'<b>Name:</b> {account_name}',
-                                  styles['Normal']))
-        elements.append(Spacer(1, 15))
-
-        table_data = [['ID', 'Date', 'Time',
-                       'Deposit', 'Withdraw', 'Balance']]
-
-        for row in transactions:
-            transaction_date = row['transaction_date']
-            date_str = transaction_date.strftime('%Y-%m-%d')
-            time_str = transaction_date.strftime('%H:%M:%S')
-
-            table_data.append([row['id'], date_str, time_str,
-                               row['deposit'] if row['deposit'] else '-',
-                               row['withdraw'] if row['withdraw'] else '-',
-                               row['balance']])
-
-        table = Table(table_data, colWidths = [50, 80, 80, 80, 80, 80])
-
-        table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
-        ]))
-
-        elements.append(table)
-        doc.build(elements)
-
-        messagebox.showinfo(title = 'Success',
-                            message = f'PDF generated: {pdf_filename}')
-
-        accountnumber2entry.delete(0, tk.END)
-
-    except mysql.connector.Error as db_error:
-        messagebox.showerror(title = 'Database Error',
-                             message = f'Error: {db_error}')
-    except Exception as e:
-        messagebox.showerror(title = 'Error',
-                             message = str(e))
-
-def on_generate_pdf():
-    account_number = accountnumber2entry.get()
-    if account_number.isdigit():
-        generate_balance_pdf(account_number)
-    else:
-        messagebox.showerror(title = 'Error',
-                             message = 'Please enter a valid account number')
-
-if len(sys.argv) > 1:
-    logged_in_username = sys.argv[1]
-else:
-    logged_in_username = None
-
-root = tk.Tk()
+root = Tk()
 root.title('Online Banking System - Dashboard')
 root.geometry('1920x1080')
 
-headerpoint = tk.Frame(root,
+headerpoint = Frame(root,
                        width = 20,
-                       relief = tk.SOLID,
+                       relief = SOLID,
                        bd = 1)
 headerpoint.pack(fill = 'x',
                  side = 'top',
                  padx = 5,
                  pady = 5)
 
-home = tk.Button(headerpoint,
+home = Button(headerpoint,
               text = 'Home',
               bg = 'lightgrey',
               fg = 'black',
@@ -562,7 +304,7 @@ home.pack(side = 'left',
           padx = 70,
           pady = 15)
 
-create_account = tk.Button(headerpoint,
+create_account = Button(headerpoint,
                            text = 'Create Account',
                            bg = 'lightgrey',
                            fg = 'black',
@@ -571,20 +313,9 @@ create_account = tk.Button(headerpoint,
                            width = 15)
 create_account.pack(side = 'left',
                     pady = 15,
-                    padx = 70)
+                    padx = 200)
 
-transaction_history = tk.Button(headerpoint,
-                                text = 'Transaction History',
-                                bg = 'lightgrey',
-                                fg = 'black',
-                                font = ('Arial', 12, 'bold'),
-                                command = transactionhistory,
-                                width = 15)
-transaction_history.pack(side = 'right',
-                         pady = 15,
-                         padx = 70)
-
-deposit_money = tk.Button(headerpoint,
+deposit_money = Button(headerpoint,
                           text = 'Deposit and Withdraw Cash',
                           bg = 'lightgrey',
                           fg = 'black',
@@ -595,26 +326,21 @@ deposit_money.pack(side = 'right',
                    pady = 15,
                    padx = 70)
 
-main_frame = tk.Frame(root,
+main_frame = Frame(root,
                       bd = 1,
-                      relief = tk.SOLID)
+                      relief = SOLID)
 main_frame.pack(expand = True,
                 fill = 'both',
                 padx = 5,
                 pady = 5)
 
-homeframe = tk.Frame(main_frame)
-
-accountframe = tk.Frame(main_frame)
-vcmd = accountframe.register(mobile_number_validation)
-
-depositframe = tk.Frame(main_frame)
-transactionframe = tk.Frame(main_frame)
+homeframe = Frame(main_frame)
+accountframe = Frame(main_frame)
+depositframe = Frame(main_frame)
 
 for frame in (homeframe,
               accountframe,
-              depositframe,
-              transactionframe):
+              depositframe):
     frame.place(x = 0,
                 y = 0,
                 relwidth = 1,
@@ -622,12 +348,12 @@ for frame in (homeframe,
 
 show_frame(homeframe)
 
-welcome = tk.Label(homeframe,
+welcome = Label(homeframe,
                    text = 'Welcome to System & Start Your Work',
                    font = ('Arial', 18, 'bold'))
 welcome.pack(pady = 100)
 
-heading = tk.Label(accountframe,
+heading = Label(accountframe,
                    text = 'New Account Application Form',
                    font = ('Arial', 14, 'bold'))
 heading.grid(row = 0,
@@ -635,10 +361,10 @@ heading.grid(row = 0,
              columnspan = 7,
              pady = 10)
 
-name1 = tk.Label(accountframe,
+name1 = Label(accountframe,
                  text = 'Name',
                  font = ('Arial', 12, 'bold'))
-name1entry = tk.Entry(accountframe,
+name1entry = Entry(accountframe,
                       font = ('Arial', 12))
 name1.grid(row = 1,
            column = 0,
@@ -649,42 +375,42 @@ name1entry.grid(row = 1,
                 column = 1,
                 padx = 5,
                 pady = 10,
-                sticky = 'w')
+                sticky = 'w',
+                columnspan = 3)
 
-age2 = tk.Label(accountframe,
+age2 = Label(accountframe,
                 text = 'Age',
                 font = ('Arial', 12, 'bold'))
-age2entry = tk.Entry(accountframe,
+age2entry = Entry(accountframe,
                      font = ('Arial', 12))
 age2.grid(row = 1,
-          column = 3,
+          column = 4,
           padx = 5,
           pady = 10,
           sticky = 'e')
 age2entry.grid(row = 1,
-               column = 4,
+               column = 5,
                padx = 5,
                pady = 10,
                sticky = 'w')
 
-mobilenumber1 = tk.Label(accountframe,
+mobilenumber1 = Label(accountframe,
                          text = 'Mobile Number',
                          font = ('Arial', 12, 'bold'))
-mobilenumber1entry = tk.Entry(accountframe,
-                              font = ('Arial', 12),
-                              validatecommand = (vcmd, '%M'))
+mobilenumber1entry = Entry(accountframe,
+                              font = ('Arial', 12))
 mobilenumber1.grid(row = 1,
-                   column = 5,
+                   column = 6,
                    padx = 5,
                    pady = 10,
                    sticky = 'e')
 mobilenumber1entry.grid(row = 1,
-                       column = 6,
+                       column = 7,
                        padx = 5,
                        pady = 10,
                        sticky = 'w')
 
-dob = tk.Label(accountframe,
+dob = Label(accountframe,
                text = 'Date of Birth',
                font = ('Arial', 12, 'bold'))
 dob.grid(row = 2,
@@ -693,65 +419,73 @@ dob.grid(row = 2,
          pady = 5,
          sticky = 'e')
 
-dobentry = tk.Entry(accountframe,
-                    font = ('Arial', 12),
-                    fg = 'grey')
-dobentry.insert(0,
-                'yyyy-mm-dd')
-dobentry.bind('<FocusIn>',
-              on_entry_focus_in)
-dobentry.bind('<FocusOut>',
-              on_entry_focus_out)
-dobentry.grid(row = 2,
-              column = 1,
-              padx = 5,
-              pady = 5,
-              sticky = 'w')
+days = [str(i) for i in range(1, 32)]
+months = ['January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December']
+years = [str(i) for i in range(1925, 2026)]
 
-validate = tk.Button(accountframe,
-                     text = 'Validate',
-                     command = validate_button, 
-                     font = ('Arial', 12, 'bold'),
-                     bg = 'lightgrey')
-validate.grid(row = 2,
-              column = 2)
+selected_day = StringVar()
+selected_month = StringVar()
+selected_year = StringVar()
 
-aadharnumber = tk.Label(accountframe,
+selected_day.set('Day')
+selected_month.set('Month')
+selected_year.set('Year')
+
+day_dropdown = ttk.Combobox(accountframe, textvariable=selected_day, values=days, width=5, state='readonly')
+month_dropdown = ttk.Combobox(accountframe, textvariable=selected_month, values=months, width=10, state='readonly')
+year_dropdown = ttk.Combobox(accountframe, textvariable=selected_year, values=years, width=7, state='readonly')
+
+day_dropdown.grid(row=2, column=1, padx=5, pady=5, sticky='w')
+month_dropdown.grid(row=2, column=2, padx=5, pady=5, sticky='w')
+year_dropdown.grid(row=2, column=3, padx=5, pady=5, sticky='w')
+
+aadharnumber = Label(accountframe,
                         text = 'Aadhaar No.',
                         font = ('Arial', 12, 'bold'))
-aadharnumberentry = tk.Entry(accountframe,
+aadharnumberentry = Entry(accountframe,
                              font = ('Arial', 12))
 aadharnumber.grid(row = 2,
-                  column = 3,
+                  column = 4,
                   padx = 10,
                   pady = 5,
                   sticky = 'e')
 aadharnumberentry.grid(row = 2,
-                       column = 4,
+                       column = 5,
                        padx = 5,
                        pady = 5,
                        sticky = 'w')
 
-pancardnumber = tk.Label(accountframe,
+pancardnumber = Label(accountframe,
                          text = 'Pan Card Number',
                          font = ('Arial', 12, 'bold'))
-pancardnumberentry = tk.Entry(accountframe,
+pancardnumberentry = Entry(accountframe,
                               font = ('Arial', 12))
 pancardnumber.grid(row = 2,
-                   column = 5,
+                   column = 6,
                    padx = 5,
                    pady = 5,
                    sticky = 'e')
 pancardnumberentry.grid(row = 2,
-                        column = 6,
+                        column = 7,
                         padx = 5,
                         pady = 5,
                         sticky = 'w')
 
-fathername = tk.Label(accountframe,
+fathername = Label(accountframe,
                       text = 'Father Name',
                       font = ('Arial', 12, 'bold'))
-fathernameentry = tk.Entry(accountframe,
+fathernameentry = Entry(accountframe,
                            font = ('Arial', 12))
 fathername.grid(row = 3,
                 column = 0,
@@ -762,44 +496,45 @@ fathernameentry.grid(row = 3,
                      column = 1,
                      padx = 5,
                      pady = 5,
-                     sticky = 'w')
+                     sticky = 'w',
+                     columnspan = 3)
 
-mothername = tk.Label(accountframe,
+mothername = Label(accountframe,
                       text = 'Mother Name',
                       font = ('Arial', 12, 'bold'))
-mothernameentry = tk.Entry(accountframe,
+mothernameentry = Entry(accountframe,
                            font = ('Arial', 12))
 mothername.grid(row = 3,
-                column = 3,
+                column = 4,
                 padx = 5,
                 pady = 5,
                 sticky = 'e')
 mothernameentry.grid(row = 3,
-                     column = 4,
+                     column = 5,
                      padx = 5,
                      pady = 5,
                      sticky = 'w')
 
-address = tk.Label(accountframe,
+address = Label(accountframe,
                    text = 'Address',
                    font = ('Arial', 12, 'bold'))
-addressentry = tk.Entry(accountframe,
+addressentry = Entry(accountframe,
                         font = ('Arial', 12))
 address.grid(row = 3,
-             column = 5,
+             column = 6,
              padx = 5,
              pady = 5,
              sticky = 'e')
 addressentry.grid(row = 3,
-                  column = 6,
+                  column = 7,
                   padx = 5,
                   pady = 5,
                   sticky = 'w')
 
-city = tk.Label(accountframe,
+city = Label(accountframe,
                 text = 'City',
                 font = ('Arial', 12, 'bold'))
-cityentry = tk.Entry(accountframe,
+cityentry = Entry(accountframe,
                      font = ('Arial', 12))
 city.grid(row = 4,
           column = 0,
@@ -810,44 +545,45 @@ cityentry.grid(row = 4,
                column = 1,
                padx = 5,
                pady = 5,
-               sticky = 'w')
+               sticky = 'w',
+               columnspan = 3)
 
-district = tk.Label(accountframe,
+district = Label(accountframe,
                     text = 'District',
                     font = ('Arial', 12, 'bold'))
-districtentry = tk.Entry(accountframe,
+districtentry = Entry(accountframe,
                          font = ('Arial', 12))
 district.grid(row = 4,
-              column = 3,
+              column = 4,
               padx = 5,
               pady = 5,
               sticky = 'e')
 districtentry.grid(row = 4,
-                   column = 4,
+                   column = 5,
                    padx = 5,
                    pady = 5,
                    sticky = 'w')
 
-state = tk.Label(accountframe,
+state = Label(accountframe,
                  text = 'State',
                  font = ('Arial', 12, 'bold'))
-stateentry = tk.Entry(accountframe,
+stateentry = Entry(accountframe,
                       font = ('Arial', 12))
 state.grid(row = 4,
-           column = 5,
+           column = 6,
            padx = 5,
            pady = 5,
            sticky = 'e')
 stateentry.grid(row = 4,
-                column = 6,
+                column = 7,
                 padx = 5,
                 pady = 5,
                 sticky = 'w')
 
-country = tk.Label(accountframe,
+country = Label(accountframe,
                    text = 'Country',
                    font = ('Arial', 12, 'bold'))
-countryentry = tk.Entry(accountframe,
+countryentry = Entry(accountframe,
                         font = ('Arial', 12))
 country.grid(row = 5,
              column = 0,
@@ -858,41 +594,42 @@ countryentry.grid(row = 5,
                   column = 1,
                   padx = 5,
                   pady = 5,
-                  sticky = 'w')
+                  sticky = 'w',
+                  columnspan = 3)
 
-pincode = tk.Label(accountframe,
+pincode = Label(accountframe,
                    text = 'Pin Code',
                    font = ('Arial', 12, 'bold'))
-pincodeentry = tk.Entry(accountframe,
+pincodeentry = Entry(accountframe,
                         font = ('Arial', 12))
 pincode.grid(row = 5,
-           column = 3,
+           column = 4,
            padx = 5,
            pady = 5,
            sticky = 'e')
 pincodeentry.grid(row = 5,
-                  column = 4,
+                  column = 5,
                   padx = 5,
                   pady = 5,
                   sticky = 'w')
 
-email = tk.Label(accountframe,
+email = Label(accountframe,
                  text = 'Email Address',
                  font = ('Arial', 12, 'bold'))
-emailentry = tk.Entry(accountframe,
+emailentry = Entry(accountframe,
                       font = ('Arial', 12))
 email.grid(row = 5,
-           column = 5,
+           column = 6,
            padx = 5,
            pady = 5,
            sticky = 'e')
 emailentry.grid(row = 5,
-                column = 6,
+                column = 7,
                 padx = 5,
                 pady = 5,
                 sticky = 'w')
 
-education = tk.Label(accountframe,
+education = Label(accountframe,
                      text = 'Education Qualification',
                      font  = ('Arial', 12, 'bold'))
 educationentry = ttk.Combobox(accountframe,
@@ -913,9 +650,10 @@ educationentry.grid(row = 6,
                     column = 1,
                     padx = 10,
                     pady = 5,
-                    sticky = 'w')
+                    sticky = 'w',
+                    columnspan = 3)
 
-accounttype = tk.Label(accountframe,
+accounttype = Label(accountframe,
                        text = 'Account Type',
                        font = ('Arial', 12, 'bold'))
 accounttypeentry = ttk.Combobox(accountframe,
@@ -926,32 +664,32 @@ accounttypeentry = ttk.Combobox(accountframe,
 accounttypeentry.bind('<<ComboboxSelected>>',
                       gst_entry)
 accounttype.grid(row = 6,
-                 column = 3,
+                 column = 4,
                  padx = 5,
                  pady = 5,
                  sticky = 'e')
 accounttypeentry.grid(row = 6,
-                      column = 4,
+                      column = 5,
                       padx = 5,
                       pady = 5,
                       sticky = 'w')
 
-gstnumber = tk.Label(accountframe,
+gstnumber = Label(accountframe,
                      text = 'GST Number',
                      font = ('Arial', 12, 'bold'))
-gstnumberentry = tk.Entry(accountframe,
+gstnumberentry = Entry(accountframe,
                           font = ('Arial', 12))
 
-accountbutton = tk.Button(accountframe,
+accountbutton = Button(accountframe,
                           text = 'Create Account',
                           font = ('Arial', 12, 'bold'),
                           command = account_button)
 accountbutton.grid(row = 7,
                    column = 0,
-                   columnspan = 7,
+                   columnspan = 8,
                    pady = 5)
 
-heading1 = tk.Label(depositframe,
+heading1 = Label(depositframe,
                     text = 'Deposit and Withdraw Cash',
                     font = ('Arial', 14, 'bold'))
 heading1.grid(row = 0,
@@ -959,10 +697,10 @@ heading1.grid(row = 0,
               columnspan = 7,
               pady = 20)
 
-accountnumber = tk.Label(depositframe,
+accountnumber = Label(depositframe,
                          text = 'Account Number',
                          font = ('Arial', 12, 'bold'))
-accountnumberentry = tk.Entry(depositframe,
+accountnumberentry = Entry(depositframe,
                               font = ('Arial', 12))
 accountnumber.grid(row = 1,
                    column = 0,
@@ -975,10 +713,10 @@ accountnumberentry.grid(row = 1,
                         pady = 10,
                         sticky = 'w')
 
-amount = tk.Label(depositframe,
+amount = Label(depositframe,
                   text = 'Amount',
                   font = ('Arial', 12, 'bold'))
-amountentry = tk.Entry(depositframe, 
+amountentry = Entry(depositframe, 
                        font = ('Arial', 12))
 amount.grid(row = 1,
             column = 2,
@@ -991,7 +729,7 @@ amountentry.grid(row = 1,
                  pady = 10,
                  sticky = 'w')
 
-depositbutton = tk.Button(depositframe,
+depositbutton = Button(depositframe,
                           text = 'Deposit', 
                           font = ('Arial', 12, 'bold'), 
                           command = deposit_button,
@@ -1001,7 +739,7 @@ depositbutton.grid(row = 2,
                    columnspan = 2,
                    pady = 10)
 
-withdrawbutton = tk.Button(depositframe,
+withdrawbutton = Button(depositframe,
                            text = 'Withdraw',
                            font = ('Arial', 12, 'bold'),
                            command = withdraw_button,
@@ -1010,49 +748,5 @@ withdrawbutton.grid(row = 2,
                     column = 2,
                     columnspan = 2,
                     pady = 10)
-
-heading4 = tk.Label(transactionframe,
-                    text = 'Account History',
-                    font = ('Arial', 14, 'bold'))
-heading4.grid(row = 0,
-              column = 0,
-              columnspan = 7,
-              pady = 20)
-
-accountnumber2 = tk.Label(transactionframe,
-                          text = 'Account Number',
-                          font = ('Arial', 12, 'bold'))
-accountnumber2entry = tk.Entry(transactionframe,
-                               font = ('Arial', 12))
-accountnumber2.grid(row = 1,
-                   column = 0,
-                   padx = 10,
-                   pady = 10,
-                   sticky = 'w')
-accountnumber2entry.grid(row = 1,
-                        column = 1,
-                        padx = 10,
-                        pady = 10,
-                        sticky = 'e')
-
-accountdetailbutton = tk.Button(transactionframe,
-                                text = 'Account Detail',
-                                font = ('Arial', 12, 'bold'),
-                                command = account_detail,
-                                bg = 'lightgrey')
-accountdetailbutton.grid(row = 2,
-                         column = 0,
-                         padx = 10,
-                         pady = 10)
-
-balanceenquirybutton = tk.Button(transactionframe,
-                                 text = 'Balance Enquery',
-                                 font = ('Arial', 12, 'bold'),
-                                 command = on_generate_pdf,
-                                 bg = 'lightgrey')
-balanceenquirybutton.grid(row = 2,
-                          column = 1,
-                          padx = 10,
-                          pady = 10)
 
 root.mainloop()
