@@ -321,57 +321,86 @@ def fetch_account_detail(account_number):
                              message = f'Error fetching account details: {str(e)}')
         return None
 
-def generate_pdf(account_data):
+def display_account_detail(account_data):
+    for widget in transactionframe.winfo_children():
+        if isinstance(widget, tk.Label) and widget not in [accountnumber2, accountnumber2entry]:
+            widget.destroy()
+    
     if not account_data:
         messagebox.showerror(title = 'Error',
                              message = 'No account detail found!')
         return
     
-    pdf_file = f'AccountDetail_{account_data[0]}.pdf'
-    doc = SimpleDocTemplate(pdf_file,
-                            pagesize = A4)
-    elements = []
-    styles = getSampleStyleSheet()
+    accountnumber2entry.config(state = 'disabled')
     
-    elements.append(Paragraph('<b>Account Details</b>',
-                              styles['Normal']))
-    elements.append(Spacer(1, 15))
+    labels = ['Account Number', 'Name', 'Age', 'Mobile Number', 'Date of Birth',
+              'Aadhar Number', 'Pan Card Number', 'Father Name', 'Mother Name',
+              'Address', 'City', 'District', 'State', 'Country', 'Pin Code',
+              'Email', 'Education Qualification', 'Account Type', 'GST Number',
+              'Created At']
     
-    bold_style = ParagraphStyle(name = 'BoldStyle',
-                                parent = styles['Normal'], 
-                                fontName = 'Helvetica-Bold',
-                                fontSize = 10)
+    canvas = tk.Canvas(transactionframe)
+    scrollbar = tk.Scrollbar(transactionframe,
+                             orient = 'vertical',
+                             command = canvas.yview)
+    scrollable_frame = tk.Frame(canvas)
     
-    data = [['Field', 'Data']]
-    labels = ['Account Number', 'Name', 'Age',
-              'Mobile Number', 'Date of Birth',
-              'Aadhar Number', 'Pan Card Number',
-              'Father Name', 'Mother Name', 'Address',
-              'City', 'District', 'State', 'Country',
-              'Pin Code', 'Email', 'Education Qualification',
-              'Account Type', 'GST Number', 'Created At']
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(
+            scrollregion = canvas.bbox("all")
+        )
+    )
+    
+    canvas.create_window((0, 0),
+                         window = scrollable_frame,
+                         anchor = 'nw')
+    canvas.configure(yscrollcommand = scrollbar.set)
     
     for i, label in enumerate(labels):
-        data.append([Paragraph(label, bold_style),
-                     str(account_data[i])])
+        tk.Label(scrollable_frame,
+                 text = f"{label}:",
+                 font = ('Arial', 12, 'bold')).grid(row = i,
+                                                    column = 0,
+                                                    sticky = 'w',
+                                                    padx = 10,
+                                                    pady = 2)
+        tk.Label(scrollable_frame,
+                 text = f"{account_data[i]}",
+                 font = ('Arial', 12, 'italic')).grid(row = i,
+                                                      column = 1,
+                                                      sticky = 'w',
+                                                      padx = 10,
+                                                      pady = 2)
+    
+    canvas.grid(row = 3,
+                column = 0,
+                columnspan = 2,
+                sticky = 'nsew')
+    scrollbar.grid(row = 3,
+                   column = 2,
+                   sticky = 'ns')
+    
+    remove_button = tk.Button(transactionframe,
+                              text = 'Remove Details',
+                              font = ('Arial', 12, 'bold'),
+                              command = lambda: remove_account_details(canvas,
+                                                                       scrollbar,
+                                                                       remove_button),
+                              bg = 'red',
+                              fg = 'white')
+    remove_button.grid(row = 4,
+                       column = 0,
+                       columnspan = 2,
+                       padx = 10,
+                       pady = 10)
 
-    
-    table = Table(data, colWidths = [150, 300])
-    
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black)
-    ]))
-    
-    elements.append(table)
-    doc.build(elements)
-    messagebox.showinfo(title = 'PDF Generated',
-                        message = f'PDF saved as {pdf_file}')
+def remove_account_details(canvas, scrollbar, remove_button):
+    canvas.destroy()
+    scrollbar.destroy()
+    remove_button.destroy()
+    accountnumber2entry.config(state = 'normal')
+    accountnumber2entry.delete(0, tk.END)
 
 def account_detail():
     account_number = accountnumber2entry.get()
@@ -399,8 +428,7 @@ def account_detail():
                              message = 'Invalid account data format.')
         return
     
-    generate_pdf(account_data)
-    accountnumber2entry.delete(0, tk.END)
+    display_account_detail(account_data)
 
 def generate_balance_pdf(account_number):
     try:
