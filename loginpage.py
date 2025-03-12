@@ -54,7 +54,7 @@ def loginbutton():
 
 root = Tk()
 root.title('Staff Login')
-root.geometry('300x150')
+root.geometry('300x200')
 
 heading = Label(root,
                 text = 'Online Banking System',
