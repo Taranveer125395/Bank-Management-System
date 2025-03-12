@@ -69,11 +69,11 @@ def account_button():
                   district, state, country, pin_code, email, education_qualification, 
                   account_type, gst_number)
                  VALUES
-                 (%s, %s, %s, %s, %s,
-                 %s, %s, %s, %s, %s,
-                 %s, %s, %s, %s, %s, %s,
+                 (%s, %s, %s, %s,
+                 %s, %s, %s, %s,
+                 %s, %s, %s, %s,
+                 %s, %s, %s, %s,
                  %s, %s)'''
-
         values = (name, age, mobile_number, date_of_birth, aadhar_number, 
                   pan_card_number, father_name, mother_name, address, city, 
                   district, state, country, pin_code, email, 
@@ -81,9 +81,26 @@ def account_button():
 
         cursor.execute(sql, values)
         conn.commit()
-        
+
+        cursor.execute('SELECT LAST_INSERT_ID()')
+        account_number = cursor.fetchone()[0]
+
         messagebox.showinfo(title = 'Success',
-                            message = 'Your account has been created successfully.')
+                            message = f'''Your account has been created successfully.
+                                          \nAccount Number: {account_number}''')
+
+        global account_label, remove_button
+        account_label = Label(root,
+                              text = f'Account Number: {account_number}',
+                              font = ('Arial', 12, 'bold'))
+        account_label.pack()
+
+        remove_button = Button(root,
+                               text = 'Remove',
+                               command = remove_account_display,
+                               bg = 'red',
+                               fg = 'white')
+        remove_button.pack()
 
         name1entry.delete(0, END)
         age2entry.delete(0, END)
@@ -116,6 +133,10 @@ def account_button():
         if 'conn' in locals() and conn.is_connected():
             conn.close()
 
+def remove_account_display():
+    '''Removes the displayed account number and the remove button'''
+    account_label.destroy()
+    remove_button.destroy()
 
 def depositmoney():
     show_frame(depositandwithdrawframe)
