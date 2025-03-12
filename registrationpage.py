@@ -40,7 +40,9 @@ def register_button():
         return
 
     try:
-        cursor.execute('SELECT username FROM staff_registeration WHERE username = %s', (username,))
+        cursor.execute('''SELECT username FROM staff_registeration
+                       WHERE username = %s''',
+                       (username,))
         existing_user = cursor.fetchone()
 
         if existing_user:
@@ -50,13 +52,13 @@ def register_button():
             conn.close()
             return
 
-        insert_query = """
+        insert_query = '''
         INSERT INTO staff_registeration (
             fullname, username, mobile_number, age, 
             education_qualification, job_type, password, 
             confirm_password
         ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """
+        '''
 
         values = (fullname, username, mobilenumber,
                   age1, qualification, job, password,
@@ -110,12 +112,11 @@ heading = Label(root,
 heading.grid(row = 0, 
              column = 0, 
              columnspan = 4, 
-             pady = 10
-            )
+             pady = 10)
 
 full_name = Label(root, 
                   text = 'Full Name',
-                  font = ('Arial', 12))
+                  font = ('Arial', 12, 'bold'))
 full_name_entry = Entry(root,
                         font = ('Arial', 12))
 full_name.grid(row = 1, 
@@ -130,15 +131,15 @@ full_name_entry.grid(row = 1,
                      sticky = 'w')
 
 user_name = Label(root, 
-                 text = 'Username',
-                 font = ('Arial', 12))
+                  text = 'Username',
+                  font = ('Arial', 12, 'bold'))
 username_entry = Entry(root,
                        font = ('Arial', 12))
 user_name.grid(row = 1, 
-              column = 2, 
-              padx = 5, 
-              pady = 2,
-              sticky = 'e')
+               column = 2, 
+               padx = 5, 
+               pady = 2,
+               sticky = 'e')
 username_entry.grid(row = 1, 
                     column = 3, 
                     padx = 5, 
@@ -147,7 +148,7 @@ username_entry.grid(row = 1,
 
 mobile_number = Label(root,
                       text = 'Mobile Number',
-                      font = ('Arial', 12))
+                      font = ('Arial', 12, 'bold'))
 mobile_number_entry = Entry(root,
                             validate = 'key', 
                             validatecommand = (vcmd, '%P'),
@@ -165,7 +166,7 @@ mobile_number_entry.grid(row = 2,
 
 age = Label(root, 
             text = 'Age',
-            font = ('Arial', 12))
+            font = ('Arial', 12, 'bold'))
 age_entry = Spinbox(root, 
                     from_ = 18, 
                     to = 100,
@@ -183,7 +184,7 @@ age_entry.grid(row = 2,
 
 qualification_type = Label(root, 
                       text = 'Education Qualification',
-                      font = ('Arial', 12))
+                      font = ('Arial', 12, 'bold'))
 qualification_entry = ttk.Combobox(root, 
                                    values = ['12th Pass', 
                                              'Diploma', 
@@ -192,10 +193,10 @@ qualification_entry = ttk.Combobox(root,
                                              'PostGraduate'],
                                    font = ('Arial', 12))
 qualification_type.grid(row = 3, 
-                   column = 0, 
-                   padx = 5, 
-                   pady = 2,
-                   sticky = 'e')
+                        column = 0, 
+                        padx = 5, 
+                        pady = 2,
+                        sticky = 'e')
 qualification_entry.grid(row = 3, 
                          column = 1, 
                          padx = 5, 
@@ -204,7 +205,7 @@ qualification_entry.grid(row = 3,
 
 job_type = Label(root, 
                  text = 'Job Type',
-                 font = ('Arial', 12))
+                 font = ('Arial', 12, 'bold'))
 job_type_entry = ttk.Combobox(root,
                               values = ['Customer Service Officer(CSO)',
                                         'Relationship Manager',
@@ -227,7 +228,7 @@ job_type_entry.grid(row = 3,
 
 password_type = Label(root,
                       text = 'Password',
-                      font = ('Arial', 12))
+                      font = ('Arial', 12, 'bold'))
 password_type_entry = Entry(root,
                             show = '*',
                             font = ('Arial', 12))
@@ -244,7 +245,7 @@ password_type_entry.grid(row = 4,
 
 confirm_password_type = Label(root,
                               text = 'Confirm Password',
-                              font = ('Arial', 12))
+                              font = ('Arial', 12, 'bold'))
 confirm_password_type_entry = Entry(root,
                                     show = '*',
                                     font = ('Arial', 12))
@@ -262,7 +263,7 @@ confirm_password_type_entry.grid(row = 4,
 registration_button = Button(root, 
                              text = 'Register',
                              command = register_button,
-                             font = ('Arial', 12))
+                             font = ('Arial', 12, 'bold'))
 registration_button.grid(row = 5, 
                          column = 0, 
                          columnspan = 2, 
@@ -270,7 +271,7 @@ registration_button.grid(row = 5,
 
 login_button = Button(root,
                       text = 'Login Here!',
-                      font = ('Arial', 12),
+                      font = ('Arial', 12, 'bold'),
                       command = loginbutton)
 login_button.grid(row = 5,
                   column = 2,
