@@ -119,7 +119,7 @@ def account_button():
 
 
 def depositmoney():
-    show_frame(depositframe)
+    show_frame(depositandwithdrawframe)
 
 def deposit_button():
     account_number = accountnumberentry.get().strip()
@@ -315,14 +315,14 @@ create_account.pack(side = 'left',
                     pady = 15,
                     padx = 200)
 
-deposit_money = Button(headerpoint,
+depositandwithdraw_money = Button(headerpoint,
                           text = 'Deposit and Withdraw Cash',
                           bg = 'lightgrey',
                           fg = 'black',
                           font = ('Arial', 12, 'bold'),
                           command = depositmoney,
                           width = 25)
-deposit_money.pack(side = 'right',
+depositandwithdraw_money.pack(side = 'right',
                    pady = 15,
                    padx = 70)
 
@@ -336,11 +336,11 @@ main_frame.pack(expand = True,
 
 homeframe = Frame(main_frame)
 accountframe = Frame(main_frame)
-depositframe = Frame(main_frame)
+depositandwithdrawframe = Frame(main_frame)
 
 for frame in (homeframe,
               accountframe,
-              depositframe):
+              depositandwithdrawframe):
     frame.place(x = 0,
                 y = 0,
                 relwidth = 1,
@@ -689,7 +689,7 @@ accountbutton.grid(row = 7,
                    columnspan = 8,
                    pady = 5)
 
-heading1 = Label(depositframe,
+heading1 = Label(depositandwithdrawframe,
                     text = 'Deposit and Withdraw Cash',
                     font = ('Arial', 14, 'bold'))
 heading1.grid(row = 0,
@@ -697,10 +697,10 @@ heading1.grid(row = 0,
               columnspan = 7,
               pady = 20)
 
-accountnumber = Label(depositframe,
+accountnumber = Label(depositandwithdrawframe,
                          text = 'Account Number',
                          font = ('Arial', 12, 'bold'))
-accountnumberentry = Entry(depositframe,
+accountnumberentry = Entry(depositandwithdrawframe,
                               font = ('Arial', 12))
 accountnumber.grid(row = 1,
                    column = 0,
@@ -713,10 +713,10 @@ accountnumberentry.grid(row = 1,
                         pady = 10,
                         sticky = 'w')
 
-amount = Label(depositframe,
+amount = Label(depositandwithdrawframe,
                   text = 'Amount',
                   font = ('Arial', 12, 'bold'))
-amountentry = Entry(depositframe, 
+amountentry = Entry(depositandwithdrawframe,
                        font = ('Arial', 12))
 amount.grid(row = 1,
             column = 2,
@@ -729,21 +729,21 @@ amountentry.grid(row = 1,
                  pady = 10,
                  sticky = 'w')
 
-depositbutton = Button(depositframe,
-                          text = 'Deposit', 
-                          font = ('Arial', 12, 'bold'), 
-                          command = deposit_button,
-                          bg = 'lightgrey')
+depositbutton = Button(depositandwithdrawframe,
+                       text = 'Deposit', 
+                       font = ('Arial', 12, 'bold'), 
+                       command = deposit_button,
+                       bg = 'lightgrey')
 depositbutton.grid(row = 2,
                    column = 0, 
                    columnspan = 2,
                    pady = 10)
 
-withdrawbutton = Button(depositframe,
-                           text = 'Withdraw',
-                           font = ('Arial', 12, 'bold'),
-                           command = withdraw_button,
-                           bg = 'lightgrey')
+withdrawbutton = Button(depositandwithdrawframe,
+                        text = 'Withdraw',
+                        font = ('Arial', 12, 'bold'),
+                        command = withdraw_button,
+                        bg = 'lightgrey')
 withdrawbutton.grid(row = 2,
                     column = 2,
                     columnspan = 2,
