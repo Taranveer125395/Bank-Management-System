@@ -476,7 +476,7 @@ year_dropdown = ttk.Combobox(accountframe,
                              textvariable = selected_year,
                              values = years,
                              width = 7,
-                             state='readonly')
+                             state = 'readonly')
 
 day_dropdown.grid(row = 2,
                   column = 1,
