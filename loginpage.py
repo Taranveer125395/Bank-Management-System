@@ -15,6 +15,10 @@ def forregistration():
     root.destroy()
     subprocess.run(['python', 'registrationpage.py'])
 
+def backbutton():
+    root.destroy()
+    subprocess.run(['python', 'welcomepage.py'])
+
 def loginbutton():
     username = entry1.get()
     password = entry2.get()
@@ -54,15 +58,14 @@ def loginbutton():
 
 root = Tk()
 root.title('Staff Login')
-root.geometry('300x200')
+root.geometry('400x300')
 
 heading = Label(root,
                 text = 'Online Banking System',
                 font = ('Arial', 16, 'bold'))
 heading.grid(row = 0,
              column = 0,
-             columnspan = 2,
-             pady = 10)
+             columnspan = 3)
 
 username_type = Label(root,
                       text = 'Username',
@@ -76,6 +79,7 @@ username_type.grid(row = 1,
                    sticky = 'e')
 entry1.grid(row = 1,
             column = 1,
+            columnspan = 2,
             padx = 5,
             pady = 2)
 
@@ -92,6 +96,7 @@ password_type.grid(row = 2,
                    sticky = 'e')
 entry2.grid(row = 2,
             column = 1,
+            columnspan = 2,
             padx = 5,
             pady = 2)
 
@@ -110,5 +115,14 @@ registration_button = Button(root,
 registration_button.grid(row = 3,
                          column = 1,
                          pady = 10)
+
+back_button = Button(root,
+                     text = 'Go Back!',
+                     font = ('Arial', 12, 'bold'),
+                     command = backbutton)
+back_button.grid(row = 3,
+                 column = 2,
+                 pady = 10,
+                 padx = 20)
 
 root.mainloop()

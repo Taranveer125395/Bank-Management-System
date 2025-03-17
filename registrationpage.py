@@ -88,6 +88,10 @@ def register_button():
         messagebox.showerror(title = 'Database Error',
                              message = f'Error: {err}')
 
+def backbutton():
+    root.destroy()
+    subprocess.run(['python', 'welcomepage.py'])
+
 def mobile_number_validation(P):
     if P.isdigit() and len(P) <= 10:
         return True
@@ -277,5 +281,15 @@ login_button.grid(row = 5,
                   column = 2,
                   columnspan = 2,
                   pady = 10)
+
+back_button = Button(root,
+                     text = 'Go Back!',
+                     font = ('Arial', 12, 'bold'),
+                     command = backbutton)
+back_button.grid(row = 5,
+                 column = 3,
+                 pady = 10,
+                 padx = 20,
+                 columnspan = 2)
 
 root.mainloop()
