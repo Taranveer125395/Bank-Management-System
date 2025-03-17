@@ -279,7 +279,6 @@ login_button = Button(root,
                       command = loginbutton)
 login_button.grid(row = 5,
                   column = 2,
-                  columnspan = 2,
                   pady = 10)
 
 back_button = Button(root,
