@@ -1,9 +1,9 @@
 from tkinter import *
 from tkinter import messagebox
-import mysql.connector
+import pymysql
 import subprocess
 
-conn = mysql.connector.connect(
+conn = pymysql.connect(
     host = 'localhost',
     user = 'root',
     password = '20Bcs@125395',
@@ -49,7 +49,7 @@ def loginbutton():
             root.destroy()
             subprocess.run(['python', 'dashboard.py'])
 
-        except mysql.connector.Error as err:
+        except pymysql.Error as err:
             messagebox.showerror(title = 'Database Error',
                                  message = f'Error: {err}')
     else:

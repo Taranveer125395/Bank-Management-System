@@ -1,8 +1,8 @@
 from tkinter import *
 from tkinter import ttk, messagebox
-import mysql.connector
+import pymysql
 
-conn = mysql.connector.connect(
+conn = pymysql.connect(
     host = 'localhost',
     user = 'root',
     password = '20Bcs@125395',
@@ -123,7 +123,7 @@ def account_button():
         accounttypeentry.set('')
         gstnumberentry.delete(0, END)
 
-    except mysql.connector.Error as err:
+    except pymysql.Error as err:
         messagebox.showerror(title = 'Error',
                              message = f'Error: {err}')
     
@@ -206,7 +206,7 @@ def deposit_button():
         messagebox.showwarning(title = 'Error',
                                message = 'Enter a valid numeric amount.')
 
-    except mysql.connector.Error as db_error:
+    except pymysql.Error as db_error:
         messagebox.showerror(title = 'Database Error', 
                              message = f'Database error: {db_error}')
         conn.rollback()
@@ -291,7 +291,7 @@ def withdraw_button():
         messagebox.showwarning(title = 'Error',
                                message = 'Enter a valid numeric amount.')
 
-    except mysql.connector.Error as db_error:
+    except pymysql.Error as db_error:
         messagebox.showerror(title = 'Database Error',
                              message = f'Database error: {db_error}')
         conn.rollback()
