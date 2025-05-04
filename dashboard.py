@@ -229,6 +229,7 @@ def withdraw_button():
         return
 
     try:
+        cursor = conn.cursor()
         withdraw_amount = float(withdraw_amount)
         if withdraw_amount <= 0:
             messagebox.showwarning(title = 'Error',
@@ -240,8 +241,6 @@ def withdraw_button():
                                  message = 'Database connection is not established.')
             return
         
-        cursor = conn.cursor(buffered = True)
-
         cursor.execute(
             '''SELECT account_number 
             FROM account_details 
@@ -297,8 +296,19 @@ def withdraw_button():
         conn.rollback()
 
     finally:
-        if cursor:
-            cursor.close()
+        try:
+            if cursor:
+                cursor.close()
+        
+        except NameError:
+            pass
+
+        try:
+            if conn:
+                conn.close
+        
+        except NameError:
+            pass
 
 root = Tk()
 root.title('Online Banking System - Dashboard')
