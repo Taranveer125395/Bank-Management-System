@@ -343,7 +343,7 @@ create_account = Button(headerpoint,
                         width = 15)
 create_account.pack(side = 'left',
                     pady = 15,
-                    padx = 200)
+                    padx = 70)
 
 depositandwithdraw_money = Button(headerpoint,
                                   text = 'Deposit and Withdraw Cash',
@@ -352,7 +352,7 @@ depositandwithdraw_money = Button(headerpoint,
                                   font = ('Arial', 12, 'bold'),
                                   command = depositmoney,
                                   width = 25)
-depositandwithdraw_money.pack(side = 'right',
+depositandwithdraw_money.pack(side = 'left',
                               pady = 15,
                               padx = 70)
 
