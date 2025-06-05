@@ -218,23 +218,23 @@ def withdrawmoney():
     show_frame(withdrawframe)
 
 def withdraw_button():
-    account_number = accountnumberentry.get().strip()
-    withdraw_amount = amountentry.get().strip()
+    account_number1 = accountnumberentry2.get().strip()
+    withdraw_amount1 = amountentry2.get().strip()
 
-    if not account_number or not withdraw_amount:
+    if not account_number1 or not withdraw_amount1:
         messagebox.showwarning(title = 'Error',
                                message = 'Please enter account number and amount.')
         return
 
-    if not account_number.isdigit():
+    if not account_number1.isdigit():
         messagebox.showwarning(title = 'Error',
                                message = 'Account number must be numeric.')
         return
 
     try:
         cursor = conn.cursor()
-        withdraw_amount = float(withdraw_amount)
-        if withdraw_amount <= 0:
+        withdraw_amount1 = float(withdraw_amount1)
+        if withdraw_amount1 <= 0:
             messagebox.showwarning(title = 'Error',
                                    message = 'Enter a valid withdrawal amount.')
             return
@@ -248,7 +248,7 @@ def withdraw_button():
             '''SELECT account_number 
             FROM account_details 
             WHERE account_number = %s''', 
-            (account_number,)
+            (account_number1,)
         )
         if not cursor.fetchone():
             messagebox.showwarning(title = 'Error', 
@@ -263,31 +263,31 @@ def withdraw_button():
             WHERE account_number = %s 
             ORDER BY transaction_date 
             DESC LIMIT 1''',
-            (account_number,)
+            (account_number1,)
         )
         current_balance = cursor.fetchone()
         last_balance = current_balance[0] if current_balance else 0
 
-        if last_balance < withdraw_amount:
+        if last_balance < withdraw_amount1:
             messagebox.showwarning(title = 'Error',
                                    message = 'Insufficient balance.')
             cursor.close()
             return
 
-        new_balance = float(last_balance) - withdraw_amount
+        new_balance = float(last_balance) - withdraw_amount1
 
         cursor.execute(
             '''INSERT INTO Transactions
             (account_number, balance, amount, transaction_type) 
             VALUES (%s, %s, %s, 'Withdraw')''',
-            (account_number, new_balance, withdraw_amount)
+            (account_number1, new_balance, withdraw_amount1)
         )
         conn.commit()
 
         messagebox.showinfo(title = 'Success',
                             message = 'Withdrawal Successful')
-        accountnumberentry.delete(0, END)
-        amountentry.delete(0, END)
+        accountnumberentry2.delete(0, END)
+        amountentry2.delete(0, END)
 
     except ValueError:
         messagebox.showwarning(title = 'Error',
